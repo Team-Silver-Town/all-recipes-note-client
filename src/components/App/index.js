@@ -1,7 +1,14 @@
-import { TestDiv } from "./component.js";
+import { Fragment } from "react";
+import GlobalStyles from "../../config/GlobalStyles";
+import DefaultRoutes from "../../routes/Routes";
 
 function App() {
-  return <TestDiv />;
+  return (
+    <Fragment>
+      <GlobalStyles />
+      <DefaultRoutes />
+    </Fragment>
+  );
 }
 
 export default App;
