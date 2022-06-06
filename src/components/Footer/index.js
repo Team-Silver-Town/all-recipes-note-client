@@ -11,5 +11,4 @@ const Container = styled.footer`
   padding: 0px 10px;
   line-height: 25px;
   font-weight: bolder;
-  border-top: 1px solid black;
 `;

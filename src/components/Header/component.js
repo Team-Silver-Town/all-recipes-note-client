@@ -11,9 +11,13 @@ export function Navigation() {
   );
 }
 
-export function MyAccount() {
+export function MyAccount({ clickedToggle }) {
   return (
-    <ProfileImg src="https://avatars.githubusercontent.com/u/61281531?v=4" />
+    <ProfileImg
+      onClick={clickedToggle}
+      src="https://avatars.githubusercontent.com/u/61281531?v=4"
+      alt="my-profile-image"
+    />
   );
 }
 
