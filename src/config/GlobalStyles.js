@@ -1,6 +1,6 @@
 import { createGlobalStyle } from "styled-components";
 import reset from "styled-reset";
-const GlobalStyles = createGlobalStyle` 
+const GlobalStyles = createGlobalStyle`
     ${reset}
     a{
         text-decoration: none;
@@ -9,9 +9,21 @@ const GlobalStyles = createGlobalStyle`
     *{
         box-sizing: border-box;
     }
+    html {
+      width: 100%;
+      height: 100%;
+    }
+
     body {
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
         font-size: 14px;
+        background-color: var(--primary-color);
+        width: 100%;
+        height: 100%;
+    }
+
+    #root {
+      width: 100%;
+      height: 100%;
     }
 `;
 
