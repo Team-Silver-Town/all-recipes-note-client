@@ -8,14 +8,16 @@ import {
 } from "react-query";
 import { getCategories, getMenus } from "../../api/foodApi";
 import { getUser } from "../../api/authApi";
+import Modal from "../../components/Modal/Modal";
+import ModalPortal from "../../components/Modal/Portal";
+import SearchInput from "../../components/Input/SearchInput";
 
 const NewRecipe = () => {
   const { data: categories } = useQuery("categories", getCategories);
   const [category, setCategory] = useState("");
-  const [menuId, setMenuId] = useState("");
+  const [menuName, setMenuName] = useState("");
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
-  const [modalOn, setModalOn] = useState(false);
   const queryClient = useQueryClient();
 
   const selectCategoryHanlder = (e) => {
@@ -28,16 +30,6 @@ const NewRecipe = () => {
     }
   };
 
-  const selectMenuHandler = (e) => {
-    const menuIndex = e.target.options.selectedIndex;
-
-    if (menuIndex) {
-      setMenuId(category.menus[menuIndex - 1]._id);
-    } else {
-      setMenuId("");
-    }
-  };
-
   const youtubeUrlHandler = (e) => {
     const url = e.target.value;
     const videoId = url.split("v=")[1];
@@ -47,23 +39,13 @@ const NewRecipe = () => {
   };
 
   const postRecipeHandler = () => {
+    console.log("제출 됨");
     const recipe = {
-      postedBy: "",
+      postedBy: "", //user email 이나 아이디 필요
       youtubeUrl,
       thumbnailUrl,
-      belongsToMenu: menuId,
+      menuName,
     };
-  };
-
-  // const createRecipeMutation = useMutation(createRecipe, {
-  //   onSuccess: () => {
-  //     // Invalidates cache and refresh
-  //     queryClient.invalidateQueries("recipes");
-  //   },
-  // });
-
-  const handleModal = () => {
-    setModalOn(!modalOn);
   };
 
   useEffect(() => {
@@ -74,26 +56,33 @@ const NewRecipe = () => {
     <div>
       <label>1. 링크 입력하기</label>
       <input id="youtubeUrl" onChange={youtubeUrlHandler} />
-      <label>2. 메뉴카테고리 선택하기</label>
-      <select id="categories" onChange={selectCategoryHanlder}>
-        <option>선택</option>
-        {categories?.map((category) => {
-          return <option key={category._id}>{category.name}</option>;
-        })}
-      </select>
-      {Object.keys(category).length > 0 && (
+
+      {youtubeUrl !== "" && (
         <div>
-          <label>3. 메뉴 선택하기</label>
-          <select id="menus" onChange={selectMenuHandler}>
+          <label>2. 메뉴카테고리 선택하기</label>
+          <select id="categories" onChange={selectCategoryHanlder}>
             <option>선택</option>
-            {category.menus?.map((menu) => {
-              return <option key={menu._id}>{menu.name}</option>;
+            {categories?.map((category) => {
+              return <option key={category._id}>{category.name}</option>;
             })}
           </select>
         </div>
       )}
-      <button onClick={handleModal}>직접입력</button>
-      <button onClick={postRecipeHandler}>제출하기</button>
+      {Object.keys(category).length > 0 && (
+        <SearchInput updateHanlder={setMenuName} searchData={category.menus} />
+      )}
+
+      <button
+        onClick={postRecipeHandler}
+        disabled={
+          youtubeUrl === "" ||
+          Object.keys(category).length === 0 ||
+          menuName === ""
+        }
+      >
+        제출하기
+      </button>
+
       {thumbnailUrl !== "" && <img src={thumbnailUrl} alt="thumbnail" />}
     </div>
   );
