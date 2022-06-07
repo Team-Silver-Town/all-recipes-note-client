@@ -1,19 +1,36 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signInWithGoogle } from "../../services/firebase";
 
 import styled from "styled-components";
 
 function Login() {
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = "Login";
   }, []);
+
+  const handleClick = async () => {
+    const loginInfo = await signInWithGoogle();
+
+    const { id, email } = loginInfo.additionalUserInfo.profile;
+    const tokken = loginInfo.credential.idToken;
+    localStorage.setItem(
+      "allRecipesNoteLoginInfo",
+      JSON.stringify({ id, email })
+    );
+    localStorage.setItem("allRecipesNoteTokken", tokken);
+
+    navigate("/");
+  };
 
   return (
     <Container>
       <LoginBox>
         <h1>로그인</h1>
         <ButtonList>
-          <button>
+          <button onClick={handleClick}>
             <img
               alt="google-logo"
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3xqbVcEHLEUb5nZrVBscKBEw9bQ3TSkDc1wjM-NzsJBuzQqgFIbsrztLrUMRTAnfRSIE&usqp=CAU"

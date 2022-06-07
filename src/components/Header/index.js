@@ -1,13 +1,24 @@
 import { useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signOut } from "../../services/firebase";
 
 import { Navigation, MyAccount } from "./component";
 
 function Header() {
   const [isModalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
+
   const clickedToggle = () => {
     setModalOpen((prev) => !prev);
+  };
+
+  const handleClick = async () => {
+    await signOut();
+    localStorage.removeItem("allRecipesNoteLoginInfo");
+    localStorage.removeItem("allRecipesNoteTokken");
+
+    navigate("/login");
   };
 
   if (isModalOpen) {
@@ -18,7 +29,7 @@ function Header() {
         <MyAccountModal>
           <Link to="/">My Profile</Link>
           <Link to="/">My Recipes</Link>
-          <Link to="/">Log out</Link>
+          <span onClick={handleClick}>Log out</span>
         </MyAccountModal>
       </Container>
     );
@@ -68,6 +79,13 @@ const MyAccountModal = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  span {
+    height: 30%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
 
   a {
     height: 30%;
