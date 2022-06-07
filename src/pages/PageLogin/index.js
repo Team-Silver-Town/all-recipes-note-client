@@ -1,10 +1,10 @@
 import { useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { signInWithGoogle } from "../../services/firebase";
 
 import styled from "styled-components";
 
-function Login() {
+function Login({ handleLogin }) {
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -13,15 +13,16 @@ function Login() {
 
   const handleClick = async () => {
     const loginInfo = await signInWithGoogle();
-
-    const { id, email } = loginInfo.additionalUserInfo.profile;
+    console.log(loginInfo);
+    console.log(loginInfo.additionalUserInfo);
+    const { id, email, picture } = loginInfo.additionalUserInfo.profile;
     const tokken = loginInfo.credential.idToken;
     localStorage.setItem(
       "allRecipesNoteLoginInfo",
-      JSON.stringify({ id, email })
+      JSON.stringify({ id, email, picture, tokken })
     );
-    localStorage.setItem("allRecipesNoteTokken", tokken);
 
+    handleLogin({ id, email, picture, tokken });
     navigate("/");
   };
 
@@ -38,10 +39,6 @@ function Login() {
             구글로 계속 하기
           </button>
         </ButtonList>
-        <div>
-          <p>계정이 없으신가요?</p>
-          <Link to="/singup">회원가입</Link>
-        </div>
       </LoginBox>
     </Container>
   );
