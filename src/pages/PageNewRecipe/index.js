@@ -19,6 +19,7 @@ const NewRecipe = () => {
   const [youtubeUrl, setYoutubeUrl] = useState("");
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const queryClient = useQueryClient();
+  const mutation = useMutation(createRecipe);
 
   const selectCategoryHanlder = (e) => {
     const categoryIndex = e.target.options.selectedIndex;
@@ -39,13 +40,14 @@ const NewRecipe = () => {
   };
 
   const postRecipeHandler = () => {
-    console.log("제출 됨");
     const recipe = {
-      postedBy: "", //user email 이나 아이디 필요
+      postedBy: "sp@test.com", //user email 이나 아이디 필요
       youtubeUrl,
       thumbnailUrl,
       menuName,
     };
+
+    mutation.mutate(recipe);
   };
 
   useEffect(() => {
