@@ -5,14 +5,14 @@ import Header from "../../components/Header";
 import Main from "../../components/Main";
 import Footer from "../../components/Footer";
 
-function Home() {
+function Home({ loginUserInfo, handleLogin }) {
   useEffect(() => {
     document.title = "Home";
   }, []);
 
   return (
     <Container>
-      <Header />
+      <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
       <Main />
       <Footer />
     </Container>

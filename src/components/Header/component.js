@@ -11,11 +11,15 @@ export function Navigation() {
   );
 }
 
-export function MyAccount({ clickedToggle }) {
+export function MyAccount({ clickedToggle, loginUserInfo }) {
   return (
     <ProfileImg
       onClick={clickedToggle}
-      src="https://avatars.githubusercontent.com/u/61281531?v=4"
+      src={
+        loginUserInfo
+          ? loginUserInfo.picture
+          : "https://archive.org/download/no-photo-available/no-photo-available.png"
+      }
       alt="my-profile-image"
     />
   );

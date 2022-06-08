@@ -1,24 +1,50 @@
 import { useState } from "react";
 import styled, { keyframes } from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { signOut } from "../../services/firebase";
 
 import { Navigation, MyAccount } from "./component";
 
-function Header() {
+function Header({ loginUserInfo, handleLogin }) {
   const [isModalOpen, setModalOpen] = useState(false);
+  const navigate = useNavigate();
+
   const clickedToggle = () => {
     setModalOpen((prev) => !prev);
   };
+
+  const handleClick = async () => {
+    await signOut();
+    localStorage.removeItem("allRecipesNoteLoginInfo");
+    handleLogin(null);
+
+    navigate("/login");
+  };
+
+  const modalOnLogin = (
+    <>
+      <Link to="/">My Profile</Link>
+      <Link to="/">My Recipes</Link>
+      <span onClick={handleClick}>Log out</span>
+    </>
+  );
+
+  const modalOnLogout = (
+    <>
+      <Link to="/login">Login</Link>
+    </>
+  );
 
   if (isModalOpen) {
     return (
       <Container>
         <Navigation />
-        <MyAccount clickedToggle={clickedToggle} />
+        <MyAccount
+          clickedToggle={clickedToggle}
+          loginUserInfo={loginUserInfo}
+        />
         <MyAccountModal>
-          <Link to="/">My Profile</Link>
-          <Link to="/">My Recipes</Link>
-          <Link to="/">Log out</Link>
+          {loginUserInfo ? modalOnLogin : modalOnLogout}
         </MyAccountModal>
       </Container>
     );
@@ -26,7 +52,10 @@ function Header() {
     return (
       <Container>
         <Navigation />
-        <MyAccount clickedToggle={clickedToggle} />
+        <MyAccount
+          clickedToggle={clickedToggle}
+          loginUserInfo={loginUserInfo}
+        />
       </Container>
     );
   }
@@ -68,6 +97,13 @@ const MyAccountModal = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: center;
+
+  span {
+    height: 30%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
 
   a {
     height: 30%;
