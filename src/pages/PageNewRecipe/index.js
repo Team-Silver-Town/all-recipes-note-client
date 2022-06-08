@@ -33,6 +33,16 @@ const NewRecipe = () => {
 
   const youtubeUrlHandler = (e) => {
     const url = e.target.value;
+
+    const regex =
+      /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
+
+    if (regex.test(url)) {
+      console.log("VALID");
+    } else {
+      console.log("INVALID");
+    }
+
     const videoId = url.split("v=")[1];
     //validate url -> 분기 처리
     setYoutubeUrl(url);
@@ -58,22 +68,22 @@ const NewRecipe = () => {
     <div>
       <label>1. 링크 입력하기</label>
       <input id="youtubeUrl" onChange={youtubeUrlHandler} />
+      <div>
+        <label>2. 메뉴카테고리 선택하기</label>
+        <select
+          id="categories"
+          onChange={selectCategoryHanlder}
+          disabled={youtubeUrl === ""}
+        >
+          <option>선택</option>
+          {categories?.map((category) => {
+            return <option key={category._id}>{category.name}</option>;
+          })}
+        </select>
+      </div>
 
-      {youtubeUrl !== "" && (
-        <div>
-          <label>2. 메뉴카테고리 선택하기</label>
-          <select id="categories" onChange={selectCategoryHanlder}>
-            <option>선택</option>
-            {categories?.map((category) => {
-              return <option key={category._id}>{category.name}</option>;
-            })}
-          </select>
-        </div>
-      )}
-      {Object.keys(category).length > 0 && (
-        <SearchInput updateHanlder={setMenuName} searchData={category.menus} />
-      )}
-
+      <label>3. 메뉴 선택하기</label>
+      <SearchInput updateHanlder={setMenuName} searchData={category.menus} />
       <button
         onClick={postRecipeHandler}
         disabled={
