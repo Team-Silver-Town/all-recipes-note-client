@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useState } from "react";
 import GlobalStyles from "../../config/GlobalStyles";
 import DefaultRoutes from "../../routes/Routes";
 
@@ -10,10 +10,6 @@ function App() {
   const handleLogin = (input) => {
     setLoginUserInfo(input);
   };
-
-  useEffect(() => {
-    console.log(localStorageInfo);
-  }, []);
 
   return (
     <Fragment>
