@@ -8,8 +8,6 @@ import {
 } from "react-query";
 import { getCategories, getMenus } from "../../api/foodApi";
 import { getUser } from "../../api/authApi";
-import Modal from "../../components/Modal/Modal";
-import ModalPortal from "../../components/Modal/Portal";
 import SearchInput from "../../components/Input/SearchInput";
 
 const PageNewRecipe = () => {
