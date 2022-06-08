@@ -1,7 +1,8 @@
 import axios from "axios";
+import envKeys from "../config/config";
 
 const fetchApi = axios.create({
-  baseURL: process.env.BACKEND_URL,
+  baseURL: envKeys.REACT_APP_BACKEND_URL,
 });
 
 export default fetchApi;

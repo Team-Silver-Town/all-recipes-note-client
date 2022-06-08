@@ -15,10 +15,9 @@ function Header({ loginUserInfo, handleLogin }) {
 
   const handleClick = async () => {
     await signOut();
-    localStorage.removeItem("allRecipesNoteLoginInfo");
     handleLogin(null);
-
     navigate("/login");
+    localStorage.removeItem("allRecipesNoteLoginInfo");
   };
 
   const modalOnLogin = (

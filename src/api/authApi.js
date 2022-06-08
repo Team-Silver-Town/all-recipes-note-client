@@ -1,11 +1,20 @@
 import fetchApi from "./apiConfig";
 
-export const getUser = async () => {
-  const response = await fetchApi.get("/users");
-  return response.data;
+export const getUser = async (email) => {
+  const response = await fetchApi.get("api/auth", {
+    params: {
+      email,
+    },
+  });
+  return response;
 };
 
-export const createUser = async (newUser) => {
-  const response = await fetchApi.post("/users", newUser);
-  return response.data;
+export const createUser = async (newUserInfo) => {
+  const response = await fetchApi.post("api/auth", newUserInfo);
+  return response;
+};
+
+export const updateUser = async ({ nickname, email }) => {
+  const response = await fetchApi.patch("api/auth", { nickname, email });
+  return response;
 };

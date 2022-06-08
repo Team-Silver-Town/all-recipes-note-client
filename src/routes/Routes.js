@@ -1,4 +1,9 @@
-import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Route,
+  Routes,
+  Navigate,
+} from "react-router-dom";
 import PageHome from "../pages/PageHome";
 import PageLogin from "../pages/PageLogin";
 import PageNewRecipe from "../pages/PageNewRecipe";
@@ -36,10 +41,14 @@ function DefaultRoutes({ loginUserInfo, handleLogin }) {
         <Route
           path="/recipes/my-recipes"
           element={
-            <PageMyRecipes
-              loginUserInfo={loginUserInfo}
-              handleLogin={handleLogin}
-            />
+            loginUserInfo ? (
+              <PageMyRecipes
+                loginUserInfo={loginUserInfo}
+                handleLogin={handleLogin}
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
         <Route
@@ -54,10 +63,14 @@ function DefaultRoutes({ loginUserInfo, handleLogin }) {
         <Route
           path="/profile"
           element={
-            <PageProfile
-              loginUserInfo={loginUserInfo}
-              handleLogin={handleLogin}
-            />
+            loginUserInfo ? (
+              <PageProfile
+                loginUserInfo={loginUserInfo}
+                handleLogin={handleLogin}
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
         <Route

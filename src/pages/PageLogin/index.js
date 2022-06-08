@@ -1,6 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { signInWithGoogle } from "../../services/firebase";
+import { getUser, createUser } from "../../api/authApi";
 
 import styled from "styled-components";
 
@@ -12,18 +13,29 @@ function Login({ handleLogin }) {
   }, []);
 
   const handleClick = async () => {
-    const loginInfo = await signInWithGoogle();
-    console.log(loginInfo);
-    console.log(loginInfo.additionalUserInfo);
-    const { id, email, picture } = loginInfo.additionalUserInfo.profile;
-    const tokken = loginInfo.credential.idToken;
-    localStorage.setItem(
-      "allRecipesNoteLoginInfo",
-      JSON.stringify({ id, email, picture, tokken })
-    );
+    try {
+      const loginInfo = await signInWithGoogle();
+      const { id, email, picture } = loginInfo.additionalUserInfo.profile;
+      const tokken = loginInfo.credential.idToken;
 
-    handleLogin({ id, email, picture, tokken });
-    navigate("/");
+      const responseData = await getUser(email);
+      const { nickname } = responseData.data;
+
+      if (!responseData.data) {
+        await createUser({ nickname: `unknown${id.slice(0, 8)}`, email });
+      }
+
+      localStorage.setItem(
+        "allRecipesNoteLoginInfo",
+        JSON.stringify({ email, picture, nickname, tokken })
+      );
+
+      handleLogin({ email, picture, nickname, tokken });
+      navigate("/");
+    } catch (error) {
+      // TODO: 에러 처리 요망
+      console.log(error);
+    }
   };
 
   return (
