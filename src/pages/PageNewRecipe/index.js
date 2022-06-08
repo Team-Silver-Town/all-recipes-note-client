@@ -1,5 +1,5 @@
-import { useEffect, useState, Fragment } from "react";
-import { createRecipe, getRecipes } from "../../api/recipeApi";
+import { useEffect, useState } from "react";
+import { createRecipe } from "../../api/recipeApi";
 import {
   QueryClient,
   useMutation,
@@ -18,6 +18,12 @@ const PageNewRecipe = () => {
   const [thumbnailUrl, setThumbnailUrl] = useState("");
   const queryClient = useQueryClient();
   const mutation = useMutation(createRecipe);
+  const localStorageInfo = JSON.parse(
+    localStorage.getItem("allRecipesNoteLoginInfo")
+  );
+
+  console.log(localStorageInfo.email);
+  console.log(categories);
 
   const selectCategoryHanlder = (e) => {
     const categoryIndex = e.target.options.selectedIndex;
@@ -49,7 +55,7 @@ const PageNewRecipe = () => {
 
   const postRecipeHandler = () => {
     const recipe = {
-      postedBy: "sp@test.com", //user email 이나 아이디 필요
+      email: localStorageInfo.email,
       youtubeUrl,
       thumbnailUrl,
       menuName,
