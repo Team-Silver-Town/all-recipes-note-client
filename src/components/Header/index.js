@@ -5,7 +5,7 @@ import { signOut } from "../../services/firebase";
 
 import { Navigation, MyAccount } from "./component";
 
-function Header() {
+function Header({ loginUserInfo, handleLogin }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -16,20 +16,35 @@ function Header() {
   const handleClick = async () => {
     await signOut();
     localStorage.removeItem("allRecipesNoteLoginInfo");
-    localStorage.removeItem("allRecipesNoteTokken");
+    handleLogin(null);
 
     navigate("/login");
   };
+
+  const modalOnLogin = (
+    <>
+      <Link to="/">My Profile</Link>
+      <Link to="/">My Recipes</Link>
+      <span onClick={handleClick}>Log out</span>
+    </>
+  );
+
+  const modalOnLogout = (
+    <>
+      <Link to="/login">Login</Link>
+    </>
+  );
 
   if (isModalOpen) {
     return (
       <Container>
         <Navigation />
-        <MyAccount clickedToggle={clickedToggle} />
+        <MyAccount
+          clickedToggle={clickedToggle}
+          loginUserInfo={loginUserInfo}
+        />
         <MyAccountModal>
-          <Link to="/">My Profile</Link>
-          <Link to="/">My Recipes</Link>
-          <span onClick={handleClick}>Log out</span>
+          {loginUserInfo ? modalOnLogin : modalOnLogout}
         </MyAccountModal>
       </Container>
     );
@@ -37,7 +52,10 @@ function Header() {
     return (
       <Container>
         <Navigation />
-        <MyAccount clickedToggle={clickedToggle} />
+        <MyAccount
+          clickedToggle={clickedToggle}
+          loginUserInfo={loginUserInfo}
+        />
       </Container>
     );
   }
