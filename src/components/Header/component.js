@@ -5,8 +5,8 @@ export function Navigation() {
   return (
     <NavContainer>
       <StyledLink to="/">Home</StyledLink>
-      <StyledLink to="/">Recipes</StyledLink>
-      <StyledLink to="/">Rankings</StyledLink>
+      <StyledLink to="/recipes">Recipes</StyledLink>
+      <StyledLink to="/rankings">Rankings</StyledLink>
     </NavContainer>
   );
 }

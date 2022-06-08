@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
-function Main() {
-  return <Container>Main 영역입니다.</Container>;
+function Main({ children }) {
+  return <Container>{children}</Container>;
 }
 
 export default Main;

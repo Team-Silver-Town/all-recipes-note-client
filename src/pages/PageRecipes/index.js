@@ -5,21 +5,21 @@ import Header from "../../components/Header";
 import Main from "../../components/Main";
 import Footer from "../../components/Footer";
 
-function Home({ loginUserInfo, handleLogin }) {
+function PageRecipes({ loginUserInfo, handleLogin }) {
   useEffect(() => {
-    document.title = "Home";
+    document.title = "Recipes";
   }, []);
 
   return (
     <Container>
       <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
-      <Main>Home 화면입니다.</Main>
+      <Main>Recipes 화면입니다.</Main>
       <Footer />
     </Container>
   );
 }
 
-export default Home;
+export default PageRecipes;
 
 const Container = styled.div`
   height: 100%;

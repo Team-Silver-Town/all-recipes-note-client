@@ -14,7 +14,7 @@ const SearchInput = ({ updateHanlder, searchData }) => {
     if (e.nativeEvent.data) {
       const matchArray = [];
 
-      searchData.map((data) => {
+      searchData.forEach((data) => {
         if (data.name.includes(inputValue)) {
           matchArray.push(data.name);
         }
