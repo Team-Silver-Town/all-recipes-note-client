@@ -12,7 +12,7 @@ import Modal from "../../components/Modal/Modal";
 import ModalPortal from "../../components/Modal/Portal";
 import SearchInput from "../../components/Input/SearchInput";
 
-const NewRecipe = () => {
+const PageNewRecipe = () => {
   const { data: categories } = useQuery("categories", getCategories);
   const [category, setCategory] = useState("");
   const [menuName, setMenuName] = useState("");
@@ -100,4 +100,4 @@ const NewRecipe = () => {
   );
 };
 
-export default NewRecipe;
+export default PageNewRecipe;
