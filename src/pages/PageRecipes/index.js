@@ -6,11 +6,11 @@ import Main from "../../components/Main";
 import Footer from "../../components/Footer";
 import { useQuery } from "react-query";
 import { getRecipes } from "../../api/recipeApi";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
+import RecipeCard from "../../components/Card/RecipeCard";
 
 function PageRecipes({ loginUserInfo, handleLogin }) {
-  const { data } = useQuery("recipes", getRecipes);
-  console.log("recipes", data);
+  const { data: recipes } = useQuery("recipes", getRecipes);
 
   useEffect(() => {
     document.title = "Recipes";
@@ -20,8 +20,15 @@ function PageRecipes({ loginUserInfo, handleLogin }) {
     <Container>
       <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
       <Main>
-        <Link to="/"> Home </Link>
-        <div>영상추가하기</div>
+        <NavLink to="/recipes/new">영상추가하기</NavLink>
+        {recipes &&
+          recipes.map((recipe) => {
+            return (
+              <NavLink id={recipe._id} to={`/recipes/${recipe._id}`}>
+                <RecipeCard recipeData={recipe} />;
+              </NavLink>
+            );
+          })}
       </Main>
       <Footer />
     </Container>
