@@ -1,19 +1,37 @@
 import { useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import { signInWithGoogle } from "../../services/firebase";
 
 import styled from "styled-components";
 
-function Login() {
+function Login({ handleLogin }) {
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = "Login";
   }, []);
+
+  const handleClick = async () => {
+    const loginInfo = await signInWithGoogle();
+    console.log(loginInfo);
+    console.log(loginInfo.additionalUserInfo);
+    const { id, email, picture } = loginInfo.additionalUserInfo.profile;
+    const tokken = loginInfo.credential.idToken;
+    localStorage.setItem(
+      "allRecipesNoteLoginInfo",
+      JSON.stringify({ id, email, picture, tokken })
+    );
+
+    handleLogin({ id, email, picture, tokken });
+    navigate("/");
+  };
 
   return (
     <Container>
       <LoginBox>
         <h1>로그인</h1>
         <ButtonList>
-          <button>
+          <button onClick={handleClick}>
             <img
               alt="google-logo"
               src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ3xqbVcEHLEUb5nZrVBscKBEw9bQ3TSkDc1wjM-NzsJBuzQqgFIbsrztLrUMRTAnfRSIE&usqp=CAU"
@@ -21,10 +39,6 @@ function Login() {
             구글로 계속 하기
           </button>
         </ButtonList>
-        <div>
-          <p>계정이 없으신가요?</p>
-          <Link to="/singup">회원가입</Link>
-        </div>
       </LoginBox>
     </Container>
   );
