@@ -1,10 +1,35 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
+import { patchUser } from "../../api/authApi";
 
 import Header from "../../components/Header";
 import Footer from "../../components/Footer";
 
 function PageProfile({ loginUserInfo, handleLogin }) {
+  const [inputNickname, setInputNickname] = useState(loginUserInfo.nickname);
+  const handleChange = (event) => {
+    setInputNickname(event.target.value);
+  };
+
+  const handleClick = async () => {
+    try {
+      const nickname = inputNickname;
+      const { email, picture, tokken } = loginUserInfo;
+
+      await patchUser({ nickname, email });
+
+      localStorage.removeItem("allRecipesNoteLoginInfo");
+      localStorage.setItem(
+        "allRecipesNoteLoginInfo",
+        JSON.stringify({ email, picture, nickname, tokken })
+      );
+
+      handleLogin({ email, picture, nickname, tokken });
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
   useEffect(() => {
     document.title = "Profile";
   }, []);
@@ -16,12 +41,23 @@ function PageProfile({ loginUserInfo, handleLogin }) {
         <ProfileBox>
           <ProfileImg src={loginUserInfo.picture} />
           <ProfileLine>
-            <label>ID</label>
-            <input type="text" value={loginUserInfo.id} disabled />
+            <label>별명</label>
+            <div>
+              <input
+                type="text"
+                value={inputNickname}
+                onChange={handleChange}
+              />
+              <button type="button" onClick={handleClick}>
+                변경
+              </button>
+            </div>
           </ProfileLine>
           <ProfileLine>
-            <label>E-mail</label>
-            <input type="email" value={loginUserInfo.email} disabled />
+            <label>이메일</label>
+            <div>
+              <input type="email" value={loginUserInfo.email} disabled />
+            </div>
           </ProfileLine>
         </ProfileBox>
       </Main>
@@ -79,17 +115,28 @@ const ProfileLine = styled.div`
     font-size: medium;
   }
 
-  input {
-    height: 40px;
+  div {
     width: 80%;
-    border: none;
-    font-weight: bold;
-    font-size: medium;
     padding-left: 5px;
     border-bottom: 1px solid black;
   }
 
+  input {
+    height: 35px;
+    width: 80%;
+    border: none;
+    font-weight: bold;
+    font-size: medium;
+  }
+
   input:disabled {
     background-color: white;
+  }
+
+  button {
+    width: 60px;
+    height: 100%;
+    font-weight: bold;
+    font-size: medium;
   }
 `;
