@@ -39,7 +39,11 @@ const SearchInput = ({ updateHanlder, searchData }) => {
 
   return (
     <Fragment>
-      <input onChange={inputHandler} ref={inputElement} />
+      <input
+        onChange={inputHandler}
+        ref={inputElement}
+        disabled={!(searchData && searchData.length > 0)}
+      />
       {suggestions.length > 0 && (
         <div>
           {suggestions.map((suggestion, index) => {
