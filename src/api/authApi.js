@@ -14,7 +14,7 @@ export const createUser = async (newUserInfo) => {
   return response;
 };
 
-export const patchUser = async ({ nickname, email }) => {
+export const updateUser = async ({ nickname, email }) => {
   const response = await fetchApi.patch("api/auth", { nickname, email });
   return response;
 };
