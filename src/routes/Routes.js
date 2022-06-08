@@ -3,7 +3,7 @@ import PageHome from "../pages/PageHome";
 import PageLogin from "../pages/PageLogin";
 import PageNewRecipe from "../pages/PageNewRecipe";
 import PageMyRecipes from "../pages/PageMyRecipes";
-import PageOneRecipe from "../pages/PageOneRecipe";
+import PageSingleRecipe from "../pages/PageSingleRecipe";
 import PageProfile from "../pages/PageProfile";
 import PageRankings from "../pages/PageRankings";
 import PageRecipes from "../pages/PageRecipes";
@@ -45,7 +45,7 @@ function DefaultRoutes({ loginUserInfo, handleLogin }) {
         <Route
           path="/recipes/:recipe_id"
           element={
-            <PageOneRecipe
+            <PageSingleRecipe
               loginUserInfo={loginUserInfo}
               handleLogin={handleLogin}
             />
