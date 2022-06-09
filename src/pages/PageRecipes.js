@@ -1,16 +1,17 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 
-import Header from "../../components/Header";
-import Main from "../../components/Main";
-import Footer from "../../components/Footer";
+import Header from "../components/Header";
+import Main from "../components/Main";
+import Footer from "../components/Footer";
 import { useQuery } from "react-query";
-import { getRecipes } from "../../api/recipeApi";
+import { getRecipes } from "../api/recipeApi";
 import { NavLink } from "react-router-dom";
-import RecipeCard from "../../components/Card/RecipeCard";
+import RecipeCard from "../components/Card.Recipe";
 
 function PageRecipes({ loginUserInfo, handleLogin }) {
   const { data: recipes } = useQuery("recipes", getRecipes);
+  console.log(recipes);
 
   useEffect(() => {
     document.title = "Recipes";

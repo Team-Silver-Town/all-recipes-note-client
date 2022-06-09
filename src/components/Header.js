@@ -1,9 +1,9 @@
 import { useState } from "react";
 import styled, { keyframes } from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
-import { signOut } from "../../services/firebase";
+import { signOut } from "../services/firebase";
 
-import { Navigation, MyAccount } from "./component";
+import { Navigation, MyAccount } from "./Header.component";
 
 function Header({ loginUserInfo, handleLogin }) {
   const [isModalOpen, setModalOpen] = useState(false);

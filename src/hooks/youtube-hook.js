@@ -47,5 +47,12 @@ export const useYoutube = () => {
     }
   }, [videoId]);
 
-  return { opts, isValidUrl, videoId, youtubeUrl, thumbnailUrl, urlHandler };
+  return {
+    youtubeOptions,
+    isValidUrl,
+    videoId,
+    youtubeUrl,
+    thumbnailUrl,
+    urlHandler,
+  };
 };

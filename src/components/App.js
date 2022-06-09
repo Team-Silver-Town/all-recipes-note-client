@@ -1,6 +1,6 @@
 import { Fragment, useState } from "react";
-import GlobalStyles from "../../config/GlobalStyles";
-import DefaultRoutes from "../../routes/Routes";
+import GlobalStyles from "../config/GlobalStyles";
+import DefaultRoutes from "../routes/Routes";
 
 function App() {
   const localStorageInfo = JSON.parse(
