@@ -8,4 +8,6 @@ export default Main;
 
 const Container = styled.main`
   height: 100%;
+  overflow: auto;
+  padding-top: 80px;
 `;
