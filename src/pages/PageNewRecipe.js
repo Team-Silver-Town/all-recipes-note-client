@@ -1,10 +1,10 @@
 import { useEffect, useState } from "react";
-import { createRecipe } from "../../api/recipeApi";
+import { createRecipe } from "../api/recipeApi";
 import { useMutation, useQuery } from "react-query";
-import { getCategories } from "../../api/foodApi";
-import SearchInput from "../../components/Input/SearchInput";
+import { getCategories } from "../api/foodApi";
+import SearchInput from "../components/Input.Search";
 import YouTube from "react-youtube";
-import { useYoutube } from "../../hooks/youtube-hook";
+import { useYoutube } from "../hooks/youtube-hook";
 import { useNavigate } from "react-router";
 
 const PageNewRecipe = () => {
@@ -12,8 +12,14 @@ const PageNewRecipe = () => {
   const navigate = useNavigate();
   const [category, setCategory] = useState("");
   const [menuName, setMenuName] = useState("");
-  const { opts, isValidUrl, videoId, youtubeUrl, thumbnailUrl, urlHandler } =
-    useYoutube();
+  const {
+    youtubeOptions,
+    isValidUrl,
+    videoId,
+    youtubeUrl,
+    thumbnailUrl,
+    urlHandler,
+  } = useYoutube();
   const mutation = useMutation(createRecipe);
   const localStorageInfo = JSON.parse(
     localStorage.getItem("allRecipesNoteLoginInfo")
@@ -67,7 +73,9 @@ const PageNewRecipe = () => {
       <label>3. 메뉴 선택하기</label>
       <SearchInput updateHanlder={setMenuName} searchData={category.menus} />
 
-      {isValidUrl && <YouTube videoId={videoId} id="youtube" opts={opts} />}
+      {isValidUrl && (
+        <YouTube videoId={videoId} id="youtube" opts={youtubeOptions} />
+      )}
       <button
         onClick={createRecipeHandler}
         disabled={!isValidUrl || !Object.keys(category).length || !menuName}

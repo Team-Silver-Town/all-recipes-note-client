@@ -1,9 +1,9 @@
 import { useState, useEffect } from "react";
 import styled from "styled-components";
-import { updateUser } from "../../api/authApi";
+import { updateUser } from "../api/authApi";
 
-import Header from "../../components/Header";
-import Footer from "../../components/Footer";
+import Header from "../components/Header";
+import Footer from "../components/Footer";
 
 function PageProfile({ loginUserInfo, handleLogin }) {
   const [inputNickname, setInputNickname] = useState(loginUserInfo.nickname);

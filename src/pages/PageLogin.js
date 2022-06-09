@@ -1,7 +1,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { signInWithGoogle } from "../../services/firebase";
-import { getUser, createUser } from "../../api/authApi";
+import { signInWithGoogle } from "../services/firebase";
+import { getUser, createUser } from "../api/authApi";
 
 import styled from "styled-components";
 

@@ -1,25 +1,25 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 
-import Header from "../../components/Header";
-import Main from "../../components/Main";
-import Footer from "../../components/Footer";
+import Header from "../components/Header";
+import Main from "../components/Main";
+import Footer from "../components/Footer";
 
-function PageOneRecipe({ loginUserInfo, handleLogin }) {
+function Home({ loginUserInfo, handleLogin }) {
   useEffect(() => {
-    document.title = "OneRecipe";
+    document.title = "Home";
   }, []);
 
   return (
     <Container>
       <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
-      <Main>OneRecipes 화면입니다. 화면 구성 변경이 필요합니다!</Main>
+      <Main>Home 화면입니다.</Main>
       <Footer />
     </Container>
   );
 }
 
-export default PageOneRecipe;
+export default Home;
 
 const Container = styled.div`
   height: 100%;
