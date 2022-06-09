@@ -64,12 +64,14 @@ export default Header;
 
 const Container = styled.header`
   height: 80px;
+  width: 100%;
   padding: 0px 10px;
+  background-color: var(--primary-color);
   display: flex;
   justify-content: space-between;
   align-items: center;
   border-bottom: 1px solid black;
-  position: relative;
+  position: fixed;
 `;
 
 const fadeIn = keyframes`

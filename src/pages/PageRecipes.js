@@ -31,7 +31,6 @@ function PageRecipes({ loginUserInfo, handleLogin }) {
             );
           })}
       </Main>
-      <Footer />
     </Container>
   );
 }
