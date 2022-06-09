@@ -32,6 +32,7 @@ const Container = styled.div`
 
 const VideoThumbnail = styled.img`
   width: 100%;
+  border-radius: 10px;
 `;
 
 const RecipeInfoBox = styled.div`

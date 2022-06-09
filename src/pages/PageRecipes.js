@@ -64,6 +64,7 @@ const StyledNewLink = styled(NavLink)`
   width: 100%;
   height: 100%;
   background-color: white;
+  border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -90,5 +91,6 @@ const StyledRecipeLink = styled(NavLink)`
   display: block;
   width: 100%;
   height: 100%;
+  border-radius: 10px;
   background-color: white;
 `;
