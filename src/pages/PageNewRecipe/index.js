@@ -70,9 +70,7 @@ const PageNewRecipe = () => {
       {isValidUrl && <YouTube videoId={videoId} id="youtube" opts={opts} />}
       <button
         onClick={createRecipeHandler}
-        disabled={
-          !isValidUrl || Object.keys(category).length === 0 || menuName === ""
-        }
+        disabled={!isValidUrl || !Object.keys(category).length || !menuName}
       >
         제출하기
       </button>

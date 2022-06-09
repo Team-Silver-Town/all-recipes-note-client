@@ -8,7 +8,7 @@ export const useYoutube = () => {
   const [thumbnailUrl, setThumbnailUrl] = useState(null);
   const [videoId, setVideoId] = useState(null);
 
-  const opts = {
+  const youtubeOptions = {
     height: "390",
     width: "640",
   };
