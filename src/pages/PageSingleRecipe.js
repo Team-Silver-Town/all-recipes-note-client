@@ -1,18 +1,26 @@
 import { useState, useEffect } from "react";
+import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 import Notes from "./PageSingleRecipe.Notes";
 import Tips from "./PageSingleRecipe.Tips";
 import MyNote from "./PageSingleRecipe.MyNote";
+import { useQuery } from "react-query";
+import { getRecipe } from "../api/recipeApi";
 
 function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
+  const { recipe_id } = useParams();
+  const { data: recipe } = useQuery(["recipe", recipe_id], () =>
+    getRecipe(recipe_id)
+  );
+
+  console.log("recipe", recipe);
+
   const handleClick = (event) => {
     setBoardPage(event.target.name);
   };
-
-  console.log(currentBoardPage);
 
   useEffect(() => {
     document.title = "SingleRecipe";

@@ -1,21 +1,24 @@
 import { Fragment, useState, useRef } from "react";
 import { debounce } from "lodash";
 
-const SearchInput = ({ updateHanlder, searchData }) => {
+const SearchInput = ({ updateHanlder, searchData, category }) => {
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const inputElement = useRef();
-
+  // TODO: fine tuning
   const inputHandler = debounce((e) => {
     const inputValue = e.target.value;
-    setInput(inputValue);
-    updateHanlder(input);
+    updateHanlder(inputValue);
 
+    generateSuggestions(e);
+  }, 200);
+
+  const generateSuggestions = (e) => {
     if (e.nativeEvent.data) {
       const matchArray = [];
 
       searchData.forEach((data) => {
-        if (data.name.includes(inputValue)) {
+        if (data.name.includes(e.target.value)) {
           matchArray.push(data.name);
         }
       });
@@ -26,7 +29,7 @@ const SearchInput = ({ updateHanlder, searchData }) => {
     } else {
       setSuggestions([]);
     }
-  }, 300);
+  };
 
   const clickSuggestionHandler = (e) => {
     const suggestedValue = e.target.innerText;
@@ -42,7 +45,7 @@ const SearchInput = ({ updateHanlder, searchData }) => {
       <input
         onChange={inputHandler}
         ref={inputElement}
-        disabled={!(searchData && searchData.length > 0)}
+        // disabled={!(searchData && searchData.length > 0)}
       />
       {suggestions.length > 0 && (
         <div>

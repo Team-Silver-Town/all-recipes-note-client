@@ -10,8 +10,9 @@ import { useNavigate } from "react-router";
 const PageNewRecipe = () => {
   const { data: categories } = useQuery("categories", getCategories);
   const navigate = useNavigate();
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState({});
   const [menuName, setMenuName] = useState("");
+
   const {
     youtubeOptions,
     isValidUrl,
@@ -70,7 +71,7 @@ const PageNewRecipe = () => {
         </select>
       </div>
 
-      <label>3. 메뉴 선택하기</label>
+      <label>3. 메뉴 입력하기</label>
       <SearchInput updateHanlder={setMenuName} searchData={category.menus} />
 
       {isValidUrl && (
