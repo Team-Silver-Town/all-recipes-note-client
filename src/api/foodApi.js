@@ -1,7 +1,6 @@
 import fetchApi from "./apiConfig";
 
 export const getCategories = async () => {
-  console.log("GET CATEGORIES");
   const response = await fetchApi.get("/api/categories");
   return response.data;
 };
