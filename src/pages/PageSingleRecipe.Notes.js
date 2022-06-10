@@ -1,8 +1,6 @@
 import styled from "styled-components";
 
 const Notes = ({ notes }) => {
-  // console.log(notes);
-
   const options = {
     weekday: "long",
     year: "numeric",

@@ -20,21 +20,21 @@ const Background = styled.div`
   left: 0;
   width: 100%;
   height: 100vh;
-  background-color: rgba(0, 0, 0, 0.6);
-  backdrop-filter: blur(5px);
+  /* background-color: rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(5px); */
   z-index: 10;
 `;
 
 const Content = styled.div`
   position: fixed;
   top: 50%;
-  left: 50%;
+  left: 70%;
   transform: translate(-50%, -50%);
-  width: 50%;
+  width: 35%;
   height: 60%;
   background-color: white;
   padding: 30px;
   border-radius: 5px;
-  box-shadow: 0 3rem 5rem rgba(0, 0, 0, 0.3);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);
   z-index: 99;
 `;

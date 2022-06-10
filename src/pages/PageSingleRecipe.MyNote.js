@@ -17,8 +17,6 @@ const MyNote = ({ loginUserInfo, myNote, recipeId }) => {
   const [isVisibile, setIsVisible] = useState(true);
   const queryClient = useQueryClient();
 
-  console.log("MY NOTE", myNote);
-
   useEffect(() => {
     if (myNote) {
       myNote.ingredients.length && setTotalIngredients(myNote.ingredients);
@@ -26,6 +24,10 @@ const MyNote = ({ loginUserInfo, myNote, recipeId }) => {
       setIsVisible(myNote.visibility);
     }
   }, []);
+
+  const inputContentHandler = (event) => {
+    setContent(event.target.value);
+  };
 
   const createNoteMutation = useMutation(createNote, {
     onSuccess: () => {
@@ -45,12 +47,7 @@ const MyNote = ({ loginUserInfo, myNote, recipeId }) => {
     },
   });
 
-  const inputContentHandler = (event) => {
-    setContent(event.target.value);
-  };
-
   const createNoteHandler = () => {
-    console.log("CREATE");
     createNoteMutation.mutate({
       email: loginUserInfo.email,
       relatedRecipe: recipeId,
@@ -61,7 +58,6 @@ const MyNote = ({ loginUserInfo, myNote, recipeId }) => {
   };
 
   const updateNoteHandler = () => {
-    console.log("PATCH");
     updateNoteMutation.mutate({
       note_id: myNote._id,
       ingredients: totalIngredients,

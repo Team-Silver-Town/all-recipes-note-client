@@ -28,8 +28,6 @@ const Ingredients = ({
     ingredientsHandler((previous) => {
       return [...previous, ingredients];
     });
-
-    closeModalHandler();
   };
 
   return (
@@ -60,7 +58,6 @@ const Ingredients = ({
           </Button>
         </Container>
       </Modal>
-      <div>Ingredients</div>;
     </>
   );
 };
