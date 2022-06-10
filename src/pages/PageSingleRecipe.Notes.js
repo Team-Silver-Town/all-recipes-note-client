@@ -1,25 +1,34 @@
-import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-const Notes = () => {
+const Notes = ({ notes }) => {
+  const options = {
+    weekday: "long",
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+    hour: "numeric",
+    minute: "numeric",
+  };
+
   return (
     <NotesContainer>
-      <NotesCard>1번노트</NotesCard>
-      <NotesCard>2번노트</NotesCard>
-      <NotesCard>3번노트</NotesCard>
-      <NotesCard>4번노트</NotesCard>
-      <NotesCard>5번노트</NotesCard>
-      <NotesCard>6번노트</NotesCard>
-      <NotesCard>7번노트</NotesCard>
-      <NotesCard>8번노트</NotesCard>
-      <NotesCard>9번노트</NotesCard>
-      <NotesCard>10번노트</NotesCard>
-      <NotesCard>11번노트</NotesCard>
-      <NotesCard>12번노트</NotesCard>
-      <NotesCard>12번노트</NotesCard>
-      <NotesCard>12번노트</NotesCard>
-      <NotesCard>12번노트</NotesCard>
-      <NotesCard>12번노트</NotesCard>
+      {notes.map((note) => {
+        return (
+          note.visibility && (
+            <NotesCard key={note._id}>
+              <div>{`${note.creator.nickname} 님의 레시피 노트`}</div>
+              <div>{`작성일 ${new Date(note.createdAt).toLocaleString(
+                "ko-KR",
+                options
+              )}`}</div>
+              <div>
+                {`👍 ${note.liked.length}`}
+                {`👎 ${note.disliked.length}`}
+              </div>
+            </NotesCard>
+          )
+        );
+      })}
     </NotesContainer>
   );
 };

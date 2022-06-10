@@ -1,4 +1,4 @@
-import { Fragment, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { debounce } from "lodash";
 import styled from "styled-components";
 
@@ -6,28 +6,23 @@ const SearchInput = ({ updateHanlder, searchData }) => {
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const inputElement = useRef();
-
+  // TODO: fine tuning
   const inputHandler = debounce((e) => {
     const inputValue = e.target.value;
-    setInput(inputValue);
-    updateHanlder(input);
+    updateHanlder(inputValue);
 
-    if (e.nativeEvent.data) {
-      const matchArray = [];
+    generateSuggestions(e);
+  }, 500);
 
-      searchData.forEach((data) => {
-        if (data.name.includes(inputValue)) {
-          matchArray.push(data.name);
-        }
-      });
+  const generateSuggestions = (e) => {
+    const matchArray = searchData.filter(
+      (data) => data.indexOf(e.target.value.trim()) > -1
+    );
 
-      if (matchArray.length > 0) {
-        setSuggestions(matchArray);
-      }
-    } else {
-      setSuggestions([]);
+    if (matchArray.length > 0) {
+      setSuggestions(matchArray);
     }
-  }, 300);
+  };
 
   const clickSuggestionHandler = (e) => {
     const suggestedValue = e.target.innerText;
@@ -40,12 +35,8 @@ const SearchInput = ({ updateHanlder, searchData }) => {
 
   return (
     <Container>
-      <input
-        onChange={inputHandler}
-        ref={inputElement}
-        disabled={!(searchData && searchData.length > 0)}
-      />
-      {suggestions.length > 0 && (
+      <input onChange={inputHandler} ref={inputElement} />
+      {suggestions.length !== searchData.length && suggestions.length > 0 && (
         <div>
           {suggestions.map((suggestion, index) => {
             return (
@@ -62,6 +53,18 @@ const SearchInput = ({ updateHanlder, searchData }) => {
     </Container>
   );
 };
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  input {
+    margin-right: 10px;
+  }
+  div {
+    font-size: 16px;
+    cursor: pointer;
+  }
+`;
 
 export default SearchInput;
 

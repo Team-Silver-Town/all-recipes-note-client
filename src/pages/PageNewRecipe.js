@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createRecipe } from "../api/recipeApi";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import { getCategories } from "../api/foodApi";
@@ -14,9 +14,11 @@ import Footer from "../components/Footer";
 
 const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
   const { data: categories } = useQuery("categories", getCategories);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const [category, setCategory] = useState("");
+  const [category, setCategory] = useState({});
   const [menuName, setMenuName] = useState("");
+
   const {
     youtubeOptions,
     isValidUrl,
@@ -25,7 +27,11 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
     thumbnailUrl,
     urlHandler,
   } = useYoutube();
-  const mutation = useMutation(createRecipe);
+  const createRecipeMutation = useMutation(createRecipe, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("recipes");
+    },
+  });
   const localStorageInfo = JSON.parse(
     localStorage.getItem("allRecipesNoteLoginInfo")
   );
@@ -49,8 +55,8 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
       categoryName: category.name,
     };
 
-    mutation.mutate(recipe);
-    navigate("/");
+    createRecipeMutation.mutate(recipe);
+    navigate("/recipes");
   };
 
   useEffect(() => {

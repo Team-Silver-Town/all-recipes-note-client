@@ -11,7 +11,6 @@ import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function PageRecipes({ loginUserInfo, handleLogin }) {
   const { data: recipes } = useQuery("recipes", getRecipes);
-  console.log(recipes);
 
   useEffect(() => {
     document.title = "Recipes";
@@ -30,7 +29,7 @@ function PageRecipes({ loginUserInfo, handleLogin }) {
         {recipes &&
           recipes.map((recipe) => {
             return (
-              <StyledRecipeLink id={recipe._id} to={`/recipes/${recipe._id}`}>
+              <StyledRecipeLink key={recipe._id} to={`/recipes/${recipe._id}`}>
                 <RecipeCard recipeData={recipe} />
               </StyledRecipeLink>
             );

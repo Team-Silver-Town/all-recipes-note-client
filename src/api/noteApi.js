@@ -11,7 +11,7 @@ export const createNote = async (note) => {
 };
 
 export const updateNote = async (note) => {
-  const response = await fetchApi.patch(`/api/notes/${note.id}`, note);
+  const response = await fetchApi.patch(`/api/notes/${note._id}`, note);
   return response.data;
 };
 
