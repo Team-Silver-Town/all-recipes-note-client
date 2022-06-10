@@ -72,6 +72,7 @@ const Container = styled.header`
   align-items: center;
   border-bottom: 1px solid black;
   position: fixed;
+  z-index: 1;
 `;
 
 const fadeIn = keyframes`
