@@ -1,4 +1,4 @@
-import { Fragment, useState, useRef } from "react";
+import { useState, useRef } from "react";
 import { debounce } from "lodash";
 import styled from "styled-components";
 
@@ -34,52 +34,36 @@ const SearchInput = ({ updateHanlder, searchData }) => {
   };
 
   return (
-    <Fragment>
+    <Container>
       <input onChange={inputHandler} ref={inputElement} />
-      <Suggestions>
-        {suggestions.length !== searchData.length && suggestions.length > 0 && (
-          <div>
-            {suggestions.map((suggestion, index) => {
-              return (
-                <div
-                  key={`${suggestion}-${index}`}
-                  onClick={clickSuggestionHandler}
-                >
-                  {suggestion}
-                </div>
-              );
-            })}
-          </div>
-        )}
-      </Suggestions>
-    </Fragment>
+      {suggestions.length !== searchData.length && suggestions.length > 0 && (
+        <div>
+          {suggestions.map((suggestion, index) => {
+            return (
+              <div
+                key={`${suggestion}-${index}`}
+                onClick={clickSuggestionHandler}
+              >
+                {suggestion}
+              </div>
+            );
+          })}
+        </div>
+      )}
+    </Container>
   );
 };
 
-// const [stateList, setList] = useState(list);
-
-// function filterList(e: SyntheticEvent) {
-//   let newList = [...list];
-//   let string = "";
-//   string = (e.target as HTMLInputElement).value;
-//   newList = list.filter((element) => {
-//     element = element.toLocaleLowerCase();
-//     return element.includes(string);
-//   });
-//   setList(newList);
-//   console.log(JSON.stringify(list));
-// }
-
-// return (
-//   <div className="App">
-//     <h2> Code Challenge </h2>
-//     <input onChange={filterList} />
-//     <p> {stateList.toString()}</p>
-//   </div>
-// );
-
-const Suggestions = styled.div`
-  z-index: 1000;
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+  input {
+    margin-right: 10px;
+  }
+  div {
+    font-size: 16px;
+    cursor: pointer;
+  }
 `;
 
 export default SearchInput;
