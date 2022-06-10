@@ -36,7 +36,7 @@ const SearchInput = ({ updateHanlder, searchData }) => {
   return (
     <Container>
       <input onChange={inputHandler} ref={inputElement} />
-      {suggestions.length !== searchData.length && suggestions.length > 0 && (
+      {suggestions?.length !== searchData?.length && suggestions?.length > 0 && (
         <div>
           {suggestions.map((suggestion, index) => {
             return (
@@ -53,18 +53,6 @@ const SearchInput = ({ updateHanlder, searchData }) => {
     </Container>
   );
 };
-
-const Container = styled.div`
-  display: flex;
-  align-items: center;
-  input {
-    margin-right: 10px;
-  }
-  div {
-    font-size: 16px;
-    cursor: pointer;
-  }
-`;
 
 export default SearchInput;
 
