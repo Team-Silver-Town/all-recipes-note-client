@@ -23,7 +23,7 @@ function Header({ loginUserInfo, handleLogin }) {
   const modalOnLogin = (
     <>
       <Link to="/profile">My Profile</Link>
-      <Link to="/recipes">My Recipes</Link>
+      <Link to="/recipes/my-recipes">My Recipes</Link>
       <span onClick={handleClick}>Log out</span>
     </>
   );

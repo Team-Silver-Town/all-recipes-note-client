@@ -54,13 +54,13 @@ const Main = styled.main`
   padding-top: 80px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr;
-  grid-auto-rows: 300px;
+  grid-auto-rows: 250px;
   gap: 10px;
   margin: 10px;
 `;
 
 const StyledNewLink = styled(NavLink)`
-  display: block;
+  display: inline-block;
   width: 100%;
   height: 100%;
   background-color: white;
@@ -70,14 +70,18 @@ const StyledNewLink = styled(NavLink)`
   justify-content: center;
   align-items: center;
   position: relative;
-  transition: all ease 1s;
+  padding: 2px;
+
+  &:hover {
+    border: 2px solid black;
+
+    div:nth-child(1) {
+      transform: rotate(90deg);
+    }
+  }
 
   div:nth-child(1) {
     transition: all ease-in-out 0.5s;
-  }
-
-  div:nth-child(1):hover {
-    transform: rotate(90deg);
   }
 
   div:nth-child(2) {
@@ -93,4 +97,9 @@ const StyledRecipeLink = styled(NavLink)`
   height: 100%;
   border-radius: 10px;
   background-color: white;
+
+  &:hover {
+    padding: 2px;
+    border: 2px solid black;
+  }
 `;
