@@ -1,5 +1,6 @@
 import { Fragment, useState, useRef } from "react";
 import { debounce } from "lodash";
+import styled from "styled-components";
 
 const SearchInput = ({ updateHanlder, searchData }) => {
   const [input, setInput] = useState("");
@@ -38,7 +39,7 @@ const SearchInput = ({ updateHanlder, searchData }) => {
   };
 
   return (
-    <Fragment>
+    <Container>
       <input
         onChange={inputHandler}
         ref={inputElement}
@@ -58,8 +59,22 @@ const SearchInput = ({ updateHanlder, searchData }) => {
           })}
         </div>
       )}
-    </Fragment>
+    </Container>
   );
 };
 
 export default SearchInput;
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+
+  input {
+    margin-right: 10px;
+  }
+
+  div {
+    font-size: 16px;
+    cursor: pointer;
+  }
+`;
