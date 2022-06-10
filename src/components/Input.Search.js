@@ -67,3 +67,17 @@ const Container = styled.div`
 `;
 
 export default SearchInput;
+
+const Container = styled.div`
+  display: flex;
+  align-items: center;
+
+  input {
+    margin-right: 10px;
+  }
+
+  div {
+    font-size: 16px;
+    cursor: pointer;
+  }
+`;

@@ -37,7 +37,15 @@ function DefaultRoutes({ loginUserInfo, handleLogin }) {
             />
           }
         />
-        <Route path="/recipes/new" element={<PageNewRecipe />} />
+        <Route
+          path="/recipes/new"
+          element={
+            <PageNewRecipe
+              loginUserInfo={loginUserInfo}
+              handleLogin={handleLogin}
+            />
+          }
+        />
         <Route
           path="/recipes/my-recipes"
           element={
