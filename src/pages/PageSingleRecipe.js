@@ -11,14 +11,23 @@ import { getRecipe } from "../api/recipeApi";
 
 function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
+  const [myNote, setMyNote] = useState(null);
   const { recipe_id } = useParams();
   const { data: recipe } = useQuery(["recipe", recipe_id], () =>
     getRecipe(recipe_id)
   );
 
-  console.log("recipe", recipe);
+  useEffect(() => {
+    if (recipe) {
+      const note = recipe.notes.find(
+        (note) => note.creator.email === loginUserInfo.email
+      );
 
-  const handleClick = (event) => {
+      if (note) setMyNote(note);
+    }
+  }, [recipe]);
+
+  const handleBoardNavigation = (event) => {
     setBoardPage(event.target.name);
   };
 
@@ -41,25 +50,39 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
         <BoardHeader>
           <ButtonBox>
             <ButtonLeft>
-              <Button type="button" name="notes" onClick={handleClick}>
+              <Button
+                type="button"
+                name="notes"
+                onClick={handleBoardNavigation}
+              >
                 노트
               </Button>
-              <Button type="button" name="tips" onClick={handleClick}>
+              <Button type="button" name="tips" onClick={handleBoardNavigation}>
                 꿀팁
               </Button>
             </ButtonLeft>
             <ButtonRight>
-              <Button type="button" name="myNote" onClick={handleClick}>
-                내 노트
+              <Button
+                type="button"
+                name="myNote"
+                onClick={handleBoardNavigation}
+              >
+                {myNote ? "내 노트" : "새 노트"}
               </Button>
             </ButtonRight>
           </ButtonBox>
         </BoardHeader>
         <BoardMain>
-          {currentBoardPage === "notes" && <Notes />}
+          {currentBoardPage === "notes" && recipe && (
+            <Notes notes={recipe.notes} />
+          )}
           {currentBoardPage === "tips" && <Tips />}
           {currentBoardPage === "myNote" && (
-            <MyNote loginUserInfo={loginUserInfo} />
+            <MyNote
+              loginUserInfo={loginUserInfo}
+              myNote={myNote}
+              recipeId={recipe_id}
+            />
           )}
         </BoardMain>
       </RightSetction>

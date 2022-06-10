@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { createRecipe } from "../api/recipeApi";
-import { useMutation, useQuery } from "react-query";
+import { useMutation, useQuery, useQueryClient } from "react-query";
 import { getCategories } from "../api/foodApi";
 import SearchInput from "../components/Input.Search";
 import YouTube from "react-youtube";
@@ -9,6 +9,7 @@ import { useNavigate } from "react-router";
 
 const PageNewRecipe = () => {
   const { data: categories } = useQuery("categories", getCategories);
+  const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [category, setCategory] = useState({});
   const [menuName, setMenuName] = useState("");
@@ -21,7 +22,11 @@ const PageNewRecipe = () => {
     thumbnailUrl,
     urlHandler,
   } = useYoutube();
-  const mutation = useMutation(createRecipe);
+  const createRecipeMutation = useMutation(createRecipe, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("recipes");
+    },
+  });
   const localStorageInfo = JSON.parse(
     localStorage.getItem("allRecipesNoteLoginInfo")
   );
@@ -45,8 +50,8 @@ const PageNewRecipe = () => {
       categoryName: category.name,
     };
 
-    mutation.mutate(recipe);
-    navigate("/");
+    createRecipeMutation.mutate(recipe);
+    navigate("/recipes");
   };
 
   useEffect(() => {
@@ -72,7 +77,10 @@ const PageNewRecipe = () => {
       </div>
 
       <label>3. 메뉴 입력하기</label>
-      <SearchInput updateHanlder={setMenuName} searchData={category.menus} />
+      <SearchInput
+        updateHanlder={setMenuName}
+        searchData={category.menus.map((menu) => menu.name)}
+      />
 
       {isValidUrl && (
         <YouTube videoId={videoId} id="youtube" opts={youtubeOptions} />

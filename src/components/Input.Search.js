@@ -1,7 +1,8 @@
 import { Fragment, useState, useRef } from "react";
 import { debounce } from "lodash";
+import styled from "styled-components";
 
-const SearchInput = ({ updateHanlder, searchData, category }) => {
+const SearchInput = ({ updateHanlder, searchData }) => {
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const inputElement = useRef();
@@ -11,23 +12,15 @@ const SearchInput = ({ updateHanlder, searchData, category }) => {
     updateHanlder(inputValue);
 
     generateSuggestions(e);
-  }, 200);
+  }, 500);
 
   const generateSuggestions = (e) => {
-    if (e.nativeEvent.data) {
-      const matchArray = [];
+    const matchArray = searchData.filter(
+      (data) => data.indexOf(e.target.value.trim()) > -1
+    );
 
-      searchData.forEach((data) => {
-        if (data.name.includes(e.target.value)) {
-          matchArray.push(data.name);
-        }
-      });
-
-      if (matchArray.length > 0) {
-        setSuggestions(matchArray);
-      }
-    } else {
-      setSuggestions([]);
+    if (matchArray.length > 0) {
+      setSuggestions(matchArray);
     }
   };
 
@@ -42,27 +35,51 @@ const SearchInput = ({ updateHanlder, searchData, category }) => {
 
   return (
     <Fragment>
-      <input
-        onChange={inputHandler}
-        ref={inputElement}
-        // disabled={!(searchData && searchData.length > 0)}
-      />
-      {suggestions.length > 0 && (
-        <div>
-          {suggestions.map((suggestion, index) => {
-            return (
-              <div
-                key={`${suggestion}-${index}`}
-                onClick={clickSuggestionHandler}
-              >
-                {suggestion}
-              </div>
-            );
-          })}
-        </div>
-      )}
+      <input onChange={inputHandler} ref={inputElement} />
+      <Suggestions>
+        {suggestions.length !== searchData.length && suggestions.length > 0 && (
+          <div>
+            {suggestions.map((suggestion, index) => {
+              return (
+                <div
+                  key={`${suggestion}-${index}`}
+                  onClick={clickSuggestionHandler}
+                >
+                  {suggestion}
+                </div>
+              );
+            })}
+          </div>
+        )}
+      </Suggestions>
     </Fragment>
   );
 };
+
+// const [stateList, setList] = useState(list);
+
+// function filterList(e: SyntheticEvent) {
+//   let newList = [...list];
+//   let string = "";
+//   string = (e.target as HTMLInputElement).value;
+//   newList = list.filter((element) => {
+//     element = element.toLocaleLowerCase();
+//     return element.includes(string);
+//   });
+//   setList(newList);
+//   console.log(JSON.stringify(list));
+// }
+
+// return (
+//   <div className="App">
+//     <h2> Code Challenge </h2>
+//     <input onChange={filterList} />
+//     <p> {stateList.toString()}</p>
+//   </div>
+// );
+
+const Suggestions = styled.div`
+  z-index: 1000;
+`;
 
 export default SearchInput;
