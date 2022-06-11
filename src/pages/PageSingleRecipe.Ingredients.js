@@ -23,11 +23,14 @@ const Ingredients = ({
 
   const clickAddHandler = () => {
     const ingredients = `${ingredient}-${portion}-${unit}`;
-    console.log(ingredients);
 
     ingredientsHandler((previous) => {
       return [...previous, ingredients];
     });
+
+    setIngredient("");
+    setPortion(0);
+    setUnit("");
   };
 
   return (
@@ -49,7 +52,7 @@ const Ingredients = ({
             <label>단위</label>
             <SearchInput searchData={units} updateHanlder={setUnit} />
           </TextInput>
-          <Button onClick={clickCloseHandler}>X</Button>
+          <Button onClick={clickCloseHandler}>완료</Button>
           <Button
             disabled={!ingredient || !portion || !unit}
             onClick={clickAddHandler}

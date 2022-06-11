@@ -5,17 +5,24 @@ import styled from "styled-components";
 
 import Notes from "./PageSingleRecipe.Notes";
 import Tips from "./PageSingleRecipe.Tips";
-import MyNote from "./PageSingleRecipe.MyNote";
+import Note from "./PageSingleRecipe.MyNote";
 import { useQuery } from "react-query";
 import { getRecipe } from "../api/recipeApi";
 
 function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
-  const [myNote, setMyNote] = useState(null);
+  const [currentNote, setCurrentNote] = useState(null);
+  const [isMyNote, setIsMyNote] = useState(false);
   const { recipe_id } = useParams();
   const { data: recipe } = useQuery(["recipe", recipe_id], () =>
     getRecipe(recipe_id)
   );
+
+  console.log("TIPS", recipe?.tips);
+
+  useEffect(() => {
+    document.title = "SingleRecipe";
+  }, []);
 
   useEffect(() => {
     if (recipe) {
@@ -23,17 +30,13 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
         (note) => note.creator.email === loginUserInfo.email
       );
 
-      if (note) setMyNote(note);
+      if (note) setIsMyNote(true);
     }
   }, [recipe]);
 
   const handleBoardNavigation = (event) => {
     setBoardPage(event.target.name);
   };
-
-  useEffect(() => {
-    document.title = "SingleRecipe";
-  }, []);
 
   return (
     <Container>
@@ -62,25 +65,33 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
               </Button>
             </ButtonLeft>
             <ButtonRight>
-              <Button
-                type="button"
-                name="myNote"
-                onClick={handleBoardNavigation}
-              >
-                {myNote ? "내 노트" : "새 노트"}
-              </Button>
+              {currentBoardPage !== "note" && (
+                <Button
+                  type="button"
+                  name="note"
+                  onClick={handleBoardNavigation}
+                >
+                  {isMyNote ? "내 노트" : "새 노트"}
+                </Button>
+              )}
             </ButtonRight>
           </ButtonBox>
         </BoardHeader>
         <BoardMain>
           {currentBoardPage === "notes" && recipe && (
-            <Notes notes={recipe.notes} />
+            <Notes
+              notes={recipe.notes}
+              openNote={setBoardPage}
+              changeNote={setCurrentNote}
+            />
           )}
-          {currentBoardPage === "tips" && <Tips />}
-          {currentBoardPage === "myNote" && (
-            <MyNote
+          {currentBoardPage === "tips" && recipe?.tips && (
+            <Tips tips={recipe.tips} />
+          )}
+          {currentBoardPage === "note" && (
+            <Note
               loginUserInfo={loginUserInfo}
-              myNote={myNote}
+              note={currentNote}
               recipeId={recipe_id}
             />
           )}

@@ -1,28 +1,70 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
+import { useMutation, useQueryClient } from "react-query";
 import styled from "styled-components";
+import {
+  createTip,
+  cancelTipLike,
+  deleteTip,
+  updateTip,
+  updateTipLike,
+} from "../api/tipApi";
 
-const Tips = () => {
+const Tips = ({ tips }) => {
+  const queryClient = useQueryClient();
+  const updateTipMutation = useMutation(updateTip, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("recipe");
+    },
+  });
+
+  const deleteTipMutation = useMutation(deleteTip, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("recipe");
+    },
+  });
+
+  const updateTipLikeMutation = useMutation(updateTipLike, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("recipe");
+    },
+  });
+
+  const cancelTipLikeMutation = useMutation(cancelTipLike, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("recipe");
+    },
+  });
+
   return (
     <TipsContainer>
-      <CreateTip>CreatTip</CreateTip>
-      <TipCard>Tips!</TipCard>
-      <TipCard>Tips!</TipCard>
-      <TipCard>Tips!</TipCard>
-      <TipCard>Tips!</TipCard>
-      <TipCard>Tips!</TipCard>
-      <TipCard>Tips!</TipCard>
-      <TipCard>Tips!</TipCard>
-      <TipCard>Tips!</TipCard>
+      <CreateTip />
+      {tips.length &&
+        tips.map((tip) => {
+          return <TipCard key={tip._id} tip={tip} />;
+        })}
     </TipsContainer>
   );
 };
 
 const CreateTip = () => {
+  const [tipInput, setTipInput] = useState("");
+  const queryClient = useQueryClient();
+
+  const inputTipHandler = (event) => {
+    setTipInput(event.target.value);
+  };
+
+  const createTipMutation = useMutation(createTip, {
+    onSuccess: () => {
+      queryClient.invalidateQueries("recipe");
+    },
+  });
+
   return (
     <TipsCardContainer>
       <TipProfileImg src="" alt="tip-owner-profile-image" />
       <TipInputContainer>
-        <TipInput placeholder="꿀팁 추가..." />
+        <TipInput placeholder="꿀팁 추가..." onChange={inputTipHandler} />
         <TipButtonBox>
           <TipButton>취소</TipButton>
           <TipButton>등록</TipButton>
@@ -32,18 +74,19 @@ const CreateTip = () => {
   );
 };
 
-const TipCard = ({ children }) => {
+const TipCard = ({ tip }) => {
   return (
     <TipsCardContainer>
       <TipProfileImg src="" alt="tip-owner-profile-image" />
       <TipContent>
-        <TipContentInfo>sp863 / 2022.06.09 </TipContentInfo>
-        <TipContentDeatil>
-          Tip
-          상세내용입니다.안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요안녕하세요
-        </TipContentDeatil>
+        <TipContentInfo>
+          {tip.creator.nickname} / {tip.creator.updatedAt}
+        </TipContentInfo>
+        <TipContentDeatil>{tip.content}</TipContentDeatil>
       </TipContent>
-      <TipPreference>👍 3 👎 5</TipPreference>
+      <TipPreference>
+        👍 {tip.liked.length} 👎 {tip.disliked.length}
+      </TipPreference>
     </TipsCardContainer>
   );
 };

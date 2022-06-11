@@ -8,22 +8,26 @@ import SearchInput from "../components/Input.Search";
 import Modal from "../components/Modal";
 import Ingredients from "./PageSingleRecipe.Ingredients";
 
-const MyNote = ({ loginUserInfo, myNote, recipeId }) => {
+const Note = ({ loginUserInfo, note, recipeId }) => {
   const { data: ingredients } = useQuery("ingredients", getIngredients);
   const { data: units } = useQuery("units", getUnits);
   const [totalIngredients, setTotalIngredients] = useState([]);
   const [content, setContent] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMyNote, setIsMyNote] = useState(false);
   const [isVisibile, setIsVisible] = useState(true);
   const queryClient = useQueryClient();
 
+  console.log("NOTE", note);
+
   useEffect(() => {
-    if (myNote) {
-      myNote.ingredients.length && setTotalIngredients(myNote.ingredients);
-      setContent(myNote.content);
-      setIsVisible(myNote.visibility);
+    if (note) {
+      note.ingredients.length && setTotalIngredients(note.ingredients);
+      note.creator.email === loginUserInfo.email && setIsMyNote(true);
+      setContent(note.content);
+      setIsVisible(note.visibility);
     }
-  }, []);
+  }, [note]);
 
   const inputContentHandler = (event) => {
     setContent(event.target.value);
@@ -59,7 +63,7 @@ const MyNote = ({ loginUserInfo, myNote, recipeId }) => {
 
   const updateNoteHandler = () => {
     updateNoteMutation.mutate({
-      note_id: myNote._id,
+      note_id: note._id,
       ingredients: totalIngredients,
       content,
       visibility: isVisibile,
@@ -89,15 +93,23 @@ const MyNote = ({ loginUserInfo, myNote, recipeId }) => {
         />
       )}
       <Container>
-        <ProcessMemo defaultValue={content} onChange={inputContentHandler} />
+        <ProcessMemo
+          defaultValue={content}
+          onChange={inputContentHandler}
+          disabled={!isMyNote}
+        />
         {loginUserInfo && (
           <>
             <ControllButtonSave
-              onClick={myNote ? updateNoteHandler : createNoteHandler}
+              onClick={note ? updateNoteHandler : createNoteHandler}
+              disabled={!isMyNote}
             >
               저장
             </ControllButtonSave>
-            <ControllButtonDelete onClick={deleteNoteHandler}>
+            <ControllButtonDelete
+              onClick={deleteNoteHandler}
+              disabled={!isMyNote}
+            >
               삭제
             </ControllButtonDelete>
             <IngredientsList>
@@ -112,10 +124,16 @@ const MyNote = ({ loginUserInfo, myNote, recipeId }) => {
                   );
                 })}
             </IngredientsList>
-            <ControlButtonAddIngredient onClick={openModalHandler}>
+            <ControlButtonAddIngredient
+              onClick={openModalHandler}
+              disabled={!isMyNote}
+            >
               재료등록
             </ControlButtonAddIngredient>
-            <ControllButtonDisclose onClick={toggleVisibilityHandler}>
+            <ControllButtonDisclose
+              onClick={toggleVisibilityHandler}
+              disabled={!isMyNote}
+            >
               {isVisibile ? "비공개" : "공개"}
             </ControllButtonDisclose>
           </>
@@ -125,7 +143,7 @@ const MyNote = ({ loginUserInfo, myNote, recipeId }) => {
   );
 };
 
-export default MyNote;
+export default Note;
 
 const IngredientsList = styled.div`
   width: 20%;
@@ -170,7 +188,7 @@ const ProcessMemo = styled.textarea`
   outline: none;
 `;
 
-const ControlButtonAddIngredient = styled.div`
+const ControlButtonAddIngredient = styled.button`
   width: 100px;
   height: 30px;
   background-color: var(--primary-color);
@@ -184,7 +202,7 @@ const ControlButtonAddIngredient = styled.div`
   cursor: default;
 `;
 
-const ControllButtonSave = styled.div`
+const ControllButtonSave = styled.button`
   width: 100px;
   height: 30px;
   background-color: var(--primary-color);
@@ -198,7 +216,7 @@ const ControllButtonSave = styled.div`
   cursor: default;
 `;
 
-const ControllButtonDelete = styled.div`
+const ControllButtonDelete = styled.button`
   width: 100px;
   height: 30px;
   background-color: var(--primary-color);
@@ -211,7 +229,7 @@ const ControllButtonDelete = styled.div`
   align-items: center;
   cursor: default;
 `;
-const ControllButtonDisclose = styled.div`
+const ControllButtonDisclose = styled.button`
   width: 100px;
   height: 30px;
   background-color: var(--primary-color);
