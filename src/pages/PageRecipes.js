@@ -1,12 +1,14 @@
 import { useEffect } from "react";
 import styled from "styled-components";
 import { useQuery } from "react-query";
+import { NavLink } from "react-router-dom";
+import { getRecipes } from "../api/recipeApi";
 
 import Header from "../components/Header";
-import { getRecipes } from "../api/recipeApi";
-import { NavLink } from "react-router-dom";
-import RecipeCard from "../components/Card.Recipe";
+import Loading from "../components/Loading";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import RecipeCard from "../components/Card.Recipe";
+
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function PageRecipes({ loginUserInfo, handleLogin }) {
@@ -19,22 +21,28 @@ function PageRecipes({ loginUserInfo, handleLogin }) {
   return (
     <Container>
       <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
-      <Main>
-        <StyledNewLink to="/recipes/new">
-          <div>
-            <FontAwesomeIcon icon={faPlus} size="4x" />
-          </div>
-          <div>새 영상 추가하기</div>
-        </StyledNewLink>
-        {recipes &&
-          recipes.map((recipe) => {
+      {!recipes && (
+        <LoagingMain>
+          <Loading />
+        </LoagingMain>
+      )}
+      {recipes && (
+        <Main>
+          <StyledNewLink to="/recipes/new">
+            <div>
+              <FontAwesomeIcon icon={faPlus} size="4x" />
+            </div>
+            <div>새 영상 추가하기</div>
+          </StyledNewLink>
+          {recipes.map((recipe) => {
             return (
               <StyledRecipeLink key={recipe._id} to={`/recipes/${recipe._id}`}>
                 <RecipeCard recipeData={recipe} />
               </StyledRecipeLink>
             );
           })}
-      </Main>
+        </Main>
+      )}
     </Container>
   );
 }
@@ -56,6 +64,15 @@ const Main = styled.main`
   grid-auto-rows: 250px;
   gap: 10px;
   margin: 10px;
+`;
+
+const LoagingMain = styled.main`
+  width: 100%;
+  height: 100%;
+  padding-top: 80px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 const StyledNewLink = styled(NavLink)`
