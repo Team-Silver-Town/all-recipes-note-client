@@ -1,12 +1,12 @@
 import { useEffect, useState, Fragment } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
 import { getUser } from "../api/authApi";
 import { getNotesByUserId } from "../api/noteApi";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import RecipeCard from "../components/Card.Recipe";
+import NoteCard from "./PageMyRecipes.NoteCard";
+import Loading from "../components/Loading";
 
 function PageMyRecipes({ loginUserInfo, handleLogin }) {
   const [notesData, setNotesData] = useState(null);
@@ -28,44 +28,22 @@ function PageMyRecipes({ loginUserInfo, handleLogin }) {
     getMyNotesData();
   }, [email]);
 
-  //업데이트 날짜: notesData[i].updatedAt
-  //메뉴명 : notesData[i].relatedRecipe.belongsToMenu.name
-  //thumbnailUrl:  notesData[i].thumbnailUrl
-
-  const NoteCard = ({ noteData }) => {
-    const menuName = noteData.relatedRecipe.belongsToMenu.name;
-    const {
-      thumbnailUrl: videoThumbnail,
-      liked,
-      disliked,
-    } = noteData.relatedRecipe;
-    const recipeId = noteData.relatedRecipe._id;
-
-    return (
-      <Fragment>
-        <StyledLink to={`/recipes/${recipeId}`}>
-          <StyledLinkImg src={videoThumbnail} alt="recipe-thumbnail-image" />
-          <StyledLinkInfo>
-            <MenuName>{menuName}</MenuName>
-            <RecipePreference>
-              <div>👍 {liked.length}</div>
-              <div>👎 {disliked.length}</div>
-            </RecipePreference>
-          </StyledLinkInfo>
-        </StyledLink>
-      </Fragment>
-    );
-  };
-
   return (
     <Container>
       <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
-      <Main>
-        {notesData &&
-          notesData.map((noteData) => (
+      {!notesData && (
+        <Main>
+          <Loading />
+        </Main>
+      )}
+      {notesData && (
+        <GridMain>
+          {notesData.map((noteData) => (
             <NoteCard key={`notes-${noteData._id}`} noteData={noteData} />
           ))}
-      </Main>
+        </GridMain>
+      )}
+
       <Footer />
     </Container>
   );
@@ -79,7 +57,7 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Main = styled.main`
+const GridMain = styled.main`
   height: 100%;
   overflow: auto;
   padding-top: 80px;
@@ -90,57 +68,11 @@ const Main = styled.main`
   margin: 10px;
 `;
 
-const StyledLink = styled(Link)`
-  display: block;
+const Main = styled.main`
   width: 100%;
   height: 100%;
-
-  background-color: white;
-  border-radius: 10px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-
-  &:hover {
-    border: 2px solid black;
-    padding: 2px;
-    font-weight: bolder;
-  }
-`;
-
-const StyledLinkImg = styled.img`
-  width: 100%;
-  height: 75%;
-  border-radius: 10px 10px 0px 0px;
-  background-color: gold;
-`;
-
-const StyledLinkInfo = styled.div`
-  height: 25%;
-  width: 100%;
-  min-height: 20px;
-  display: flex;
-  justify-content: space-around;
-  font-size: 16px;
-  align-items: center;
-`;
-
-const MenuName = styled.div`
+  padding-top: 80px;
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: medium;
-`;
-
-const RecipePreference = styled.div`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  font-size: large;
-  width: 50%;
-
-  div {
-    margin: 0px 5px;
-  }
 `;
