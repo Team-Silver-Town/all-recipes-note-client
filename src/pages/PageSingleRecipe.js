@@ -21,6 +21,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const { data: recipe } = useQuery(["recipe", recipe_id], () =>
     getRecipe(recipe_id)
   );
+
   const { updateRecipeLikeMutation, cancelRecipeLikeMutation } =
     useRecipeMutation();
 
@@ -82,6 +83,12 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
       <LeftSection>
         <NavigationPage>
           <StyledLinkButton to="/recipes">뒤로 가기</StyledLinkButton>
+          <button name="like" onClick={clickLikeHandler}>
+            👍 {recipe?.liked.length}
+          </button>
+          <button name="dislike" onClick={clickLikeHandler}>
+            👎 {recipe?.disliked.length}
+          </button>
         </NavigationPage>
         <VideoPlayer>
           <Screen>스크린</Screen>
@@ -103,12 +110,6 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
                 꿀팁
               </Button>
             </ButtonLeft>
-            <button name="like" onClick={clickLikeHandler}>
-              👍 {recipe?.liked.length}
-            </button>
-            <button name="dislike" onClick={clickLikeHandler}>
-              👎 {recipe?.disliked.length}
-            </button>
             <ButtonRight>
               {currentBoardPage !== "myNote" && (
                 <Button

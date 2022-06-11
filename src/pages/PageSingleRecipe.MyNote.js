@@ -1,22 +1,29 @@
-import { useState, useEffect, Fragment } from "react";
-import { useMutation, useQuery, useQueryClient } from "react-query";
-import { useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import { getIngredients, getUnits } from "../api/foodApi";
-import { createNote, deleteNote, updateNote } from "../api/noteApi";
-import SearchInput from "../components/Input.Search";
-import Modal from "../components/Modal";
+import useNoteMutation from "../hooks/note-mutation-hook";
 import Ingredients from "./PageSingleRecipe.Ingredients";
+import { isLikedCheck } from "../utils/likeHelper";
+import { getNote } from "../api/noteApi";
 
 const Note = ({ loginUserInfo, note, recipeId }) => {
   const { data: ingredients } = useQuery("ingredients", getIngredients);
   const { data: units } = useQuery("units", getUnits);
+  const {
+    createNoteMutation,
+    updateNoteMutation,
+    deleteNoteMutation,
+    updateNoteLikeMutation,
+    cancelNoteLikeMutation,
+  } = useNoteMutation();
   const [totalIngredients, setTotalIngredients] = useState([]);
   const [content, setContent] = useState("");
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMyNote, setIsMyNote] = useState(false);
   const [isVisibile, setIsVisible] = useState(true);
-  const queryClient = useQueryClient();
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeOrDislike, setLikeOrDislike] = useState("");
 
   useEffect(() => {
     if (note) {
@@ -29,27 +36,44 @@ const Note = ({ loginUserInfo, note, recipeId }) => {
     }
   }, [note]);
 
+  useEffect(() => {
+    if (note) {
+      const isAlreadyLiked = isLikedCheck(loginUserInfo.email, note.liked);
+      const isAlreadyDisliked = isLikedCheck(
+        loginUserInfo.email,
+        note.disliked
+      );
+      if (isAlreadyLiked || isAlreadyDisliked) {
+        setIsLiked(true);
+        isAlreadyLiked && setLikeOrDislike("like");
+        isAlreadyDisliked && setLikeOrDislike("dislike");
+      }
+    }
+  }, [note]);
+
+  const clickLikeHandler = (event) => {
+    if (isLiked && event.target.name === likeOrDislike) {
+      cancelNoteLikeMutation.mutate({
+        email: loginUserInfo.email,
+        note_id: note._id,
+        like: event.target.name,
+      });
+
+      setIsLiked(false);
+    } else if (!isLiked) {
+      updateNoteLikeMutation.mutate({
+        email: loginUserInfo.email,
+        note_id: note._id,
+        like: event.target.name,
+      });
+
+      setIsLiked(true);
+    }
+  };
+
   const inputContentHandler = (event) => {
     setContent(event.target.value);
   };
-
-  const createNoteMutation = useMutation(createNote, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("recipe");
-    },
-  });
-
-  const updateNoteMutation = useMutation(updateNote, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("recipe");
-    },
-  });
-
-  const deleteNoteMutation = useMutation(deleteNote, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("recipe");
-    },
-  });
 
   const createNoteHandler = () => {
     createNoteMutation.mutate({
@@ -93,12 +117,18 @@ const Note = ({ loginUserInfo, note, recipeId }) => {
         />
       )}
       <Container>
+        <NoteLikeButton name="like" onClick={clickLikeHandler}>
+          👍 {note?.liked.length}
+        </NoteLikeButton>
+        <NoteDislikeButton name="dislike" onClick={clickLikeHandler}>
+          👎 {note?.disliked.length}
+        </NoteDislikeButton>
         <ProcessMemo
           defaultValue={content}
           onChange={inputContentHandler}
           disabled={!isMyNote}
         />
-        {loginUserInfo && (
+        {isMyNote && (
           <>
             <ControllButtonSave
               onClick={note ? updateNoteHandler : createNoteHandler}
@@ -112,6 +142,7 @@ const Note = ({ loginUserInfo, note, recipeId }) => {
             >
               삭제
             </ControllButtonDelete>
+
             <IngredientsList>
               {totalIngredients.length &&
                 totalIngredients.map((ingredient) => {
@@ -144,6 +175,32 @@ const Note = ({ loginUserInfo, note, recipeId }) => {
 };
 
 export default Note;
+
+const NoteLikeButton = styled.button`
+  width: 50px;
+  height: 50px;
+  font-weight: bold;
+  position: absolute;
+  bottom: 3%;
+  left: 60%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+`;
+
+const NoteDislikeButton = styled.button`
+  width: 50px;
+  height: 50px;
+  font-weight: bold;
+  position: absolute;
+  bottom: 3%;
+  left: 70%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: default;
+`;
 
 const IngredientsList = styled.div`
   width: 20%;
