@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 const RecipeCard = ({ recipeData }) => {
-  const { thumbnailUrl: videoThumbnail, like, dislike } = recipeData;
+  const { thumbnailUrl: videoThumbnail, liked, disliked } = recipeData;
   const { thumbnailUrl: userThumbnail, nickname } = recipeData.postedBy;
   const menuName = recipeData.belongsToMenu.name;
 
@@ -12,8 +12,8 @@ const RecipeCard = ({ recipeData }) => {
         <MenuName>{menuName}</MenuName>
         <PostingOwner>{nickname}</PostingOwner>
         <RecipePreference>
-          <div>👍 {like}</div>
-          <div>👎 {dislike}</div>
+          <div>👍 {liked.length}</div>
+          <div>👎 {disliked.length}</div>
         </RecipePreference>
       </RecipeInfoBox>
     </Container>
@@ -32,7 +32,7 @@ const Container = styled.div`
 
 const VideoThumbnail = styled.img`
   width: 100%;
-  border-radius: 10px;
+  border-radius: 10px 10px 0px 0px;
 `;
 
 const RecipeInfoBox = styled.div`
