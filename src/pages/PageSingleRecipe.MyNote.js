@@ -18,8 +18,6 @@ const Note = ({ loginUserInfo, note, recipeId }) => {
   const [isVisibile, setIsVisible] = useState(true);
   const queryClient = useQueryClient();
 
-  console.log("NOTE", note);
-
   useEffect(() => {
     if (note) {
       note.ingredients.length && setTotalIngredients(note.ingredients);

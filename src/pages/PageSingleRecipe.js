@@ -12,13 +12,13 @@ import { getRecipe } from "../api/recipeApi";
 function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
   const [currentNote, setCurrentNote] = useState(null);
-  const [isMyNote, setIsMyNote] = useState(false);
+  const [myNote, setMyNote] = useState(null);
   const { recipe_id } = useParams();
   const { data: recipe } = useQuery(["recipe", recipe_id], () =>
     getRecipe(recipe_id)
   );
 
-  console.log("TIPS", recipe?.tips);
+  console.log(currentBoardPage);
 
   useEffect(() => {
     document.title = "SingleRecipe";
@@ -30,7 +30,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
         (note) => note.creator.email === loginUserInfo.email
       );
 
-      if (note) setIsMyNote(true);
+      if (note) setMyNote(note);
     }
   }, [recipe]);
 
@@ -65,13 +65,13 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
               </Button>
             </ButtonLeft>
             <ButtonRight>
-              {currentBoardPage !== "note" && (
+              {currentBoardPage !== "myNote" && (
                 <Button
                   type="button"
-                  name="note"
+                  name="myNote"
                   onClick={handleBoardNavigation}
                 >
-                  {isMyNote ? "내 노트" : "새 노트"}
+                  {myNote ? "내 노트" : "새 노트"}
                 </Button>
               )}
             </ButtonRight>
@@ -92,6 +92,13 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
             <Note
               loginUserInfo={loginUserInfo}
               note={currentNote}
+              recipeId={recipe_id}
+            />
+          )}
+          {currentBoardPage === "myNote" && (
+            <Note
+              loginUserInfo={loginUserInfo}
+              note={myNote}
               recipeId={recipe_id}
             />
           )}

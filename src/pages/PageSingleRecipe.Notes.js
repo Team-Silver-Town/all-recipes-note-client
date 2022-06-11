@@ -1,5 +1,5 @@
 import { dateOptions } from "../config/dateConfig";
-import { sortByUpdatedAt } from "../utils/sortHelper";
+import { sortDescendingByUpdatedAt } from "../utils/sortHelper";
 import styled from "styled-components";
 
 const Notes = ({ notes, openNote, changeNote }) => {
@@ -12,7 +12,7 @@ const Notes = ({ notes, openNote, changeNote }) => {
 
   return (
     <NotesContainer>
-      {sortByUpdatedAt(notes).map((note) => {
+      {sortDescendingByUpdatedAt(notes).map((note) => {
         return (
           note.visibility && (
             <NotesCard key={note._id} id={note._id} onClick={clickNoteHandler}>
