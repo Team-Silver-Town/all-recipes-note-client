@@ -24,6 +24,8 @@ const Note = ({ loginUserInfo, note, recipeId }) => {
       note.creator.email === loginUserInfo.email && setIsMyNote(true);
       setContent(note.content);
       setIsVisible(note.visibility);
+    } else {
+      setIsMyNote(true);
     }
   }, [note]);
 
