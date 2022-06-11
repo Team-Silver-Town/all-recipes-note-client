@@ -5,17 +5,24 @@ import styled from "styled-components";
 
 import Notes from "./PageSingleRecipe.Notes";
 import Tips from "./PageSingleRecipe.Tips";
-import MyNote from "./PageSingleRecipe.MyNote";
+import Note from "./PageSingleRecipe.MyNote";
 import { useQuery } from "react-query";
 import { getRecipe } from "../api/recipeApi";
 
 function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
+  const [currentNote, setCurrentNote] = useState(null);
   const [myNote, setMyNote] = useState(null);
   const { recipe_id } = useParams();
   const { data: recipe } = useQuery(["recipe", recipe_id], () =>
     getRecipe(recipe_id)
   );
+
+  console.log(currentBoardPage);
+
+  useEffect(() => {
+    document.title = "SingleRecipe";
+  }, []);
 
   useEffect(() => {
     if (recipe) {
@@ -30,10 +37,6 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const handleBoardNavigation = (event) => {
     setBoardPage(event.target.name);
   };
-
-  useEffect(() => {
-    document.title = "SingleRecipe";
-  }, []);
 
   return (
     <Container>
@@ -62,25 +65,40 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
               </Button>
             </ButtonLeft>
             <ButtonRight>
-              <Button
-                type="button"
-                name="myNote"
-                onClick={handleBoardNavigation}
-              >
-                {myNote ? "내 노트" : "새 노트"}
-              </Button>
+              {currentBoardPage !== "myNote" && (
+                <Button
+                  type="button"
+                  name="myNote"
+                  onClick={handleBoardNavigation}
+                >
+                  {myNote ? "내 노트" : "새 노트"}
+                </Button>
+              )}
             </ButtonRight>
           </ButtonBox>
         </BoardHeader>
         <BoardMain>
           {currentBoardPage === "notes" && recipe && (
-            <Notes notes={recipe.notes} />
+            <Notes
+              notes={recipe.notes}
+              openNote={setBoardPage}
+              changeNote={setCurrentNote}
+            />
           )}
-          {currentBoardPage === "tips" && <Tips />}
-          {currentBoardPage === "myNote" && (
-            <MyNote
+          {currentBoardPage === "tips" && recipe?.tips && (
+            <Tips tips={recipe.tips} />
+          )}
+          {currentBoardPage === "note" && (
+            <Note
               loginUserInfo={loginUserInfo}
-              myNote={myNote}
+              note={currentNote}
+              recipeId={recipe_id}
+            />
+          )}
+          {currentBoardPage === "myNote" && (
+            <Note
+              loginUserInfo={loginUserInfo}
+              note={myNote}
               recipeId={recipe_id}
             />
           )}
