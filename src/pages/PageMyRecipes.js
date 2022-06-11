@@ -1,33 +1,48 @@
-import { useEffect } from "react";
+import { useEffect, useState, Fragment } from "react";
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { getUser } from "../api/authApi";
+import { getNotesByUserId } from "../api/noteApi";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
-import RecipeCard from "../components/Card.Recipe";
+import NoteCard from "./PageMyRecipes.NoteCard";
+import Loading from "../components/Loading";
 
 function PageMyRecipes({ loginUserInfo, handleLogin }) {
+  const [notesData, setNotesData] = useState(null);
+  const { email } = loginUserInfo;
+
   useEffect(() => {
     document.title = "MyRecipes";
   }, []);
 
+  useEffect(() => {
+    async function getMyNotesData() {
+      const responseUserData = await getUser(email);
+      const userId = responseUserData.data._id;
+      const responseNotesData = await getNotesByUserId(userId);
+      setNotesData(responseNotesData);
+    }
+
+    getMyNotesData();
+  }, [email]);
+
   return (
     <Container>
       <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
-      <Main>
-        <StyledLink to="/recipes">요기</StyledLink>
-        <StyledLink to="/recipes">요기2</StyledLink>
-        <StyledLink to="/recipes">요기3</StyledLink>
-        <StyledLink to="/recipes">요기4</StyledLink>
-        <StyledLink to="/recipes">요기5</StyledLink>
-        <StyledLink to="/recipes">요기6</StyledLink>
-        <StyledLink to="/recipes">요기7</StyledLink>
-        <StyledLink to="/recipes">요기8</StyledLink>
-        <StyledLink to="/recipes">요기9</StyledLink>
-        <StyledLink to="/recipes">요기10</StyledLink>
-        <StyledLink to="/recipes">요기11</StyledLink>
-        <StyledLink to="/recipes">요기12</StyledLink>
-      </Main>
+      {!notesData && (
+        <Main>
+          <Loading />
+        </Main>
+      )}
+      {notesData && (
+        <GridMain>
+          {notesData.map((noteData) => (
+            <NoteCard key={`notes-${noteData._id}`} noteData={noteData} />
+          ))}
+        </GridMain>
+      )}
+
       <Footer />
     </Container>
   );
@@ -41,32 +56,22 @@ const Container = styled.div`
   flex-direction: column;
 `;
 
-const Main = styled.main`
+const GridMain = styled.main`
   height: 100%;
   overflow: auto;
   padding-top: 80px;
   display: grid;
-  grid-template-columns: repeat(8, 1fr);
-  grid-auto-rows: 250px;
+  grid-template-columns: repeat(6, 1fr);
+  grid-auto-rows: 150px;
   gap: 10px;
   margin: 10px;
 `;
 
-const StyledLink = styled(Link)`
-  display: block;
+const Main = styled.main`
   width: 100%;
   height: 100%;
-
-  background-color: white;
-  border-radius: 10px;
+  padding-top: 80px;
   display: flex;
-  flex-direction: column;
   justify-content: center;
   align-items: center;
-
-  &:hover {
-    border: 2px solid black;
-    padding: 2px;
-    font-weight: bolder;
-  }
 `;

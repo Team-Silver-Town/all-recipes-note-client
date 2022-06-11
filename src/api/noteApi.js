@@ -5,6 +5,11 @@ export const getNotes = async () => {
   return response.data;
 };
 
+export const getNotesByUserId = async (userId) => {
+  const response = await fetchApi.get(`/api/notes/${userId}`);
+  return response.data;
+};
+
 export const createNote = async (note) => {
   const response = await fetchApi.post("/api/notes", note);
   return response.data;
