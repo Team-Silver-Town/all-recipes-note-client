@@ -11,7 +11,6 @@ import Loading from "../components/Loading";
 function PageMyRecipes({ loginUserInfo, handleLogin }) {
   const [notesData, setNotesData] = useState(null);
   const { email } = loginUserInfo;
-  console.log("notesData", notesData);
 
   useEffect(() => {
     document.title = "MyRecipes";
