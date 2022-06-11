@@ -1,7 +1,7 @@
 import { useEffect, useState, Fragment } from "react";
 import styled from "styled-components";
 import { getUser } from "../api/authApi";
-import { getNotesByUserId } from "../api/noteApi";
+import { getMyNotes } from "../api/noteApi";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
@@ -20,7 +20,7 @@ function PageMyRecipes({ loginUserInfo, handleLogin }) {
     async function getMyNotesData() {
       const responseUserData = await getUser(email);
       const userId = responseUserData.data._id;
-      const responseNotesData = await getNotesByUserId(userId);
+      const responseNotesData = await getMyNotes(userId);
       setNotesData(responseNotesData);
     }
 

@@ -25,7 +25,7 @@ function PageRankings({ loginUserInfo, handleLogin }) {
     const { menus } = props;
 
     return menus.map((menu, index) => (
-      <RankItem id={`${menu}${index}`}>
+      <RankItem key={`${menu}${index}`}>
         <RankNumber>{index + 1}위</RankNumber>
         <RankContent>{menu}</RankContent>
       </RankItem>
