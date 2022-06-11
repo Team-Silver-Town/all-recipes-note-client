@@ -5,8 +5,8 @@ export const getNotes = async () => {
   return response.data;
 };
 
-export const getNotesByUserId = async (userId) => {
-  const response = await fetchApi.get(`/api/notes/${userId}`);
+export const getMyNotes = async (userId) => {
+  const response = await fetchApi.get(`/api/users/${userId}/notes`);
   return response.data;
 };
 
