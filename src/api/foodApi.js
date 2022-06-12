@@ -20,6 +20,11 @@ export const getMenu = async (menu_id) => {
   return response.data;
 };
 
+export const getTop5Menus = async (menu_id) => {
+  const response = await fetchApi.get("/api/menus/top5");
+  return response.data;
+};
+
 export const getIngredients = async () => {
   const response = await fetchApi.get("/api/ingredients");
   return response.data;

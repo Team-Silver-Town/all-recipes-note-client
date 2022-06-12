@@ -5,6 +5,7 @@ import { getIngredients, getUnits } from "../api/foodApi";
 import useNoteMutation from "../hooks/note-mutation-hook";
 import Ingredients from "./PageSingleRecipe.Ingredients";
 import { isLikedCheck } from "../utils/likeHelper";
+import { getNote } from "../api/noteApi";
 
 const Note = ({ loginUserInfo, note, recipeId, openNoteList }) => {
   const { data: ingredients } = useQuery("ingredients", getIngredients);
@@ -49,6 +50,7 @@ const Note = ({ loginUserInfo, note, recipeId, openNoteList }) => {
       }
     }
   }, [note]);
+
 
   const clickLikeHandler = (event) => {
     if (isLiked && event.target.name === likeOrDislike) {
