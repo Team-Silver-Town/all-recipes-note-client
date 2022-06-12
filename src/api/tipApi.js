@@ -6,6 +6,12 @@ export const getTips = async () => {
   return response.data;
 };
 
+export const getTipsByRecipeId = async (recipe_id) => {
+  const response = await fetchApi.get(`/api/tips/${recipe_id}`);
+
+  return response.data;
+};
+
 export const createTip = async (tip) => {
   const response = await fetchApi.post("/api/tips", tip);
 
@@ -13,25 +19,25 @@ export const createTip = async (tip) => {
 };
 
 export const updateTip = async (tip) => {
-  const response = await fetchApi.patch(`/api/tip/${tip.id}`, tip);
+  const response = await fetchApi.patch(`/api/tips/${tip.id}`, tip);
 
   return response.data;
 };
 
 export const updateTipLike = async (tip) => {
-  const response = await fetchApi.patch(`/api/tip/${tip.id}/likes`, tip);
+  const response = await fetchApi.patch(`/api/tips/${tip.id}/likes`, tip);
 
   return response.data;
 };
 
 export const cancelTipLike = async (tip) => {
-  const response = await fetchApi.patch(`/api/tip/${tip.id}/unlikes`, tip);
+  const response = await fetchApi.patch(`/api/tips/${tip.id}/unlikes`, tip);
 
   return response.data;
 };
 
 export const deleteTip = async (tip_id) => {
-  const response = await fetchApi.delete(`/api/tip/${tip_id}`, tip_id);
+  const response = await fetchApi.delete(`/api/tips/${tip_id}`, tip_id);
 
   return response.data;
 };
