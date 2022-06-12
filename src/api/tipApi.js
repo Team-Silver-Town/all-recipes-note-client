@@ -6,6 +6,12 @@ export const getTips = async () => {
   return response.data;
 };
 
+export const getTopTenTips = async () => {
+  const response = await fetchApi.get("/api/tips/top10");
+
+  return response.data;
+};
+
 export const getTipsByRecipeId = async (recipe_id) => {
   const response = await fetchApi.get(`/api/tips/${recipe_id}`);
 
