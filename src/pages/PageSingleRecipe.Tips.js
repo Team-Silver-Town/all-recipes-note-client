@@ -1,80 +1,105 @@
-import { useState } from "react";
-import { useMutation, useQueryClient } from "react-query";
+import { useEffect, useState } from "react";
+import { useQuery } from "react-query";
 import styled from "styled-components";
-import {
-  createTip,
-  cancelTipLike,
-  deleteTip,
-  updateTip,
-  updateTipLike,
-} from "../api/tipApi";
+import { getTipsByRecipeId } from "../api/tipApi";
+import useTipMutation from "../hooks/tip-mutation-hook";
+import { isLikedCheck } from "../utils/likeHelper";
+import { sortDescendingByUpdatedAt } from "../utils/sortHelper";
 
-const Tips = ({ tips }) => {
-  const queryClient = useQueryClient();
-  const updateTipMutation = useMutation(updateTip, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("recipe");
-    },
-  });
-
-  const deleteTipMutation = useMutation(deleteTip, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("recipe");
-    },
-  });
-
-  const updateTipLikeMutation = useMutation(updateTipLike, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("recipe");
-    },
-  });
-
-  const cancelTipLikeMutation = useMutation(cancelTipLike, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("recipe");
-    },
-  });
+const Tips = ({ loginUserInfo, recipeId }) => {
+  const { data: tips } = useQuery(["tips", recipeId], () =>
+    getTipsByRecipeId(recipeId)
+  );
 
   return (
     <TipsContainer>
-      <CreateTip />
-      {tips.length &&
-        tips.map((tip) => {
-          return <TipCard key={tip._id} tip={tip} />;
+      <CreateTip loginUserInfo={loginUserInfo} recipeId={recipeId} />
+      {tips?.length &&
+        sortDescendingByUpdatedAt(tips).map((tip) => {
+          return (
+            <TipCard key={tip._id} loginUserInfo={loginUserInfo} tip={tip} />
+          );
         })}
     </TipsContainer>
   );
 };
 
-const CreateTip = () => {
+const CreateTip = ({ loginUserInfo, recipeId }) => {
   const [tipInput, setTipInput] = useState("");
-  const queryClient = useQueryClient();
+  const { createTipMutation } = useTipMutation();
 
   const inputTipHandler = (event) => {
     setTipInput(event.target.value);
   };
 
-  const createTipMutation = useMutation(createTip, {
-    onSuccess: () => {
-      queryClient.invalidateQueries("recipe");
-    },
-  });
+  const clickCancelTipHandler = () => {
+    setTipInput("");
+  };
+
+  const clickCreateTipHandler = () => {
+    createTipMutation.mutate({
+      email: loginUserInfo.email,
+      relatedRecipe: recipeId,
+      content: tipInput,
+    });
+
+    setTipInput("");
+  };
 
   return (
     <TipsCardContainer>
       <TipProfileImg src="" alt="tip-owner-profile-image" />
       <TipInputContainer>
-        <TipInput placeholder="꿀팁 추가..." onChange={inputTipHandler} />
+        <TipInput
+          placeholder="꿀팁 추가..."
+          onChange={inputTipHandler}
+          value={tipInput}
+        />
         <TipButtonBox>
-          <TipButton>취소</TipButton>
-          <TipButton>등록</TipButton>
+          <TipButton onClick={clickCancelTipHandler}>취소</TipButton>
+          <TipButton onClick={clickCreateTipHandler}>등록</TipButton>
         </TipButtonBox>
       </TipInputContainer>
     </TipsCardContainer>
   );
 };
 
-const TipCard = ({ tip }) => {
+const TipCard = ({ loginUserInfo, tip }) => {
+  const { updateTipLikeMutation, cancelTipLikeMutation } = useTipMutation();
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeOrDislike, setLikeOrDislike] = useState("");
+
+  useEffect(() => {
+    const isAlreadyLiked = isLikedCheck(loginUserInfo.email, tip.liked);
+    const isAlreadyDisliked = isLikedCheck(loginUserInfo.email, tip.disliked);
+
+    if (isAlreadyLiked || isAlreadyDisliked) {
+      setIsLiked(true);
+      isAlreadyLiked && setLikeOrDislike("like");
+      isAlreadyDisliked && setLikeOrDislike("dislike");
+    }
+  }, [tip]);
+
+  const clickLikeHandler = (event) => {
+    if (isLiked && event.target.name === likeOrDislike) {
+      cancelTipLikeMutation.mutate({
+        email: loginUserInfo.email,
+        tip_id: tip._id,
+        like: event.target.name,
+      });
+
+      setIsLiked(false);
+    } else if (!isLiked) {
+      updateTipLikeMutation.mutate({
+        email: loginUserInfo.email,
+        tip_id: tip._id,
+        like: event.target.name,
+      });
+
+      setIsLiked(true);
+    }
+  };
+
   return (
     <TipsCardContainer>
       <TipProfileImg src="" alt="tip-owner-profile-image" />
@@ -85,7 +110,12 @@ const TipCard = ({ tip }) => {
         <TipContentDeatil>{tip.content}</TipContentDeatil>
       </TipContent>
       <TipPreference>
-        👍 {tip.liked.length} 👎 {tip.disliked.length}
+        <button name="like" onClick={clickLikeHandler}>
+          👍 {tip.liked.length}
+        </button>
+        <button name="dislike" onClick={clickLikeHandler}>
+          👎 {tip.disliked.length}
+        </button>
       </TipPreference>
     </TipsCardContainer>
   );
