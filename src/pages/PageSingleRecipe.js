@@ -2,7 +2,7 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
-
+import YouTube from "react-youtube";
 import Notes from "./PageSingleRecipe.Notes";
 import Tips from "./PageSingleRecipe.Tips";
 import Note from "./PageSingleRecipe.MyNote";
@@ -10,6 +10,7 @@ import { useQuery } from "react-query";
 import { getRecipe } from "../api/recipeApi";
 import useRecipeMutation from "../hooks/recipe-mutation-hook";
 import { isLikedCheck } from "../utils/likeHelper";
+import { videoOptions } from "../config/youtubeConfig";
 
 function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
@@ -91,8 +92,16 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
           </button>
         </NavigationPage>
         <VideoPlayer>
-          <Screen>스크린</Screen>
-          <Controller>컨트롤러</Controller>
+          <YouTube
+            videoId={recipe?.youtubeUrl.split("v=")[1].split("&")[0]}
+            id="youtube"
+            opts={{ height: "390", width: "640" }}
+          />
+          <Controller>
+            <button>재생/중지</button>
+            <button>{">>"}</button>
+            <button>{"<<"}</button>
+          </Controller>
         </VideoPlayer>
       </LeftSection>
       <RightSetction>
@@ -139,6 +148,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
               loginUserInfo={loginUserInfo}
               note={currentNote}
               recipeId={recipe_id}
+              openNoteList={setBoardPage}
             />
           )}
           {currentBoardPage === "myNote" && (
@@ -146,6 +156,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
               loginUserInfo={loginUserInfo}
               note={myNote}
               recipeId={recipe_id}
+              openNoteList={setBoardPage}
             />
           )}
         </BoardMain>
