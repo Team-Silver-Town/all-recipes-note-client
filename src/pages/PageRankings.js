@@ -55,7 +55,7 @@ function PageRankings({ loginUserInfo, handleLogin }) {
     });
   };
 
-  const notesTop10ClickHandler = async () => {
+  const clickNotesTop10Handler = async () => {
     try {
       const resultData = await getTopTenNotes();
 
@@ -69,7 +69,7 @@ function PageRankings({ loginUserInfo, handleLogin }) {
     }
   };
 
-  const tipsTop10ClickHandler = async () => {
+  const clickTipsTop10Handler = async () => {
     try {
       const resultData = await getTopTenTips();
 
@@ -107,10 +107,10 @@ function PageRankings({ loginUserInfo, handleLogin }) {
             </ul>
           </RankingList>
           <RankingList>
-            <h2 onClick={notesTop10ClickHandler}>베스트 노트 Top 10</h2>
+            <h2 onClick={clickNotesTop10Handler}>베스트 노트 Top 10</h2>
           </RankingList>
           <RankingList>
-            <h2 onClick={tipsTop10ClickHandler}>베스트 꿀팁 Top 10</h2>
+            <h2 onClick={clickTipsTop10Handler}>베스트 꿀팁 Top 10</h2>
           </RankingList>
         </Navigation>
         <RankingSection>
