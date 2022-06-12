@@ -1,7 +1,8 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useQuery } from "react-query";
-import styled from "styled-components";
+import styled, { keyframes } from "styled-components";
 import { getTipsByRecipeId } from "../api/tipApi";
+import { dateOptions } from "../config/dateConfig";
 import useTipMutation from "../hooks/tip-mutation-hook";
 import { isLikedCheck } from "../utils/likeHelper";
 import { sortDescendingByUpdatedAt } from "../utils/sortHelper";
@@ -17,22 +18,37 @@ const Tips = ({ loginUserInfo, recipeId }) => {
       {tips?.length &&
         sortDescendingByUpdatedAt(tips).map((tip) => {
           return (
-            <TipCard key={tip._id} loginUserInfo={loginUserInfo} tip={tip} />
+            <TipCard
+              key={tip._id}
+              loginUserInfo={loginUserInfo}
+              tip={tip}
+              isMyTip={tip.creator.email === loginUserInfo.email}
+            />
           );
         })}
     </TipsContainer>
   );
 };
 
-const CreateTip = ({ loginUserInfo, recipeId }) => {
+const CreateTip = ({
+  loginUserInfo,
+  recipeId,
+  isEditing,
+  closeEditMode,
+  tip,
+}) => {
   const [tipInput, setTipInput] = useState("");
-  const { createTipMutation } = useTipMutation();
+  const { createTipMutation, updateTipMutation } = useTipMutation();
+  const inputElement = useRef();
 
   const inputTipHandler = (event) => {
     setTipInput(event.target.value);
   };
 
   const clickCancelTipHandler = () => {
+    if (isEditing) {
+      closeEditMode();
+    }
     setTipInput("");
   };
 
@@ -43,6 +59,18 @@ const CreateTip = ({ loginUserInfo, recipeId }) => {
       content: tipInput,
     });
 
+    inputElement.current.value = "";
+    setTipInput("");
+  };
+
+  const clickUpdateTipHandler = () => {
+    updateTipMutation.mutate({
+      tip_id: tip._id,
+      content: tipInput,
+    });
+    
+    closeEditMode();
+    inputElement.current.value = "";
     setTipInput("");
   };
 
@@ -53,21 +81,29 @@ const CreateTip = ({ loginUserInfo, recipeId }) => {
         <TipInput
           placeholder="꿀팁 추가..."
           onChange={inputTipHandler}
-          value={tipInput}
+          defaultValue={isEditing ? tip.content : tipInput}
+          ref={inputElement}
         />
         <TipButtonBox>
           <TipButton onClick={clickCancelTipHandler}>취소</TipButton>
-          <TipButton onClick={clickCreateTipHandler}>등록</TipButton>
+          <TipButton
+            onClick={isEditing ? clickUpdateTipHandler : clickCreateTipHandler}
+          >
+            {isEditing ? "수정" : "등록"}
+          </TipButton>
         </TipButtonBox>
       </TipInputContainer>
     </TipsCardContainer>
   );
 };
 
-const TipCard = ({ loginUserInfo, tip }) => {
-  const { updateTipLikeMutation, cancelTipLikeMutation } = useTipMutation();
+const TipCard = ({ loginUserInfo, tip, isMyTip }) => {
+  const { updateTipLikeMutation, cancelTipLikeMutation, deleteTipMutation } =
+    useTipMutation();
   const [isLiked, setIsLiked] = useState(false);
   const [likeOrDislike, setLikeOrDislike] = useState("");
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
     const isAlreadyLiked = isLikedCheck(loginUserInfo.email, tip.liked);
@@ -100,28 +136,130 @@ const TipCard = ({ loginUserInfo, tip }) => {
     }
   };
 
-  return (
-    <TipsCardContainer>
-      <TipProfileImg src="" alt="tip-owner-profile-image" />
-      <TipContent>
-        <TipContentInfo>
-          {tip.creator.nickname} / {tip.creator.updatedAt}
-        </TipContentInfo>
-        <TipContentDeatil>{tip.content}</TipContentDeatil>
-      </TipContent>
-      <TipPreference>
-        <button name="like" onClick={clickLikeHandler}>
-          👍 {tip.liked.length}
-        </button>
-        <button name="dislike" onClick={clickLikeHandler}>
-          👎 {tip.disliked.length}
-        </button>
-      </TipPreference>
-    </TipsCardContainer>
-  );
+  const clickEditHandler = () => {
+    if (isEditing) {
+      clickEditModal();
+    }
+    setIsEditing(!isEditing);
+  };
+
+  const clickDeleteHandler = () => {
+    deleteTipMutation.mutate({
+      tip_id: tip._id,
+    });
+  };
+
+  const clickEditModal = () => {
+    setIsModalOpen(!isModalOpen);
+  };
+
+  if (isEditing) {
+    return (
+      <CreateTip
+        loginUserInfo={loginUserInfo}
+        recipeId={tip.relatedRecipe._id}
+        isEditing={isEditing}
+        closeEditMode={clickEditHandler}
+        tip={tip}
+      />
+    );
+  } else {
+    return (
+      <TipsCardContainer>
+        <TipProfileImg src="" alt="tip-owner-profile-image" />
+        <TipContent>
+          <TipContentInfo>
+            {tip.creator.nickname} /{" "}
+            {new Date(tip.creator.updatedAt).toLocaleDateString(
+              "ko-KR",
+              dateOptions
+            )}
+          </TipContentInfo>
+          <TipContentDeatil>{tip.content}</TipContentDeatil>
+        </TipContent>
+        <div></div>
+        <TipPreference>
+          {isMyTip && (
+            <TipEditButton onClick={clickEditModal}>...</TipEditButton>
+          )}
+          {isModalOpen && (
+            <TipEditContainer>
+              <div onClick={clickEditHandler}>수정</div>
+              <div onClick={clickDeleteHandler}>삭제</div>
+            </TipEditContainer>
+          )}
+          <button name="like" onClick={clickLikeHandler}>
+            👍 {tip.liked.length}
+          </button>
+          <button name="dislike" onClick={clickLikeHandler}>
+            👎 {tip.disliked.length}
+          </button>
+        </TipPreference>
+      </TipsCardContainer>
+    );
+  }
 };
 
 export default Tips;
+
+const TipEditButton = styled.button``;
+const TipLikeButton = styled.button``;
+const TipDislikeButton = styled.button``;
+
+const fadeIn = keyframes`
+  from {
+    transform: scale(0.25);
+    opacity: 0;
+  }
+
+  to {
+    transform: scale(1);
+    opacity: 1;
+  }
+`;
+
+const TipPreference = styled.div`
+  position: relative;
+  min-width: 60px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+`;
+
+const TipEditContainer = styled.div`
+  position: absolute;
+  width: 50px;
+  height: 50px;
+  background-color: #dee2e6;
+  right: 115%;
+  top: 25%;
+  padding: 0 5px;
+
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 10px;
+
+  div {
+    height: 30%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+  }
+
+  div {
+    height: 30%;
+    display: flex;
+    align-items: center;
+  }
+
+  div:nth-child(2) {
+    border-bottom: 1px solid black;
+  }
+
+  animation: ${fadeIn} 0.15s ease-out;
+`;
 
 const TipsContainer = styled.div`
   display: flex;
@@ -164,13 +302,6 @@ const TipContentInfo = styled.div`
 `;
 const TipContentDeatil = styled.div`
   height: 70%;
-  display: flex;
-  align-items: center;
-`;
-
-const TipPreference = styled.div`
-  min-width: 60px;
-  height: 100%;
   display: flex;
   align-items: center;
 `;

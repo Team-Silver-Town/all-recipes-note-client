@@ -7,7 +7,7 @@ import Ingredients from "./PageSingleRecipe.Ingredients";
 import { isLikedCheck } from "../utils/likeHelper";
 import { getNote } from "../api/noteApi";
 
-const Note = ({ loginUserInfo, note, recipeId }) => {
+const Note = ({ loginUserInfo, note, recipeId, openNoteList }) => {
   const { data: ingredients } = useQuery("ingredients", getIngredients);
   const { data: units } = useQuery("units", getUnits);
   const {
@@ -51,6 +51,7 @@ const Note = ({ loginUserInfo, note, recipeId }) => {
     }
   }, [note]);
 
+
   const clickLikeHandler = (event) => {
     if (isLiked && event.target.name === likeOrDislike) {
       cancelNoteLikeMutation.mutate({
@@ -83,6 +84,7 @@ const Note = ({ loginUserInfo, note, recipeId }) => {
       content,
       visibility: isVisibile,
     });
+    openNoteList("notes");
   };
 
   const updateNoteHandler = () => {
@@ -95,7 +97,10 @@ const Note = ({ loginUserInfo, note, recipeId }) => {
   };
 
   const deleteNoteHandler = () => {
-    deleteNoteMutation.mutate();
+    deleteNoteMutation.mutate({
+      note_id: note._id,
+    });
+    openNoteList("notes");
   };
 
   const openModalHandler = () => {
@@ -145,9 +150,9 @@ const Note = ({ loginUserInfo, note, recipeId }) => {
 
             <IngredientsList>
               {totalIngredients.length &&
-                totalIngredients.map((ingredient) => {
+                totalIngredients.map((ingredient, index) => {
                   return (
-                    <IngredientsCard>
+                    <IngredientsCard key={ingredient._id}>
                       <div>{`${ingredient.split("-")[0]} ${
                         ingredient.split("-")[1]
                       }${ingredient.split("-")[2]}`}</div>

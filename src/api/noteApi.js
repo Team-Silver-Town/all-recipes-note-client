@@ -41,7 +41,8 @@ export const cancelNoteLike = async (note) => {
   return response.data;
 };
 
-export const deleteNote = async (note_id) => {
+
+export const deleteNote = async ({ note_id }) => {
   const response = await fetchApi.delete(`/api/notes/${note_id}`);
   return response.data;
 };
