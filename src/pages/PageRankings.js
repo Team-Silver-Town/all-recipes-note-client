@@ -49,7 +49,7 @@ function PageRankings({ loginUserInfo, handleLogin }) {
             </ul>
           </RankingList>
           <RankingList>
-            <h2>인기 메뉴 노트 Top10</h2>
+            <h2>인기 메뉴 레시피 Top10</h2>
             <ul>
               {curretnTop5Menus.map((menu, index) => {
                 return (
