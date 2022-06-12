@@ -6,6 +6,11 @@ export const getTips = async () => {
   return response.data;
 };
 
+export const getTopTenTips = async () => {
+  const response = await fetchApi.get("/api/tips/top10");
+  return response.data;
+};
+
 export const createTip = async (tip) => {
   const response = await fetchApi.post("/api/tips", tip);
 

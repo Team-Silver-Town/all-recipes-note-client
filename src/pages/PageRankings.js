@@ -1,35 +1,84 @@
 import { useEffect, useState } from "react";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
+
+import { getTopTenNotes } from "../api/noteApi";
+import { getTopTenTips } from "../api/tipApi";
 
 import Header from "../components/Header";
 
 function PageRankings({ loginUserInfo, handleLogin }) {
+  const [currentRankList, setCurrentRankList] = useState([]);
+  const [currentRankType, setCurrentRnakType] = useState("");
+  const navigate = useNavigate();
+
   useEffect(() => {
     document.title = "Rankings";
   }, []);
 
-  const exampleRecipes = [
-    "봉골레",
-    "비빔밥",
-    "봉골레",
-    "비빔밥",
-    "봉골레",
-    "비빔밥",
-    "봉골레",
-    "비빔밥",
-    "봉골레",
-    "비빔밥",
-  ];
+  const rankListNaivigateHandler = (id) => {
+    if (currentRankType === "note") {
+      console.log("navigate note");
+      console.log(id);
+      navigate(`/recipes/${id}`);
+    }
+
+    if (currentRankType === "tip") {
+      console.log("navigate tip");
+      console.log(id);
+      navigate(`/recipes/${id}`);
+    }
+  };
 
   const RankItemList = (props) => {
-    const { menus } = props;
+    const { currentRankList } = props;
 
-    return menus.map((menu, index) => (
-      <RankItem key={`${menu}${index}`}>
-        <RankNumber>{index + 1}위</RankNumber>
-        <RankContent>{menu}</RankContent>
-      </RankItem>
-    ));
+    return currentRankList.map((item, index) => {
+      const id = item.relatedRecipe._id;
+      const { nickname } = item.creator;
+      const { name: menuName } = item.relatedRecipe.belongsToMenu;
+      const content = item.content;
+
+      return (
+        <RankItem
+          key={`${item}${index}`}
+          onClick={() => rankListNaivigateHandler(id)}
+        >
+          <RankNumber>{index + 1}위</RankNumber>
+          <RankContent>
+            <div>메뉴명 : {menuName}</div>
+            <div>작성자 : {nickname}</div>
+            {content && <div>내용 : {content}</div>}
+          </RankContent>
+        </RankItem>
+      );
+    });
+  };
+
+  const notesTop10ClickHandler = async () => {
+    try {
+      const resultData = await getTopTenNotes();
+
+      setCurrentRankList(resultData);
+      setCurrentRnakType("note");
+
+      console.log("NotesTop10");
+      console.log(currentRankList);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const tipsTop10ClickHandler = async () => {
+    try {
+      const resultData = await getTopTenTips();
+
+      setCurrentRankList(resultData);
+      setCurrentRnakType("tip");
+
+      console.log("TipsTop10");
+      console.log(resultData);
+    } catch (error) {}
   };
 
   return (
@@ -58,15 +107,15 @@ function PageRankings({ loginUserInfo, handleLogin }) {
             </ul>
           </RankingList>
           <RankingList>
-            <h2>베스트 노트 Top 10</h2>
+            <h2 onClick={notesTop10ClickHandler}>베스트 노트 Top 10</h2>
           </RankingList>
           <RankingList>
-            <h2>베스트 꿀팁 Top 10</h2>
+            <h2 onClick={tipsTop10ClickHandler}>베스트 꿀팁 Top 10</h2>
           </RankingList>
         </Navigation>
         <RankingSection>
           <RankTable>
-            <RankItemList menus={exampleRecipes} />
+            <RankItemList currentRankList={currentRankList} />
           </RankTable>
         </RankingSection>
       </Main>
@@ -159,9 +208,12 @@ const RankItem = styled.div`
   height: 10%;
   width: 100%;
   display: flex;
+  cursor: pointer;
+  border-bottom: 1px solid black;
 
   &:hover {
     background-color: white;
+    border: 2px solid black;
   }
 `;
 
@@ -180,5 +232,19 @@ const RankContent = styled.div`
   height: 100%;
   width: 100%;
   display: flex;
+  justify-content: flex-start;
+  padding-left: 10px;
   align-items: center;
+
+  div:nth-child(1) {
+    width: 25%;
+  }
+
+  div:nth-child(2) {
+    width: 25%;
+  }
+
+  div:nth-child(3) {
+    width: 50%;
+  }
 `;
