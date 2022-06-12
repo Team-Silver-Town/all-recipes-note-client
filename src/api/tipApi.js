@@ -42,8 +42,8 @@ export const cancelTipLike = async (tip) => {
   return response.data;
 };
 
-export const deleteTip = async (tip_id) => {
-  const response = await fetchApi.delete(`/api/tips/${tip_id}`, tip_id);
+export const deleteTip = async ({ tip_id }) => {
+  const response = await fetchApi.delete(`/api/tips/${tip_id}`);
 
   return response.data;
 };
