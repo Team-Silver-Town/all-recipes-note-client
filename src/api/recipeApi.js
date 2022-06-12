@@ -14,3 +14,19 @@ export const createRecipe = async (newRecipe) => {
   const response = await fetchApi.post("/api/recipes/new", newRecipe);
   return response.data;
 };
+
+export const updateRecipeLike = async (recipe) => {
+  const response = await fetchApi.patch(
+    `/api/recipes/${recipe.recipe_id}/likes`,
+    recipe
+  );
+  return response.data;
+};
+
+export const cancelRecipeLike = async (recipe) => {
+  const response = await fetchApi.patch(
+    `/api/recipes/${recipe.recipe_id}/unlikes`,
+    recipe
+  );
+  return response.data;
+};

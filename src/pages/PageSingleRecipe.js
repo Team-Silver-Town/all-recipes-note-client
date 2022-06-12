@@ -8,17 +8,22 @@ import Tips from "./PageSingleRecipe.Tips";
 import Note from "./PageSingleRecipe.MyNote";
 import { useQuery } from "react-query";
 import { getRecipe } from "../api/recipeApi";
+import useRecipeMutation from "../hooks/recipe-mutation-hook";
+import { isLikedCheck } from "../utils/likeHelper";
 
 function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
   const [currentNote, setCurrentNote] = useState(null);
   const [myNote, setMyNote] = useState(null);
+  const [isLiked, setIsLiked] = useState(false);
+  const [likeOrDislike, setLikeOrDislike] = useState("");
   const { recipe_id } = useParams();
   const { data: recipe } = useQuery(["recipe", recipe_id], () =>
     getRecipe(recipe_id)
   );
 
-  console.log(currentBoardPage);
+  const { updateRecipeLikeMutation, cancelRecipeLikeMutation } =
+    useRecipeMutation();
 
   useEffect(() => {
     document.title = "SingleRecipe";
@@ -34,6 +39,41 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
     }
   }, [recipe]);
 
+  useEffect(() => {
+    if (recipe) {
+      const isAlreadyLiked = isLikedCheck(loginUserInfo.email, recipe?.liked);
+      const isAlreadyDisliked = isLikedCheck(
+        loginUserInfo.email,
+        recipe.disliked
+      );
+      if (isAlreadyLiked || isAlreadyDisliked) {
+        setIsLiked(true);
+        isAlreadyLiked && setLikeOrDislike("like");
+        isAlreadyDisliked && setLikeOrDislike("dislike");
+      }
+    }
+  }, [recipe]);
+
+  const clickLikeHandler = (event) => {
+    if (isLiked && event.target.name === likeOrDislike) {
+      cancelRecipeLikeMutation.mutate({
+        email: loginUserInfo.email,
+        recipe_id,
+        like: event.target.name,
+      });
+
+      setIsLiked(false);
+    } else if (!isLiked) {
+      updateRecipeLikeMutation.mutate({
+        email: loginUserInfo.email,
+        recipe_id,
+        like: event.target.name,
+      });
+
+      setIsLiked(true);
+    }
+  };
+
   const handleBoardNavigation = (event) => {
     setBoardPage(event.target.name);
   };
@@ -43,6 +83,12 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
       <LeftSection>
         <NavigationPage>
           <StyledLinkButton to="/recipes">뒤로 가기</StyledLinkButton>
+          <button name="like" onClick={clickLikeHandler}>
+            👍 {recipe?.liked.length}
+          </button>
+          <button name="dislike" onClick={clickLikeHandler}>
+            👎 {recipe?.disliked.length}
+          </button>
         </NavigationPage>
         <VideoPlayer>
           <Screen>스크린</Screen>
@@ -86,7 +132,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
             />
           )}
           {currentBoardPage === "tips" && recipe?.tips && (
-            <Tips tips={recipe.tips} />
+            <Tips loginUserInfo={loginUserInfo} recipeId={recipe_id} />
           )}
           {currentBoardPage === "note" && (
             <Note
