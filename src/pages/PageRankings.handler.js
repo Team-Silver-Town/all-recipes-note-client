@@ -2,7 +2,7 @@ import { getTopTenNotes } from "../api/noteApi";
 import { getTopTenTips } from "../api/tipApi";
 import { getMenu } from "../api/foodApi";
 import { sortTop10RecipesInMenu } from "../utils/sortHelper";
-import { getLatestTop10Recipes } from "../api/recipeApi";
+import { getLatestTop10Recipes, getTop10Recipes } from "../api/recipeApi";
 
 export const clickNotesTop10Handler = async (
   setCurrentRnakType,
@@ -56,7 +56,21 @@ export const clickLatestTop10RecipesHandler = async (
   try {
     const resultData = await getLatestTop10Recipes();
 
-    console.log(resultData);
+    console.log("최신 top10");
+
+    setCurrentRnakType("recipe");
+    setCurrentRankList(resultData);
+  } catch (error) {}
+};
+
+export const clickTop10Recipes = async (
+  setCurrentRnakType,
+  setCurrentRankList
+) => {
+  try {
+    const resultData = await getTop10Recipes();
+
+    console.log("전체 top10");
 
     setCurrentRnakType("recipe");
     setCurrentRankList(resultData);

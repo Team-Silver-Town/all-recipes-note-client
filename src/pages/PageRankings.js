@@ -7,6 +7,7 @@ import {
   clickTipsTop10Handler,
   clickMenuTop10Handler,
   clickLatestTop10RecipesHandler,
+  clickTop10Recipes,
 } from "./PageRankings.handler";
 
 import Header from "../components/Header";
@@ -53,7 +54,13 @@ function PageRankings({ loginUserInfo, handleLogin }) {
               >
                 최신 Top 10
               </li>
-              <li>좋아요 Top 10</li>
+              <li
+                onClick={() =>
+                  clickTop10Recipes(setCurrentRnakType, setCurrentRankList)
+                }
+              >
+                전체 Top 10
+              </li>
               <li>한식 Top 10</li>
               <li>중식 Top 10</li>
               <li>양식 Top 10</li>

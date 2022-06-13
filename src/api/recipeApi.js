@@ -15,6 +15,11 @@ export const getLatestTop10Recipes = async () => {
   return response.data;
 };
 
+export const getTop10Recipes = async () => {
+  const response = await fetchApi.get("/api/recipes/top10");
+  return response.data;
+};
+
 export const createRecipe = async (newRecipe) => {
   const response = await fetchApi.post("/api/recipes/new", newRecipe);
   return response.data;
