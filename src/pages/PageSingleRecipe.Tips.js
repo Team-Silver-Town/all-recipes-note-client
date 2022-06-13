@@ -58,7 +58,6 @@ const CreateTip = ({
       relatedRecipe: recipeId,
       content: tipInput,
     });
-
     inputElement.current.value = "";
     setTipInput("");
   };
@@ -68,7 +67,6 @@ const CreateTip = ({
       tip_id: tip._id,
       content: tipInput,
     });
-    
     closeEditMode();
     inputElement.current.value = "";
     setTipInput("");

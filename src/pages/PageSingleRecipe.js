@@ -14,8 +14,8 @@ import { videoOptions } from "../config/youtubeConfig";
 
 function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
-  const [currentNote, setCurrentNote] = useState(null);
-  const [myNote, setMyNote] = useState(null);
+  const [currentNoteId, setCurrentNoteId] = useState("");
+  const [myNoteId, setMyNoteId] = useState("");
   const [isLiked, setIsLiked] = useState(false);
   const [likeOrDislike, setLikeOrDislike] = useState("");
   const { recipe_id } = useParams();
@@ -31,13 +31,11 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   }, []);
 
   useEffect(() => {
-    if (recipe) {
-      const note = recipe.notes.find(
-        (note) => note.creator.email === loginUserInfo.email
-      );
-
-      if (note) setMyNote(note);
-    }
+    console.log("RUN useEffect SingleRecipe");
+    const note = recipe?.notes.find(
+      (note) => note.creator.email === loginUserInfo.email
+    );
+    note && setMyNoteId(note._id);
   }, [recipe]);
 
   useEffect(() => {
@@ -76,7 +74,12 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   };
 
   const handleBoardNavigation = (event) => {
-    setBoardPage(event.target.name);
+    if (event.target.name === "myNote") {
+      setCurrentNoteId(myNoteId);
+      setBoardPage("note");
+    } else {
+      setBoardPage(event.target.name);
+    }
   };
 
   return (
@@ -97,11 +100,6 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
             id="youtube"
             opts={{ height: "390", width: "640" }}
           />
-          <Controller>
-            <button>재생/중지</button>
-            <button>{">>"}</button>
-            <button>{"<<"}</button>
-          </Controller>
         </VideoPlayer>
       </LeftSection>
       <RightSetction>
@@ -126,7 +124,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
                   name="myNote"
                   onClick={handleBoardNavigation}
                 >
-                  {myNote ? "내 노트" : "새 노트"}
+                  {myNoteId ? "내 노트" : "새 노트"}
                 </Button>
               )}
             </ButtonRight>
@@ -135,9 +133,10 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
         <BoardMain>
           {currentBoardPage === "notes" && recipe && (
             <Notes
+              loginUserInfo={loginUserInfo}
               notes={recipe.notes}
               openNote={setBoardPage}
-              changeNote={setCurrentNote}
+              changeNote={setCurrentNoteId}
             />
           )}
           {currentBoardPage === "tips" && recipe?.tips && (
@@ -146,19 +145,19 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
           {currentBoardPage === "note" && (
             <Note
               loginUserInfo={loginUserInfo}
-              note={currentNote}
+              note_id={currentNoteId}
               recipeId={recipe_id}
               openNoteList={setBoardPage}
             />
           )}
-          {currentBoardPage === "myNote" && (
+          {/* {currentBoardPage === "myNote" && (
             <Note
               loginUserInfo={loginUserInfo}
               note={myNote}
               recipeId={recipe_id}
               openNoteList={setBoardPage}
             />
-          )}
+          )} */}
         </BoardMain>
       </RightSetction>
     </Container>

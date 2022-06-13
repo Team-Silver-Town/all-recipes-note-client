@@ -7,9 +7,12 @@ import Ingredients from "./PageSingleRecipe.Ingredients";
 import { isLikedCheck } from "../utils/likeHelper";
 import { getNote } from "../api/noteApi";
 
-const Note = ({ loginUserInfo, note, recipeId, openNoteList }) => {
+const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
   const { data: ingredients } = useQuery("ingredients", getIngredients);
   const { data: units } = useQuery("units", getUnits);
+  const { data: note } = useQuery(["note", note_id], () =>
+    getNote(note_id ? note_id : null)
+  );
   const {
     createNoteMutation,
     updateNoteMutation,
@@ -19,8 +22,8 @@ const Note = ({ loginUserInfo, note, recipeId, openNoteList }) => {
   } = useNoteMutation();
   const [totalIngredients, setTotalIngredients] = useState([]);
   const [content, setContent] = useState("");
-  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMyNote, setIsMyNote] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [isVisibile, setIsVisible] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const [likeOrDislike, setLikeOrDislike] = useState("");
@@ -29,9 +32,13 @@ const Note = ({ loginUserInfo, note, recipeId, openNoteList }) => {
     if (note) {
       note.ingredients.length && setTotalIngredients(note.ingredients);
       note.creator.email === loginUserInfo.email && setIsMyNote(true);
+      note.creator.email !== loginUserInfo.email && setIsMyNote(false);
       setContent(note.content);
       setIsVisible(note.visibility);
     } else {
+      setTotalIngredients([]);
+      setContent("");
+      setIsVisible(true);
       setIsMyNote(true);
     }
   }, [note]);
@@ -51,7 +58,6 @@ const Note = ({ loginUserInfo, note, recipeId, openNoteList }) => {
     }
   }, [note]);
 
-
   const clickLikeHandler = (event) => {
     if (isLiked && event.target.name === likeOrDislike) {
       cancelNoteLikeMutation.mutate({
@@ -59,16 +65,20 @@ const Note = ({ loginUserInfo, note, recipeId, openNoteList }) => {
         note_id: note._id,
         like: event.target.name,
       });
+      console.log("CANCEL LIKE");
 
       setIsLiked(false);
+      setLikeOrDislike("");
     } else if (!isLiked) {
       updateNoteLikeMutation.mutate({
         email: loginUserInfo.email,
         note_id: note._id,
         like: event.target.name,
       });
+      console.log("UPDATE LIKE");
 
       setIsLiked(true);
+      setLikeOrDislike(event.target.name);
     }
   };
 
@@ -122,12 +132,16 @@ const Note = ({ loginUserInfo, note, recipeId, openNoteList }) => {
         />
       )}
       <Container>
-        <NoteLikeButton name="like" onClick={clickLikeHandler}>
-          👍 {note?.liked.length}
-        </NoteLikeButton>
-        <NoteDislikeButton name="dislike" onClick={clickLikeHandler}>
-          👎 {note?.disliked.length}
-        </NoteDislikeButton>
+        {note && (
+          <NoteLikeButton name="like" onClick={clickLikeHandler}>
+            👍 {note.liked.length}
+          </NoteLikeButton>
+        )}
+        {note && (
+          <NoteDislikeButton name="dislike" onClick={clickLikeHandler}>
+            👎 {note.disliked.length}
+          </NoteDislikeButton>
+        )}
         <ProcessMemo
           defaultValue={content}
           onChange={inputContentHandler}

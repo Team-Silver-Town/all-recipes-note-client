@@ -30,12 +30,14 @@ const useNoteMutation = () => {
 
   const updateNoteLikeMutation = useMutation(updateNoteLike, {
     onSuccess: () => {
+      queryClient.invalidateQueries("note");
       queryClient.invalidateQueries("recipe");
     },
   });
 
   const cancelNoteLikeMutation = useMutation(cancelNoteLike, {
     onSuccess: () => {
+      queryClient.invalidateQueries("note");
       queryClient.invalidateQueries("recipe");
     },
   });

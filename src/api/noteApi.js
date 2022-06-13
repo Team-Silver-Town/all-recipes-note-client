@@ -6,8 +6,12 @@ export const getNotes = async () => {
 };
 
 export const getNote = async (note_id) => {
-  const response = await fetchApi.get(`/api/notes/${note_id}`, note_id);
-  return response.data;
+  if (note_id) {
+    const response = await fetchApi.get(`/api/notes/${note_id}`);
+    return response.data;
+  }
+
+  return null;
 };
 
 export const getMyNotes = async (userId) => {
