@@ -1,51 +1,103 @@
 import { getTopTenNotes } from "../api/noteApi";
 import { getTopTenTips } from "../api/tipApi";
-import { getMenu, getTop5Menus } from "../api/foodApi";
-import { sortTop10RecipesInMenu } from "../utils/sortHelper";
+import { getMenu } from "../api/foodApi";
+import { sortTopRecipesInMenuByNumber } from "../utils/sortHelper";
+import { getLatestTop10Recipes, getTop10Recipes } from "../api/recipeApi";
+import { getCategoryByName } from "../api/foodApi";
 
 export const clickNotesTop10Handler = async (
-  setCurrentRnakType,
-  setCurrentRankList
+  handleSetCurrentRankType,
+  handleSetCurrentRankList
 ) => {
   try {
+    handleSetCurrentRankType("");
+
     const resultData = await getTopTenNotes();
 
-    setCurrentRnakType("note");
-    setCurrentRankList(resultData);
+    handleSetCurrentRankList(resultData);
+    handleSetCurrentRankType("note");
   } catch (error) {
     console.log(error);
   }
 };
 
 export const clickTipsTop10Handler = async (
-  setCurrentRnakType,
-  setCurrentRankList
+  handleSetCurrentRankType,
+  handleSetCurrentRankList
 ) => {
   try {
+    handleSetCurrentRankType("");
+
     const resultData = await getTopTenTips();
 
-    setCurrentRnakType("tip");
-    setCurrentRankList(resultData);
+    handleSetCurrentRankList(resultData);
+    handleSetCurrentRankType("tip");
   } catch (error) {}
 };
 
 export const clickMenuTop10Handler = async (
   menu,
   setCurrentMenu,
-  setCurrentRnakType,
-  setCurrentRankList
+  handleSetCurrentRankType,
+  handleSetCurrentRankList
 ) => {
   try {
+    handleSetCurrentRankType("");
+
     const { name: menuName, _id: menuId } = menu;
     const menus = await getMenu(menuId);
-    const sortedData = sortTop10RecipesInMenu(menus);
+    const sortedData = sortTopRecipesInMenuByNumber(menus, 10);
 
     setCurrentMenu(menuName);
-    setCurrentRnakType("menu");
-    setCurrentRankList(sortedData);
-    console.log("MenuTop10");
-    console.log(sortedData);
+    handleSetCurrentRankList(sortedData);
+    handleSetCurrentRankType("menu");
   } catch (error) {
     console.log(error);
   }
+};
+
+export const clickLatestTop10RecipesHandler = async (
+  handleSetCurrentRankType,
+  handleSetCurrentRankList
+) => {
+  try {
+    handleSetCurrentRankType("");
+
+    const resultData = await getLatestTop10Recipes();
+
+    console.log("최신 top10");
+
+    handleSetCurrentRankList(resultData);
+    handleSetCurrentRankType("recipe");
+  } catch (error) {}
+};
+
+export const clickTop10Recipes = async (
+  handleSetCurrentRankType,
+  handleSetCurrentRankList
+) => {
+  try {
+    handleSetCurrentRankType("");
+
+    const resultData = await getTop10Recipes();
+
+    console.log("전체 top10");
+
+    handleSetCurrentRankList(resultData);
+    handleSetCurrentRankType("recipe");
+  } catch (error) {}
+};
+
+export const clickTop10MenusByCategory = async (
+  category_name,
+  handleSetCurrentRankType,
+  handleSetCurrentRankList
+) => {
+  try {
+    handleSetCurrentRankType("");
+    const resultData = await getCategoryByName(category_name);
+
+    handleSetCurrentRankList(resultData);
+    handleSetCurrentRankType("category");
+  } catch (error) {}
 };
