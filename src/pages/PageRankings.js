@@ -6,17 +6,25 @@ import {
   clickNotesTop10Handler,
   clickTipsTop10Handler,
   clickMenuTop10Handler,
+  clickLatestTop10RecipesHandler,
+  clickTop10Recipes,
+  clickTop10MenusByCategory,
 } from "./PageRankings.handler";
 
+import { getLatestTop10Recipes } from "../api/recipeApi";
+
 import Header from "../components/Header";
+import Loading from "../components/Loading";
 import {
   RankItemListWithNoteOrTip,
   RankItemListWithMenu,
+  RankItemListWithRecipe,
+  RankItemListWithCategory,
 } from "./PageRankings.component";
 
 function PageRankings({ loginUserInfo, handleLogin }) {
   const [currentRankList, setCurrentRankList] = useState([]);
-  const [currentRankType, setCurrentRnakType] = useState("");
+  const [currentRankType, setCurrentRankType] = useState("");
   const [curretnTop5Menus, setCurrentTop5Menus] = useState([]);
   const [currentMenu, setCurrentMenu] = useState("");
 
@@ -33,19 +41,69 @@ function PageRankings({ loginUserInfo, handleLogin }) {
     fetchTop5Menus();
   }, []);
 
+  useEffect(() => {
+    async function fetchLatestTop10Menus() {
+      const data = await getLatestTop10Recipes();
+      setCurrentRankList(data);
+      setCurrentRankType("recipe");
+    }
+
+    fetchLatestTop10Menus();
+  }, []);
+
+  const handleSetCurrentRankType = (type) => setCurrentRankType(type);
+  const handleSetCurrentRankList = (list) => setCurrentRankList(list);
+
   return (
     <Container>
       <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
       <Main>
         <Navigation>
           <RankingList>
-            <h2>레시피 랭킹</h2>
+            <h2>레시피 / 메뉴 랭킹</h2>
             <ul>
-              <li>최신 Top 10</li>
-              <li>좋아요 Top 10</li>
-              <li>한식 Top 10</li>
-              <li>중식 Top 10</li>
-              <li>양식 Top 10</li>
+              <li
+                onClick={() =>
+                  clickLatestTop10RecipesHandler(
+                    handleSetCurrentRankType,
+                    handleSetCurrentRankList
+                  )
+                }
+              >
+                최신 레시피 Top 10
+              </li>
+              <li
+                onClick={() =>
+                  clickTop10Recipes(
+                    handleSetCurrentRankType,
+                    handleSetCurrentRankList
+                  )
+                }
+              >
+                전체 레시피 Top 10
+              </li>
+              <li
+                onClick={() =>
+                  clickTop10MenusByCategory(
+                    "한식",
+                    handleSetCurrentRankType,
+                    handleSetCurrentRankList
+                  )
+                }
+              >
+                한식 메뉴 Top 10
+              </li>
+              <li
+                onClick={() =>
+                  clickTop10MenusByCategory(
+                    "양식",
+                    handleSetCurrentRankType,
+                    handleSetCurrentRankList
+                  )
+                }
+              >
+                양식 메뉴 Top 10
+              </li>
             </ul>
           </RankingList>
           <RankingList>
@@ -59,8 +117,8 @@ function PageRankings({ loginUserInfo, handleLogin }) {
                       clickMenuTop10Handler(
                         menu,
                         setCurrentMenu,
-                        setCurrentRnakType,
-                        setCurrentRankList
+                        handleSetCurrentRankType,
+                        handleSetCurrentRankList
                       )
                     }
                   >
@@ -73,7 +131,10 @@ function PageRankings({ loginUserInfo, handleLogin }) {
           <RankingList>
             <h2
               onClick={() =>
-                clickNotesTop10Handler(setCurrentRnakType, setCurrentRankList)
+                clickNotesTop10Handler(
+                  handleSetCurrentRankType,
+                  handleSetCurrentRankList
+                )
               }
             >
               베스트 노트 Top 10
@@ -82,7 +143,10 @@ function PageRankings({ loginUserInfo, handleLogin }) {
           <RankingList>
             <h2
               onClick={() =>
-                clickTipsTop10Handler(setCurrentRnakType, setCurrentRankList)
+                clickTipsTop10Handler(
+                  handleSetCurrentRankType,
+                  handleSetCurrentRankList
+                )
               }
             >
               베스트 꿀팁 Top 10
@@ -91,17 +155,31 @@ function PageRankings({ loginUserInfo, handleLogin }) {
         </Navigation>
         <RankingSection>
           <RankTable>
-            {(currentRankType === "note" || currentRankType === "tip") && (
-              <RankItemListWithNoteOrTip
-                currentRankList={currentRankList}
-                currentRankType={currentRankType}
-              />
-            )}
-            {currentRankType === "menu" && (
+            {!currentRankType && <Loading />}
+            {currentRankType &&
+              (currentRankType === "note" || currentRankType === "tip") && (
+                <RankItemListWithNoteOrTip
+                  currentRankList={currentRankList}
+                  currentRankType={currentRankType}
+                />
+              )}
+            {currentRankType && currentRankType === "menu" && (
               <RankItemListWithMenu
                 currentRankList={currentRankList}
                 currentRankType={currentRankType}
                 currentMenu={currentMenu}
+              />
+            )}
+            {currentRankType && currentRankType === "recipe" && (
+              <RankItemListWithRecipe
+                currentRankList={currentRankList}
+                currentRankType={currentRankType}
+              />
+            )}
+            {currentRankType && currentRankType === "category" && (
+              <RankItemListWithCategory
+                currentRankList={currentRankList}
+                currentRankType={currentRankType}
               />
             )}
           </RankTable>

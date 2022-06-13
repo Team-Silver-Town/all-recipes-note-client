@@ -24,7 +24,8 @@ exports.sortDescendingByCreatedAt = (arrayData) => {
   return arrayDataCopy;
 };
 
-exports.sortTop10RecipesInMenu = (menu) => {
+
+exports.sortTopRecipesInMenuByNumber = (menu, num) => {
   const { recipes } = menu;
 
   recipes.sort((a, b) => {
@@ -43,7 +44,5 @@ exports.sortTop10RecipesInMenu = (menu) => {
     );
   });
 
-  console.log(recipes);
-
-  return recipes.splice(0, 10);
+  return recipes.splice(0, num);
 };
