@@ -209,7 +209,7 @@ const Navigation = styled.nav`
   height: 100%;
   width: 220px;
   min-width: 220px;
-  border-right: 1px solid black;
+  border-right: 2px solid white;
   display: flex;
   flex-direction: column;
   padding: 20px 10px;

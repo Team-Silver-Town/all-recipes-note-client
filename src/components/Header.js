@@ -70,7 +70,7 @@ const Container = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid black;
+  border-bottom: 2px solid white;
   position: fixed;
   z-index: 1;
 `;
