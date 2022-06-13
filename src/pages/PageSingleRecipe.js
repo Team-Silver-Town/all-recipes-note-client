@@ -169,6 +169,7 @@ export default PageSingleRecipe;
 const Container = styled.div`
   height: 100%;
   display: flex;
+  background-color: var(--secondary-color);
 `;
 
 const RightSetction = styled.article`

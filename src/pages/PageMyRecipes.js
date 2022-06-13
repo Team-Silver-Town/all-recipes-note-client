@@ -61,8 +61,8 @@ const GridMain = styled.main`
   overflow: auto;
   padding-top: 80px;
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
-  grid-auto-rows: 150px;
+  grid-template-columns: repeat(5, 1fr);
+  grid-auto-rows: 250px;
   gap: 10px;
   margin: 10px;
 `;

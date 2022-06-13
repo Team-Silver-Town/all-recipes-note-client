@@ -1,6 +1,6 @@
 :root {
-  --primary-color: rgb(254, 177, 2);
-  --secondary-color: rgb(171, 24, 22);
+  --primary-color: white;
+  --secondary-color: rgb(254, 177, 2);
   --tertiary-color: rgb(238, 218, 58);
   --quaternary-color: rgb(162, 179, 11);
   --quinary-color: rgb(225, 225, 207);
