@@ -6,12 +6,14 @@ import {
   clickNotesTop10Handler,
   clickTipsTop10Handler,
   clickMenuTop10Handler,
+  clickLatestTop10RecipesHandler,
 } from "./PageRankings.handler";
 
 import Header from "../components/Header";
 import {
   RankItemListWithNoteOrTip,
   RankItemListWithMenu,
+  RankItemListWithRecipe,
 } from "./PageRankings.component";
 
 function PageRankings({ loginUserInfo, handleLogin }) {
@@ -41,7 +43,16 @@ function PageRankings({ loginUserInfo, handleLogin }) {
           <RankingList>
             <h2>레시피 랭킹</h2>
             <ul>
-              <li>최신 Top 10</li>
+              <li
+                onClick={() =>
+                  clickLatestTop10RecipesHandler(
+                    setCurrentRnakType,
+                    setCurrentRankList
+                  )
+                }
+              >
+                최신 Top 10
+              </li>
               <li>좋아요 Top 10</li>
               <li>한식 Top 10</li>
               <li>중식 Top 10</li>
@@ -102,6 +113,12 @@ function PageRankings({ loginUserInfo, handleLogin }) {
                 currentRankList={currentRankList}
                 currentRankType={currentRankType}
                 currentMenu={currentMenu}
+              />
+            )}
+            {currentRankType === "recipe" && (
+              <RankItemListWithRecipe
+                currentRankList={currentRankList}
+                currentRankType={currentRankType}
               />
             )}
           </RankTable>

@@ -30,10 +30,8 @@ exports.sortTop10RecipesInMenu = (menu) => {
     );
   });
 
-  console.log(recipes);
-
   return recipes.splice(0, 10);
-}
+};
 
 exports.sortDescendingByCreatedAt = (arrayData) => {
   const arrayDataCopy = arrayData.slice();

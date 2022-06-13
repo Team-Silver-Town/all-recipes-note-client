@@ -7,14 +7,10 @@ export const RankItemListWithNoteOrTip = (props) => {
 
   const rankListNaivigateHandler = (id) => {
     if (currentRankType === "note") {
-      console.log("navigate note");
-      console.log(id);
       navigate(`/recipes/${id}`);
     }
 
     if (currentRankType === "tip") {
-      console.log("navigate tip");
-      console.log(id);
       navigate(`/recipes/${id}`);
     }
   };
@@ -47,8 +43,6 @@ export const RankItemListWithMenu = (props) => {
 
   const rankListNaivigateHandler = (id) => {
     if (currentRankType === "menu") {
-      console.log("navigate note");
-      console.log(id);
       navigate(`/recipes/${id}`);
     }
   };
@@ -77,6 +71,45 @@ export const RankItemListWithMenu = (props) => {
           <div>👎 {numberOfDislikes}</div>
           <div>노트수 : {numberOfNotes}</div>
           <div>꿀팁수 : {numberOfTips}</div>
+        </RankMenuContent>
+      </RankItem>
+    );
+  });
+};
+
+export const RankItemListWithRecipe = (props) => {
+  const navigate = useNavigate();
+  const { currentRankList, currentRankType } = props;
+
+  const rankListNaivigateHandler = (id) => {
+    if (currentRankType === "recipe") {
+      navigate(`/recipes/${id}`);
+    }
+  };
+
+  return currentRankList.map((item, index) => {
+    const {
+      _id: recipeId,
+      numberOfLikes,
+      numberOfDislikes,
+      rankScore,
+      thumbnailUrl,
+    } = item;
+
+    const menuName = item.belongsToMenu.name;
+
+    return (
+      <RankItem
+        key={`${recipeId}`}
+        onClick={() => rankListNaivigateHandler(recipeId)}
+      >
+        <RankNumber>{index + 1}위</RankNumber>
+        <RankMenuContent>
+          <img src={thumbnailUrl} alt="screen-shot" />
+          <div>{menuName}</div>
+          <div>👍 {numberOfLikes}</div>
+          <div>👎 {numberOfDislikes}</div>
+          <div>랭킹점수 : {rankScore}점</div>
         </RankMenuContent>
       </RankItem>
     );
