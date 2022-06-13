@@ -116,6 +116,42 @@ export const RankItemListWithRecipe = (props) => {
   });
 };
 
+export const RankItemListWithCategory = (props) => {
+  const navigate = useNavigate();
+  const { currentRankList, currentRankType } = props;
+
+  console.log("currentRankList", currentRankList);
+  console.log("currentRankList", currentRankList);
+  console.log("currentRankList", currentRankList[0].menus);
+
+  const categoryName = currentRankList[0].name;
+  const categoryMenus = currentRankList[0].menus;
+
+  return categoryMenus.map((item, index) => {
+    const menuName = item.name;
+    const categoryId = item._id;
+
+    return (
+      <RankItem
+        key={`${categoryId}`}
+        // onClick={() => rankListNaivigateHandler(recipeId)}
+      >
+        <RankNumber>
+          {categoryName}&nbsp;
+          {index + 1}위
+        </RankNumber>
+        <RankMenuContent>
+          <div>👍 {menuName}</div>
+          {/* <div>👍 {numberOfLikes}</div>
+          <div>👎 {numberOfDislikes}</div>
+          <div>노트수 : {numberOfNotes}</div>
+          <div>꿀팁수 : {numberOfTips}</div> */}
+        </RankMenuContent>
+      </RankItem>
+    );
+  });
+};
+
 const RankItem = styled.div`
   height: 10%;
   width: 100%;

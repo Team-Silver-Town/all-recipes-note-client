@@ -5,8 +5,8 @@ export const getCategories = async () => {
   return response.data;
 };
 
-export const getCategory = async (category_id) => {
-  const response = await fetchApi.get(`/api/categories/${category_id}`);
+export const getCategoryByName = async (category_name) => {
+  const response = await fetchApi.get(`/api/categories/${category_name}`);
   return response.data;
 };
 
