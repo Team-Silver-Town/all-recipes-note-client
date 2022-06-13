@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -11,6 +11,7 @@ import { getRecipe } from "../api/recipeApi";
 import useRecipeMutation from "../hooks/recipe-mutation-hook";
 import { isLikedCheck } from "../utils/likeHelper";
 import { videoOptions } from "../config/youtubeConfig";
+import useVideoControlBySpeech from "../hooks/video-speech-control";
 
 function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
@@ -18,20 +19,33 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const [myNoteId, setMyNoteId] = useState("");
   const [isLiked, setIsLiked] = useState(false);
   const [likeOrDislike, setLikeOrDislike] = useState("");
+  const [videoElement, setVideoElement] = useState(null);
   const { recipe_id } = useParams();
   const { data: recipe } = useQuery(["recipe", recipe_id], () =>
     getRecipe(recipe_id)
   );
-
   const { updateRecipeLikeMutation, cancelRecipeLikeMutation } =
     useRecipeMutation();
+  const recognition = useVideoControlBySpeech(videoElement);
+
+  recognition.start();
+
+  const handleVideo = (event) => {
+    setVideoElement(event.target);
+    event.target.cueVideoById({
+      videoId: recipe?.youtubeUrl.split("v=")[1].split("&")[0],
+    });
+  };
+
+  const checkVideoState = (event) => {
+    console.log(event.data);
+  };
 
   useEffect(() => {
     document.title = "SingleRecipe";
   }, []);
 
   useEffect(() => {
-    console.log("RUN useEffect SingleRecipe");
     const note = recipe?.notes.find(
       (note) => note.creator.email === loginUserInfo.email
     );
@@ -96,9 +110,10 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
         </NavigationPage>
         <VideoPlayer>
           <YouTube
-            videoId={recipe?.youtubeUrl.split("v=")[1].split("&")[0]}
+            onReady={handleVideo}
             id="youtube"
-            opts={{ height: "390", width: "640" }}
+            opts={videoOptions}
+            onStateChange={checkVideoState}
           />
         </VideoPlayer>
       </LeftSection>
@@ -150,14 +165,6 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
               openNoteList={setBoardPage}
             />
           )}
-          {/* {currentBoardPage === "myNote" && (
-            <Note
-              loginUserInfo={loginUserInfo}
-              note={myNote}
-              recipeId={recipe_id}
-              openNoteList={setBoardPage}
-            />
-          )} */}
         </BoardMain>
       </RightSetction>
     </Container>
