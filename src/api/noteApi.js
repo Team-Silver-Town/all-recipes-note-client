@@ -15,6 +15,11 @@ export const getMyNotes = async (userId) => {
   return response.data;
 };
 
+export const getTopTenNotes = async () => {
+  const response = await fetchApi.get("/api/notes/top10");
+  return response.data;
+};
+
 export const createNote = async (note) => {
   const response = await fetchApi.post("/api/notes", note);
   return response.data;
@@ -41,13 +46,7 @@ export const cancelNoteLike = async (note) => {
   return response.data;
 };
 
-
 export const deleteNote = async ({ note_id }) => {
   const response = await fetchApi.delete(`/api/notes/${note_id}`);
-  return response.data;
-};
-
-export const getTopTenNotes = async () => {
-  const response = await fetchApi.get("/api/notes/top10");
   return response.data;
 };

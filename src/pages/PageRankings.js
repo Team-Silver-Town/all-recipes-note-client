@@ -11,6 +11,8 @@ import {
   clickTop10MenusByCategory,
 } from "./PageRankings.handler";
 
+import { getLatestTop10Recipes } from "../api/recipeApi";
+
 import Header from "../components/Header";
 import Loading from "../components/Loading";
 import {
@@ -37,6 +39,16 @@ function PageRankings({ loginUserInfo, handleLogin }) {
     }
 
     fetchTop5Menus();
+  }, []);
+
+  useEffect(() => {
+    async function fetchLatestTop10Menus() {
+      const data = await getLatestTop10Recipes();
+      setCurrentRankList(data);
+      setCurrentRankType("recipe");
+    }
+
+    fetchLatestTop10Menus();
   }, []);
 
   const handleSetCurrentRankType = (type) => setCurrentRankType(type);
