@@ -12,7 +12,6 @@ import PageSingleRecipe from "../pages/PageSingleRecipe";
 import PageProfile from "../pages/PageProfile";
 import PageRankings from "../pages/PageRankings";
 import PageRecipes from "../pages/PageRecipes";
-import PageTips from "../pages/PageTips";
 
 function DefaultRoutes({ loginUserInfo, handleLogin }) {
   return (
@@ -40,10 +39,14 @@ function DefaultRoutes({ loginUserInfo, handleLogin }) {
         <Route
           path="/recipes/new"
           element={
-            <PageNewRecipe
-              loginUserInfo={loginUserInfo}
-              handleLogin={handleLogin}
-            />
+            loginUserInfo ? (
+              <PageNewRecipe
+                loginUserInfo={loginUserInfo}
+                handleLogin={handleLogin}
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
         <Route
@@ -62,10 +65,14 @@ function DefaultRoutes({ loginUserInfo, handleLogin }) {
         <Route
           path="/recipes/:recipe_id"
           element={
-            <PageSingleRecipe
-              loginUserInfo={loginUserInfo}
-              handleLogin={handleLogin}
-            />
+            loginUserInfo ? (
+              <PageSingleRecipe
+                loginUserInfo={loginUserInfo}
+                handleLogin={handleLogin}
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
         <Route
@@ -84,16 +91,14 @@ function DefaultRoutes({ loginUserInfo, handleLogin }) {
         <Route
           path="/rankings"
           element={
-            <PageRankings
-              loginUserInfo={loginUserInfo}
-              handleLogin={handleLogin}
-            />
-          }
-        />
-        <Route
-          path="/tips"
-          element={
-            <PageTips loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
+            loginUserInfo ? (
+              <PageRankings
+                loginUserInfo={loginUserInfo}
+                handleLogin={handleLogin}
+              />
+            ) : (
+              <Navigate to="/login" />
+            )
           }
         />
       </Routes>

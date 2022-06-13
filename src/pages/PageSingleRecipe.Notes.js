@@ -52,7 +52,7 @@ const NotePopularity = styled.div`
 const NotesContainer = styled.div`
   display: flex;
   flex-direction: column;
-  margin-top: 5px;
+  margin-bottom: 5px;
 `;
 
 const NotesCard = styled.button`

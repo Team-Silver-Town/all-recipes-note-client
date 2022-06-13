@@ -278,7 +278,7 @@ const TipsCardContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0px 10px;
-  margin-top: 5px;
+  margin-bottom: 5px;
 `;
 
 const TipProfileImg = styled.img`
