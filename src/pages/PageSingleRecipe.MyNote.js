@@ -22,8 +22,8 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
   } = useNoteMutation();
   const [totalIngredients, setTotalIngredients] = useState([]);
   const [content, setContent] = useState("");
-  const [isMyNote, setIsMyNote] = useState(false);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [isMyNote, setMyNote] = useState(false);
+  const [isModalOpen, setModalOpen] = useState(false);
   const [isVisibile, setIsVisible] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const [likeOrDislike, setLikeOrDislike] = useState("");
@@ -31,15 +31,15 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
   useEffect(() => {
     if (note) {
       note.ingredients.length && setTotalIngredients(note.ingredients);
-      note.creator.email === loginUserInfo.email && setIsMyNote(true);
-      note.creator.email !== loginUserInfo.email && setIsMyNote(false);
+      note.creator.email === loginUserInfo.email && setMyNote(true);
+      note.creator.email !== loginUserInfo.email && setMyNote(false);
       setContent(note.content);
       setIsVisible(note.visibility);
     } else {
       setTotalIngredients([]);
       setContent("");
       setIsVisible(true);
-      setIsMyNote(true);
+      setMyNote(true);
     }
   }, [note]);
 
@@ -114,7 +114,7 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
   };
 
   const openModalHandler = () => {
-    setIsModalOpen(!isModalOpen);
+    setModalOpen(!isModalOpen);
   };
 
   const toggleVisibilityHandler = () => {
