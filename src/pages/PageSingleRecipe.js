@@ -173,7 +173,7 @@ const Container = styled.div`
 `;
 
 const RightSetction = styled.article`
-  width: 50%;
+  width: 40%;
   height: 100%;
 `;
 
@@ -240,7 +240,7 @@ const BoardMain = styled.main`
 `;
 
 const LeftSection = styled.section`
-  width: 50%;
+  width: 60%;
   height: 100%;
 `;
 
