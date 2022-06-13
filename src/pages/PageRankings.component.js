@@ -96,8 +96,6 @@ export const RankItemListWithRecipe = (props) => {
       thumbnailUrl,
     } = item;
 
-    console.log(item);
-
     const menuName = item.belongsToMenu.name;
 
     return (
