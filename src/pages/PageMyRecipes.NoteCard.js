@@ -40,11 +40,11 @@ const StyledLink = styled(Link)`
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
+  border: 2px solid black;
 
   &:hover {
-    border: 2px solid black;
-    padding: 2px;
     font-weight: bolder;
+    background-color: var(--secondary-color);
   }
 `;
 

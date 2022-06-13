@@ -22,7 +22,11 @@ function Login({ handleLogin }) {
       const { nickname } = responseData.data;
 
       if (!responseData.data) {
-        await createUser({ nickname: `unknown${id.slice(0, 8)}`, email });
+        await createUser({
+          nickname: `unknown${id.slice(0, 8)}`,
+          email,
+          picture,
+        });
       }
 
       localStorage.setItem(

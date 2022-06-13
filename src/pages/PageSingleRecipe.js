@@ -10,7 +10,6 @@ import { useQuery } from "react-query";
 import { getRecipe } from "../api/recipeApi";
 import useRecipeMutation from "../hooks/recipe-mutation-hook";
 import { isLikedCheck } from "../utils/likeHelper";
-import { videoOptions } from "../config/youtubeConfig";
 
 function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
@@ -36,7 +35,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
       (note) => note.creator.email === loginUserInfo.email
     );
     note && setMyNoteId(note._id);
-  }, [recipe]);
+  }, [recipe, loginUserInfo.email]);
 
   useEffect(() => {
     if (recipe) {
@@ -51,7 +50,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
         isAlreadyDisliked && setLikeOrDislike("dislike");
       }
     }
-  }, [recipe]);
+  }, [recipe, loginUserInfo.email]);
 
   const clickLikeHandler = (event) => {
     if (isLiked && event.target.name === likeOrDislike) {
@@ -86,7 +85,9 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
     <Container>
       <LeftSection>
         <NavigationPage>
-          <StyledLinkButton to="/recipes">뒤로 가기</StyledLinkButton>
+          <StyledLinkButton to="/recipes">레시피 페이지</StyledLinkButton>
+          <StyledLinkButton to="/rankings">랭킹 페이지</StyledLinkButton>
+
           <button name="like" onClick={clickLikeHandler}>
             👍 {recipe?.liked.length}
           </button>
@@ -98,7 +99,6 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
           <YouTube
             videoId={recipe?.youtubeUrl.split("v=")[1].split("&")[0]}
             id="youtube"
-            opts={{ height: "390", width: "640" }}
           />
         </VideoPlayer>
       </LeftSection>
@@ -169,6 +169,7 @@ export default PageSingleRecipe;
 const Container = styled.div`
   height: 100%;
   display: flex;
+  background-color: var(--secondary-color);
 `;
 
 const RightSetction = styled.article`
@@ -177,7 +178,7 @@ const RightSetction = styled.article`
 `;
 
 const BoardHeader = styled.header`
-  min-height: 50px;
+  min-height: 75px;
   height: 5%;
   display: flex;
   justify-content: center;
@@ -186,7 +187,6 @@ const BoardHeader = styled.header`
 const ButtonBox = styled.div`
   height: 100%;
   width: 95%;
-  border-bottom: 1px solid black;
   display: flex;
   justify-content: space-between;
 `;
@@ -208,44 +208,76 @@ const ButtonRight = styled.div`
 `;
 
 const Button = styled.button`
-  width: 80px;
+  background: none;
+  color: inherit;
+  border: none;
+  padding: 0;
+  font: inherit;
+  cursor: pointer;
+  outline: inherit;
+  width: 120px;
   height: 40px;
   font-weight: bold;
+  border-radius: 5px;
+  text-align: center;
+  line-height: 40px;
+  background-color: white;
+  font-weight: bold;
+  margin-right: 5px;
+  padding: 2px;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px solid black;
+    padding: 2px;
+  }
 `;
 
 const BoardMain = styled.main`
-  height: 95%;
-  padding: 0px 16px;
+  height: 92%;
+  padding: 0px 8px 0px 0px;
   overflow-y: auto;
 `;
 
 const LeftSection = styled.section`
   width: 50%;
   height: 100%;
-  border-right: 1px solid black;
 `;
 
 const NavigationPage = styled.nav`
-  min-height: 50px;
+  min-height: 75px;
   height: 5%;
   padding: 0 10px;
   display: flex;
   align-items: center;
-  border-bottom: 1px solid black;
 `;
 
 const StyledLinkButton = styled(Link)`
-  width: 80px;
+  width: 120px;
   height: 40px;
   border-radius: 5px;
   text-align: center;
   line-height: 40px;
   background-color: white;
   font-weight: bold;
+  margin-right: 10px;
+  padding: 2px;
+
+  &:hover {
+    border: 2px solid black;
+    padding: 2px;
+  }
 `;
 
 const VideoPlayer = styled.article`
   height: 95%;
+  width: 100%;
+  padding: 0px 8px 8px 8px;
+
+  iframe {
+    width: 100%;
+    height: 600px;
+  }
 `;
 
 const Screen = styled.div`
