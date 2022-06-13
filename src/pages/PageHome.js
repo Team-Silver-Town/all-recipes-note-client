@@ -20,7 +20,7 @@ function Home({ loginUserInfo, handleLogin }) {
             onInit={(typewriter) => {
               typewriter
                 .typeString("요리 좋아하세요?,,,🍖🤔")
-                .pauseFor(2500)
+                .pauseFor(1500)
                 .deleteAll()
                 .typeString("유튜브 영상 많이 보셨겠네요.....🥸")
                 .pauseFor(2500)
@@ -37,12 +37,12 @@ function Home({ loginUserInfo, handleLogin }) {
                 .typeString("최고의 레시피를 찾고 싶다면..🔍")
                 .pauseFor(1500)
                 .deleteAll()
-                .typeString("모조리.....")
-                .pauseFor(2500)
-                .deleteChars(7)
+                .typeString("모조리...적으세요‼✍️")
+                .pauseFor(3000)
+                .deleteChars(12)
                 .pauseFor(1000)
-                .typeString("두의 조리 노트")
-                .pauseFor(2500)
+                .typeString("두의 조리 노트.")
+                .pauseFor(1000)
                 .deleteAll()
                 .typeString("모조리 🫵")
                 .start();
