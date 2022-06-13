@@ -2,8 +2,8 @@ exports.sortDescendingByUpdatedAt = (arrayData) => {
   const arrayDataCopy = arrayData.slice();
 
   arrayDataCopy.sort((a, b) => {
-    const updatedAtA = new Date(a.createdAt).getTime();
-    const updatedAtB = new Date(b.createdAt).getTime();
+    const updatedAtA = new Date(a.updatedAt).getTime();
+    const updatedAtB = new Date(b.updatedAt).getTime();
 
     return updatedAtB - updatedAtA;
   });
@@ -24,7 +24,8 @@ exports.sortDescendingByCreatedAt = (arrayData) => {
   return arrayDataCopy;
 };
 
-exports.sortTop10RecipesInMenu = (menu) => {
+
+exports.sortTopRecipesInMenuByNumber = (menu, num) => {
   const { recipes } = menu;
 
   recipes.sort((a, b) => {
@@ -43,7 +44,5 @@ exports.sortTop10RecipesInMenu = (menu) => {
     );
   });
 
-  console.log(recipes);
-
-  return recipes.splice(0, 10);
+  return recipes.splice(0, num);
 };

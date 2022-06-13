@@ -7,14 +7,10 @@ export const RankItemListWithNoteOrTip = (props) => {
 
   const rankListNaivigateHandler = (id) => {
     if (currentRankType === "note") {
-      console.log("navigate note");
-      console.log(id);
       navigate(`/recipes/${id}`);
     }
 
     if (currentRankType === "tip") {
-      console.log("navigate tip");
-      console.log(id);
       navigate(`/recipes/${id}`);
     }
   };
@@ -47,8 +43,6 @@ export const RankItemListWithMenu = (props) => {
 
   const rankListNaivigateHandler = (id) => {
     if (currentRankType === "menu") {
-      console.log("navigate note");
-      console.log(id);
       navigate(`/recipes/${id}`);
     }
   };
@@ -78,6 +72,84 @@ export const RankItemListWithMenu = (props) => {
           <div>노트수 : {numberOfNotes}</div>
           <div>꿀팁수 : {numberOfTips}</div>
         </RankMenuContent>
+      </RankItem>
+    );
+  });
+};
+
+export const RankItemListWithRecipe = (props) => {
+  const navigate = useNavigate();
+  const { currentRankList, currentRankType } = props;
+
+  const rankListNaivigateHandler = (id) => {
+    if (currentRankType === "recipe") {
+      navigate(`/recipes/${id}`);
+    }
+  };
+
+  return currentRankList.map((item, index) => {
+    const {
+      _id: recipeId,
+      numberOfLikes,
+      numberOfDislikes,
+      rankScore,
+      thumbnailUrl,
+    } = item;
+
+    const menuName = item.belongsToMenu.name;
+
+    return (
+      <RankItem
+        key={`${recipeId}`}
+        onClick={() => rankListNaivigateHandler(recipeId)}
+      >
+        <RankNumber>{index + 1}위</RankNumber>
+        <RankMenuContent>
+          <img src={thumbnailUrl} alt="screen-shot" />
+          <div>{menuName}</div>
+          <div>👍 {numberOfLikes}</div>
+          <div>👎 {numberOfDislikes}</div>
+          <div>랭킹점수 : {rankScore}점</div>
+        </RankMenuContent>
+      </RankItem>
+    );
+  });
+};
+
+export const RankItemListWithCategory = (props) => {
+  const navigate = useNavigate();
+  const { currentRankList, currentRankType } = props;
+
+  const rankListNaivigateHandler = (id) => {
+    navigate(`/recipes/${id}`);
+  };
+
+  console.log("currentRankList", currentRankList);
+  console.log("currentRankList.menus", currentRankList.menus);
+
+  const categoryName = currentRankList.name;
+  const categoryMenus = currentRankList.menus;
+
+  return categoryMenus.map((item, index) => {
+    const menuName = item.name;
+    const menuId = item._id;
+    const number1RecipeIdInMenu = item.recipes[0]._id;
+    const numberOfRecipes = item.recipes.length;
+
+    return (
+      <RankItem
+        key={`${menuId}`}
+        onClick={() => rankListNaivigateHandler(number1RecipeIdInMenu)}
+      >
+        <RankNumber>
+          {categoryName}&nbsp;
+          {index + 1}위
+        </RankNumber>
+        <RankCategoryContent>
+          <div>메뉴명 : {menuName}</div>
+          <div>등록된 레시피 개수 : {numberOfRecipes}</div>
+          <div>클릭하고 1등 레시피로 이동</div>
+        </RankCategoryContent>
       </RankItem>
     );
   });
@@ -146,5 +218,26 @@ const RankMenuContent = styled.div`
 
   div {
     width: 20%;
+  }
+`;
+
+const RankCategoryContent = styled.div`
+  height: 100%;
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  padding-left: 10px;
+  align-items: center;
+
+  div:nth-child(1) {
+    width: 25%;
+  }
+
+  div:nth-child(2) {
+    width: 25%;
+  }
+
+  div:nth-child(3) {
+    width: 50%;
   }
 `;
