@@ -93,7 +93,7 @@ const MyAccountModal = styled.div`
   height: 100px;
   background-color: var(--secondary-color);
   right: 10px;
-  top: 80px;
+  top: 90px;
   padding: 0 5px;
 
   display: flex;

@@ -75,7 +75,7 @@ const LoginBox = styled.div`
   height: 50%;
   min-height: 380px;
   border-radius: 15px;
-  background-color: white;
+  background-color: var(--secondary-color);
 
   display: flex;
   flex-direction: column;
