@@ -2,32 +2,35 @@ import { dateOptions } from "../config/dateConfig";
 import { sortDescendingByCreatedAt } from "../utils/sortHelper";
 import styled from "styled-components";
 
-const Notes = ({ notes, openNote, changeNote }) => {
+const Notes = ({ loginUserInfo, notes, openNote, changeNote }) => {
   const clickNoteHandler = (event) => {
-    const selectedNote = notes.find((note) => note._id === event.target.id);
-
-    changeNote(selectedNote);
+    changeNote(event.target.id);
     openNote("note");
   };
 
   return (
     <NotesContainer>
-      {sortDescendingByCreatedAt(notes).map((note) => {
-        return (
-          note.visibility && (
-            <NotesCard key={note._id} id={note._id} onClick={clickNoteHandler}>
-              <NoteCreator>{`${note.creator.nickname} 님의 레시피 노트`}</NoteCreator>
-              <NotedCreatedAt>{`작성일 ${new Date(
-                note.createdAt
-              ).toLocaleString("ko-KR", dateOptions)}`}</NotedCreatedAt>
-              <NotePopularity>
-                {`👍 ${note.liked.length}`}
-                {`👎 ${note.disliked.length}`}
-              </NotePopularity>
-            </NotesCard>
-          )
-        );
-      })}
+      {notes &&
+        sortDescendingByCreatedAt(notes).map((note) => {
+          return (
+            note.visibility && (
+              <NotesCard
+                key={note._id}
+                id={note._id}
+                onClick={clickNoteHandler}
+              >
+                <NoteCreator>{`${note.creator.nickname} 님의 레시피 노트`}</NoteCreator>
+                <NotedCreatedAt>{`작성일 ${new Date(
+                  note.createdAt
+                ).toLocaleString("ko-KR", dateOptions)}`}</NotedCreatedAt>
+                <NotePopularity>
+                  {`👍 ${note.liked.length}`}
+                  {`👎 ${note.disliked.length}`}
+                </NotePopularity>
+              </NotesCard>
+            )
+          );
+        })}
     </NotesContainer>
   );
 };

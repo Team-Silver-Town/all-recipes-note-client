@@ -6,8 +6,12 @@ export const getNotes = async () => {
 };
 
 export const getNote = async (note_id) => {
-  const response = await fetchApi.get(`/api/notes/${note_id}`, note_id);
-  return response.data;
+  if (note_id) {
+    const response = await fetchApi.get(`/api/notes/${note_id}`);
+    return response.data;
+  }
+
+  return null;
 };
 
 export const getMyNotes = async (userId) => {
@@ -40,7 +44,6 @@ export const cancelNoteLike = async (note) => {
   );
   return response.data;
 };
-
 
 export const deleteNote = async ({ note_id }) => {
   const response = await fetchApi.delete(`/api/notes/${note_id}`);
