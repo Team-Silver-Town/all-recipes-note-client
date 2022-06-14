@@ -14,17 +14,17 @@ function PageProfile({ loginUserInfo, handleLogin }) {
   const handleClick = async () => {
     try {
       const nickname = inputNickname;
-      const { email, picture, tokken } = loginUserInfo;
+      const { email, picture, token } = loginUserInfo;
 
       await updateUser({ nickname, email });
 
       localStorage.removeItem("allRecipesNoteLoginInfo");
       localStorage.setItem(
         "allRecipesNoteLoginInfo",
-        JSON.stringify({ email, picture, nickname, tokken })
+        JSON.stringify({ email, picture, nickname, token })
       );
 
-      handleLogin({ email, picture, nickname, tokken });
+      handleLogin({ email, picture, nickname, token });
     } catch (error) {
       console.log(error);
     }
