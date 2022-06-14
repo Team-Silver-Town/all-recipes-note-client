@@ -194,12 +194,12 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
 export default Note;
 
 const NoteLikeButton = styled.button`
-  width: 50px;
-  height: 50px;
+  width: 5%;
+  height: 5%;
   font-weight: bold;
   position: absolute;
-  bottom: 3%;
-  left: 60%;
+  bottom: 4%;
+  left: 59%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -207,12 +207,12 @@ const NoteLikeButton = styled.button`
 `;
 
 const NoteDislikeButton = styled.button`
-  width: 50px;
-  height: 50px;
+  width: 5%;
+  height: 5%;
   font-weight: bold;
   position: absolute;
-  bottom: 3%;
-  left: 70%;
+  bottom: 4%;
+  left: 64%;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -235,7 +235,7 @@ const IngredientsCard = styled.div`
   background-color: red;
   width: 100px;
   height: 30px;
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color);
   font-weight: bold;
   display: flex;
   justify-content: center;
@@ -247,13 +247,13 @@ const Container = styled.div`
   width: 100%;
   background-color: white;
   display: flex;
-  margin-top: 5px;
+  margin-bottom: 5px;
   height: 100%;
   position: relative;
 `;
 
 const ProcessMemo = styled.textarea`
-  width: 80%;
+  width: 70%;
   height: 100%;
   padding: 10px;
   background-color: white;
@@ -263,23 +263,30 @@ const ProcessMemo = styled.textarea`
 `;
 
 const ControlButtonAddIngredient = styled.button`
-  width: 100px;
-  height: 30px;
-  background-color: var(--primary-color);
+  width: 120px;
+  height: 40px;
+  background-color: var(--secondary-color);
   font-weight: bold;
   position: absolute;
   bottom: 80px;
-  right: 20px;
+  right: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: default;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px solid black;
+    padding: 2px;
+  }
 `;
 
 const ControllButtonSave = styled.button`
-  width: 100px;
-  height: 30px;
-  background-color: var(--primary-color);
+  width: 120px;
+  height: 40px;
+  background-color: var(--secondary-color);
   font-weight: bold;
   position: absolute;
   bottom: 30px;
@@ -287,32 +294,53 @@ const ControllButtonSave = styled.button`
   display: flex;
   justify-content: center;
   align-items: center;
-  cursor: default;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px solid black;
+    padding: 2px;
+  }
 `;
 
 const ControllButtonDelete = styled.button`
-  width: 100px;
-  height: 30px;
-  background-color: var(--primary-color);
+  width: 120px;
+  height: 40px;
+  background-color: var(--secondary-color);
   font-weight: bold;
   position: absolute;
   bottom: 30px;
-  left: 130px;
+  left: 150px;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
+  border-radius: 5px;
   cursor: default;
+
+  &:hover {
+    border: 2px solid black;
+    padding: 2px;
+  }
 `;
 const ControllButtonDisclose = styled.button`
-  width: 100px;
-  height: 30px;
-  background-color: var(--primary-color);
+  width: 120px;
+  height: 40px;
+  background-color: var(--secondary-color);
   font-weight: bold;
   position: absolute;
   bottom: 30px;
-  right: 20px;
+  right: 5%;
   display: flex;
   justify-content: center;
   align-items: center;
+  border: none;
+  border-radius: 5px;
   cursor: default;
+
+  &:hover {
+    border: 2px solid black;
+    padding: 2px;
+  }
 `;

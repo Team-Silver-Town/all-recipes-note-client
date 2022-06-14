@@ -91,6 +91,7 @@ const ProfileBox = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: var(--secondary-color);
 `;
 
 const ProfileImg = styled.img`
@@ -119,6 +120,7 @@ const ProfileLine = styled.div`
     width: 80%;
     padding-left: 5px;
     border-bottom: 1px solid black;
+    background-color: var(--secondary-color);
   }
 
   input {
@@ -127,10 +129,12 @@ const ProfileLine = styled.div`
     border: none;
     font-weight: bold;
     font-size: medium;
+    background-color: var(--secondary-color);
+    outline: none;
   }
 
   input:disabled {
-    background-color: white;
+    background-color: var(--secondary-color);
   }
 
   button {

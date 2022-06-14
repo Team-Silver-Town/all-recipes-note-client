@@ -22,7 +22,11 @@ function Login({ handleLogin }) {
       const { nickname } = responseData.data;
 
       if (!responseData.data) {
-        await createUser({ nickname: `unknown${id.slice(0, 8)}`, email });
+        await createUser({
+          nickname: `unknown${id.slice(0, 8)}`,
+          email,
+          picture,
+        });
       }
 
       localStorage.setItem(
@@ -71,7 +75,7 @@ const LoginBox = styled.div`
   height: 50%;
   min-height: 380px;
   border-radius: 15px;
-  background-color: white;
+  background-color: var(--secondary-color);
 
   display: flex;
   flex-direction: column;

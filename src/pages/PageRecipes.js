@@ -60,7 +60,7 @@ const Main = styled.main`
   overflow: auto;
   padding-top: 80px;
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr 1fr;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-auto-rows: 250px;
   gap: 10px;
   margin: 10px;
@@ -87,9 +87,10 @@ const StyledNewLink = styled(NavLink)`
   align-items: center;
   position: relative;
   padding: 2px;
+  border: 2px solid black;
 
   &:hover {
-    border: 2px solid black;
+    background-color: var(--secondary-color);
 
     div:nth-child(1) {
       transform: rotate(90deg);
@@ -113,9 +114,10 @@ const StyledRecipeLink = styled(NavLink)`
   height: 100%;
   border-radius: 10px;
   background-color: white;
+  border: 2px solid black;
 
   &:hover {
-    padding: 2px;
-    border: 2px solid black;
+    background-color: var(--secondary-color);
+    font-weight: bold;
   }
 `;

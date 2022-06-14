@@ -162,7 +162,7 @@ const RankItem = styled.div`
   cursor: pointer;
 
   &:hover {
-    background-color: white;
+    background-color: var(--secondary-color);
     border: 2px solid black;
     font-weight: bold;
     font-size: large;

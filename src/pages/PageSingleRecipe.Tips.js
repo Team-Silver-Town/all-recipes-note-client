@@ -74,7 +74,10 @@ const CreateTip = ({
 
   return (
     <TipsCardContainer>
-      <TipProfileImg src="" alt="tip-owner-profile-image" />
+      <TipProfileImg
+        src={loginUserInfo.picture}
+        alt="tip-owner-profile-image"
+      />
       <TipInputContainer>
         <TipInput
           placeholder="꿀팁 추가..."
@@ -164,7 +167,10 @@ const TipCard = ({ loginUserInfo, tip, isMyTip }) => {
   } else {
     return (
       <TipsCardContainer>
-        <TipProfileImg src="" alt="tip-owner-profile-image" />
+        <TipProfileImg
+          src={tip.creator.picture}
+          alt="tip-owner-profile-image"
+        />
         <TipContent>
           <TipContentInfo>
             {tip.creator.nickname} /{" "}
@@ -272,7 +278,7 @@ const TipsCardContainer = styled.div`
   align-items: center;
   justify-content: space-between;
   padding: 0px 10px;
-  margin-top: 5px;
+  margin-bottom: 5px;
 `;
 
 const TipProfileImg = styled.img`

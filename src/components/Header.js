@@ -70,7 +70,7 @@ const Container = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 1px solid black;
+  border-bottom: 2px solid black;
   position: fixed;
   z-index: 1;
 `;
@@ -91,9 +91,9 @@ const MyAccountModal = styled.div`
   position: absolute;
   width: 100px;
   height: 100px;
-  background-color: white;
+  background-color: var(--secondary-color);
   right: 10px;
-  top: 80px;
+  top: 90px;
   padding: 0 5px;
 
   display: flex;
