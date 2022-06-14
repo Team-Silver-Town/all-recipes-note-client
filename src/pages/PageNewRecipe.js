@@ -138,6 +138,7 @@ const InputForm = styled.div`
   flex-direction: column;
   padding-left: 20px;
   padding-top: 20px;
+  background-color: var(--secondary-color);
 
   div {
     font-size: large;
@@ -225,6 +226,7 @@ const Preview = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: var(--secondary-color);
 
   div {
     font-size: larger;

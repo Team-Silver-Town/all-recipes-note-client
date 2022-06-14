@@ -47,7 +47,7 @@ const MenuName = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: larger;
+  font-size: medium;
   font-weight: bold;
 `;
 
@@ -55,8 +55,8 @@ const RecipePreference = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: large;
-  width: 30%;
+  font-size: medium;
+  width: 40%;
 
   div {
     margin: 0px 5px;
@@ -68,5 +68,5 @@ const PostingOwner = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  font-size: large;
+  font-size: medium;
 `;

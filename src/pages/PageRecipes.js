@@ -89,7 +89,8 @@ const StyledNewLink = styled(NavLink)`
   padding: 2px;
   border: 2px solid black;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: var(--secondary-color);
 
     div:nth-child(1) {
@@ -116,7 +117,8 @@ const StyledRecipeLink = styled(NavLink)`
   background-color: white;
   border: 2px solid black;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: var(--secondary-color);
     font-weight: bold;
   }

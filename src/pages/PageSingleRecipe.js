@@ -85,18 +85,22 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
     <Container>
       <LeftSection>
         <NavigationPage>
-          <StyledLinkButton to="/recipes">레시피 페이지</StyledLinkButton>
-          <StyledLinkButton to="/rankings">랭킹 페이지</StyledLinkButton>
-
-          <button name="like" onClick={clickLikeHandler}>
+          <StyledLinkButton tabIndex="0" to="/recipes">
+            레시피 페이지
+          </StyledLinkButton>
+          <StyledLinkButton tabIndex="0" to="/rankings">
+            랭킹 페이지
+          </StyledLinkButton>
+          <button tabIndex="0" name="like" onClick={clickLikeHandler}>
             👍 {recipe?.liked.length}
           </button>
-          <button name="dislike" onClick={clickLikeHandler}>
+          <button tabIndex="0" name="dislike" onClick={clickLikeHandler}>
             👎 {recipe?.disliked.length}
           </button>
         </NavigationPage>
-        <VideoPlayer>
+        <VideoPlayer tabIndex="1">
           <YouTube
+            tabIndex="1"
             videoId={recipe?.youtubeUrl.split("v=")[1].split("&")[0]}
             id="youtube"
           />
@@ -107,19 +111,26 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
           <ButtonBox>
             <ButtonLeft>
               <Button
+                tabIndex="0"
                 type="button"
                 name="notes"
                 onClick={handleBoardNavigation}
               >
                 노트
               </Button>
-              <Button type="button" name="tips" onClick={handleBoardNavigation}>
+              <Button
+                tabIndex="0"
+                type="button"
+                name="tips"
+                onClick={handleBoardNavigation}
+              >
                 꿀팁
               </Button>
             </ButtonLeft>
             <ButtonRight>
               {currentBoardPage !== "myNote" && (
                 <Button
+                  tabIndex="0"
                   type="button"
                   name="myNote"
                   onClick={handleBoardNavigation}
@@ -227,7 +238,8 @@ const Button = styled.button`
   padding: 2px;
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &:focus {
     border: 2px solid black;
     padding: 2px;
   }
@@ -263,7 +275,8 @@ const StyledLinkButton = styled(Link)`
   margin-right: 10px;
   padding: 2px;
 
-  &:hover {
+  &:hover,
+  &:focus {
     border: 2px solid black;
     padding: 2px;
   }
@@ -278,17 +291,4 @@ const VideoPlayer = styled.article`
     width: 100%;
     height: 600px;
   }
-`;
-
-const Screen = styled.div`
-  height: 80%;
-  width: 100%;
-  color: white;
-  background-color: black;
-`;
-
-const Controller = styled.div`
-  background-color: aqua;
-  height: 20%;
-  width: 100%;
 `;

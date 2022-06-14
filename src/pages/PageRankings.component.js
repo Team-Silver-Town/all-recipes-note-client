@@ -23,8 +23,14 @@ export const RankItemListWithNoteOrTip = (props) => {
 
     return (
       <RankItem
+        tabIndex="0"
         key={`${item}${index}`}
         onClick={() => rankListNaivigateHandler(id)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            rankListNaivigateHandler(id);
+          }
+        }}
       >
         <RankNumber>{index + 1}위</RankNumber>
         <RankContent>
@@ -58,15 +64,21 @@ export const RankItemListWithMenu = (props) => {
 
     return (
       <RankItem
+        tabIndex="0"
         key={`${recipeId}`}
         onClick={() => rankListNaivigateHandler(recipeId)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            rankListNaivigateHandler(recipeId);
+          }
+        }}
       >
         <RankNumber>
           {menuName}&nbsp;
           {index + 1}위
         </RankNumber>
         <RankMenuContent>
-          <img src={thumbnailUrl} alt="screen-shot" />
+          <img src={thumbnailUrl} alt="메뉴의 스크린샷" />
           <div>👍 {numberOfLikes}</div>
           <div>👎 {numberOfDislikes}</div>
           <div>노트수 : {numberOfNotes}</div>
@@ -100,8 +112,14 @@ export const RankItemListWithRecipe = (props) => {
 
     return (
       <RankItem
+        tabIndex="0"
         key={`${recipeId}`}
         onClick={() => rankListNaivigateHandler(recipeId)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            rankListNaivigateHandler(recipeId);
+          }
+        }}
       >
         <RankNumber>{index + 1}위</RankNumber>
         <RankMenuContent>
@@ -135,8 +153,14 @@ export const RankItemListWithCategory = (props) => {
 
     return (
       <RankItem
+        tabIndex="0"
         key={`${menuId}`}
         onClick={() => rankListNaivigateHandler(number1RecipeIdInMenu)}
+        onKeyDown={(event) => {
+          if (event.key === "Enter") {
+            rankListNaivigateHandler(number1RecipeIdInMenu);
+          }
+        }}
       >
         <RankNumber>
           {categoryName}&nbsp;
@@ -158,7 +182,8 @@ const RankItem = styled.div`
   display: flex;
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: var(--secondary-color);
     border: 2px solid black;
     font-weight: bold;

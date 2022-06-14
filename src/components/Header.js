@@ -13,6 +13,12 @@ function Header({ loginUserInfo, handleLogin }) {
     setModalOpen((prev) => !prev);
   };
 
+  const keyDownedToggle = (event) => {
+    if (event.key === "Enter") {
+      setModalOpen((prev) => !prev);
+    }
+  };
+
   const handleClick = async () => {
     await signOut();
     handleLogin(null);
@@ -22,9 +28,15 @@ function Header({ loginUserInfo, handleLogin }) {
 
   const modalOnLogin = (
     <>
-      <Link to="/profile">My Profile</Link>
-      <Link to="/recipes/my-recipes">My Recipes</Link>
-      <span onClick={handleClick}>Log out</span>
+      <Link tabIndex="0" to="/profile">
+        My Profile
+      </Link>
+      <Link tabIndex="0" to="/recipes/my-recipes">
+        My Recipes
+      </Link>
+      <span tabIndex="0" onClick={handleClick}>
+        Log out
+      </span>
     </>
   );
 
@@ -39,7 +51,9 @@ function Header({ loginUserInfo, handleLogin }) {
       <Container>
         <Navigation />
         <MyAccount
+          tabIndex="0"
           clickedToggle={clickedToggle}
+          keyDownedToggle={keyDownedToggle}
           loginUserInfo={loginUserInfo}
         />
         <MyAccountModal>
@@ -53,6 +67,7 @@ function Header({ loginUserInfo, handleLogin }) {
         <Navigation />
         <MyAccount
           clickedToggle={clickedToggle}
+          keyDownedToggle={keyDownedToggle}
           loginUserInfo={loginUserInfo}
         />
       </Container>
@@ -107,10 +122,18 @@ const MyAccountModal = styled.div`
     cursor: pointer;
   }
 
+  span:focus {
+    font-weight: bold;
+  }
+
   a {
     height: 30%;
     display: flex;
     align-items: center;
+  }
+
+  a:focus {
+    font-weight: bold;
   }
 
   a:nth-child(2) {

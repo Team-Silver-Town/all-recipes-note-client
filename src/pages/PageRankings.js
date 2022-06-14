@@ -63,26 +63,45 @@ function PageRankings({ loginUserInfo, handleLogin }) {
             <h2>레시피 / 메뉴 랭킹</h2>
             <ul>
               <li
+                tabIndex="0"
                 onClick={() =>
                   clickLatestTop10RecipesHandler(
                     handleSetCurrentRankType,
                     handleSetCurrentRankList
                   )
                 }
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    clickLatestTop10RecipesHandler(
+                      handleSetCurrentRankType,
+                      handleSetCurrentRankList
+                    );
+                  }
+                }}
               >
                 최신 레시피 Top 10
               </li>
               <li
+                tabIndex="0"
                 onClick={() =>
                   clickTop10Recipes(
                     handleSetCurrentRankType,
                     handleSetCurrentRankList
                   )
                 }
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    clickTop10Recipes(
+                      handleSetCurrentRankType,
+                      handleSetCurrentRankList
+                    );
+                  }
+                }}
               >
                 전체 레시피 Top 10
               </li>
               <li
+                tabIndex="0"
                 onClick={() =>
                   clickTop10MenusByCategory(
                     "한식",
@@ -90,10 +109,20 @@ function PageRankings({ loginUserInfo, handleLogin }) {
                     handleSetCurrentRankList
                   )
                 }
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    clickTop10MenusByCategory(
+                      "한식",
+                      handleSetCurrentRankType,
+                      handleSetCurrentRankList
+                    );
+                  }
+                }}
               >
                 한식 메뉴 Top 10
               </li>
               <li
+                tabIndex="0"
                 onClick={() =>
                   clickTop10MenusByCategory(
                     "양식",
@@ -101,6 +130,15 @@ function PageRankings({ loginUserInfo, handleLogin }) {
                     handleSetCurrentRankList
                   )
                 }
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    clickTop10MenusByCategory(
+                      "양식",
+                      handleSetCurrentRankType,
+                      handleSetCurrentRankList
+                    );
+                  }
+                }}
               >
                 양식 메뉴 Top 10
               </li>
@@ -113,6 +151,7 @@ function PageRankings({ loginUserInfo, handleLogin }) {
                 return (
                   <li
                     key={menu._id}
+                    tabIndex="0"
                     onClick={() =>
                       clickMenuTop10Handler(
                         menu,
@@ -121,6 +160,16 @@ function PageRankings({ loginUserInfo, handleLogin }) {
                         handleSetCurrentRankList
                       )
                     }
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        clickMenuTop10Handler(
+                          menu,
+                          setCurrentMenu,
+                          handleSetCurrentRankType,
+                          handleSetCurrentRankList
+                        );
+                      }
+                    }}
                   >
                     {menu.name} Top 10
                   </li>
@@ -130,24 +179,42 @@ function PageRankings({ loginUserInfo, handleLogin }) {
           </RankingList>
           <RankingList>
             <h2
+              tabIndex="0"
               onClick={() =>
                 clickNotesTop10Handler(
                   handleSetCurrentRankType,
                   handleSetCurrentRankList
                 )
               }
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  clickNotesTop10Handler(
+                    handleSetCurrentRankType,
+                    handleSetCurrentRankList
+                  );
+                }
+              }}
             >
               베스트 노트 Top 10
             </h2>
           </RankingList>
           <RankingList>
             <h2
+              tabIndex="0"
               onClick={() =>
                 clickTipsTop10Handler(
                   handleSetCurrentRankType,
                   handleSetCurrentRankList
                 )
               }
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  clickTipsTop10Handler(
+                    handleSetCurrentRankType,
+                    handleSetCurrentRankList
+                  );
+                }
+              }}
             >
               베스트 꿀팁 Top 10
             </h2>
