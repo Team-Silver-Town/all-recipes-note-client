@@ -15,9 +15,8 @@ function Login({ handleLogin }) {
   const handleClick = async () => {
     try {
       const loginInfo = await signInWithGoogle();
-      const token = await auth.currentUser.getIdToken();
+      const token = await auth.currentUser.getIdToken(true);
       const { id, email, picture } = loginInfo.additionalUserInfo.profile;
-      console.log(loginInfo);
 
       const responseData = await getUser(email);
       const { nickname } = responseData.data;

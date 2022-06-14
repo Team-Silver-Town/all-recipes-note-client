@@ -124,9 +124,6 @@ export const RankItemListWithCategory = (props) => {
     navigate(`/recipes/${id}`);
   };
 
-  console.log("currentRankList", currentRankList);
-  console.log("currentRankList.menus", currentRankList.menus);
-
   const categoryName = currentRankList.name;
   const categoryMenus = currentRankList.menus;
 
