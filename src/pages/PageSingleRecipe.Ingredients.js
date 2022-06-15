@@ -45,7 +45,6 @@ const Ingredients = ({
   };
 
   const clickIngredientSuggestionHandler = (event) => {
-    console.log("suggestion clicked", event.target.innerText);
     setIngredient(event.target.innerText);
     setIngredientSuggestions([]);
   };

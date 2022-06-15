@@ -20,7 +20,6 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
   const [menuName, setMenuName] = useState("");
   const [menus, setMenus] = useState([]);
   const [menuSuggestions, setMenuSuggestions] = useState([]);
-  console.log(menuSuggestions);
 
   const {
     youtubeOptions,
