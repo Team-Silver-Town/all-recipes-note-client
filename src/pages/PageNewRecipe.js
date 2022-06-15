@@ -28,10 +28,12 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
     urlHandler,
   } = useYoutube();
   const createRecipeMutation = useMutation(createRecipe, {
-    onSuccess: () => {
+    onSuccess: (data) => {
       queryClient.invalidateQueries("recipes");
+      navigate(`/recipes/${data._id}`);
     },
   });
+
   const localStorageInfo = JSON.parse(
     localStorage.getItem("allRecipesNoteLoginInfo")
   );
@@ -56,11 +58,10 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
     };
 
     createRecipeMutation.mutate(recipe);
-    navigate("/recipes");
   };
 
   useEffect(() => {
-    document.title = "새로운 레시피";
+    document.title = "New Recipe";
   }, []);
 
   return (
@@ -71,7 +72,12 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
           <InputLinkTitle>1. 링크 입력하기</InputLinkTitle>
           <InputLinkDetail>
             <label>URL : </label>
-            <input id="youtubeUrl" onChange={urlHandler} />
+            <input
+              autoComplete="off"
+              type="url"
+              id="youtubeUrl"
+              onChange={urlHandler}
+            />
           </InputLinkDetail>
           <InputCategory>
             <label>2. 메뉴카테고리 선택하기</label>
@@ -108,6 +114,14 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
               <div>미리보기 화면입니다.</div>
             </>
           )}
+          {!isValidUrl && (
+            <>
+              <PreviewComment>
+                <div>화면 미리보기가 제공됩니다.</div>
+                {!isValidUrl && <div> 올바른 URL을 입력해주세요.</div>}
+              </PreviewComment>
+            </>
+          )}
         </Preview>
       </Main>
       <Footer />
@@ -138,6 +152,7 @@ const InputForm = styled.div`
   flex-direction: column;
   padding-left: 20px;
   padding-top: 20px;
+  background-color: var(--secondary-color);
 
   div {
     font-size: large;
@@ -225,8 +240,23 @@ const Preview = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  background-color: var(--secondary-color);
 
   div {
     font-size: larger;
+  }
+`;
+
+const PreviewComment = styled.div`
+  width: 640px;
+  height: 490px;
+  display: flex;
+  flex-direction: column;
+  border: 1px solid black;
+  justify-content: center;
+  align-items: center;
+
+  div {
+    margin-bottom: 20px;
   }
 `;

@@ -11,9 +11,11 @@ export function Navigation() {
   );
 }
 
-export function MyAccount({ clickedToggle, loginUserInfo }) {
+export function MyAccount({ clickedToggle, keyDownedToggle, loginUserInfo }) {
   return (
     <ProfileImg
+      tabIndex="0"
+      onKeyDown={keyDownedToggle}
       onClick={clickedToggle}
       src={
         loginUserInfo
@@ -37,17 +39,18 @@ const NavContainer = styled.div`
 const StyledLink = styled(Link)`
   display: flex;
   padding: 4px 8px;
-  margin: 0 auto;
+  margin: 0 5px;
   text-align: center;
   width: 100%;
   height: 100%;
-  border-radius: 30px;
+  border-radius: 10px;
   justify-content: center;
   align-items: center;
-  transition: all 0.6s;
+  transition: all 0.4s;
 
+  &:focus,
   &:hover {
-    background-color: white;
+    background-color: var(--secondary-color);
   }
 `;
 
@@ -55,4 +58,11 @@ const ProfileImg = styled.img`
   width: 40px;
   height: 40px;
   border-radius: 40px;
+  transition: all 0.4s ease-in;
+
+  &:focus {
+    width: 50px;
+    height: 50px;
+    border-radius: 50px;
+  }
 `;

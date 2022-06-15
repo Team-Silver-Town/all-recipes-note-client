@@ -35,7 +35,7 @@ const SearchInput = ({ updateHanlder, searchData }) => {
 
   return (
     <Container>
-      <input onChange={inputHandler} ref={inputElement} />
+      <input autoComplete="on" onChange={inputHandler} ref={inputElement} />
       {suggestions?.length !== searchData?.length && suggestions?.length > 0 && (
         <div>
           {suggestions.map((suggestion, index) => {

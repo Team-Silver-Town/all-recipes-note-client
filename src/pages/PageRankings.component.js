@@ -1,30 +1,20 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const RankItemListWithNoteOrTip = (props) => {
-  const navigate = useNavigate();
-  const { currentRankList, currentRankType } = props;
-
-  const rankListNaivigateHandler = (id) => {
-    if (currentRankType === "note") {
-      navigate(`/recipes/${id}`);
-    }
-
-    if (currentRankType === "tip") {
-      navigate(`/recipes/${id}`);
-    }
-  };
+  const { currentRankList } = props;
 
   return currentRankList.map((item, index) => {
-    const id = item.relatedRecipe._id;
+    const recipeId = item.relatedRecipe._id;
     const { nickname } = item.creator;
     const { name: menuName } = item.relatedRecipe.belongsToMenu;
     const content = item.content;
 
     return (
       <RankItem
+        tabIndex="0"
         key={`${item}${index}`}
-        onClick={() => rankListNaivigateHandler(id)}
+        to={`/recipes/${recipeId}`}
       >
         <RankNumber>{index + 1}위</RankNumber>
         <RankContent>
@@ -38,14 +28,7 @@ export const RankItemListWithNoteOrTip = (props) => {
 };
 
 export const RankItemListWithMenu = (props) => {
-  const navigate = useNavigate();
-  const { currentRankList, currentRankType, currentMenu } = props;
-
-  const rankListNaivigateHandler = (id) => {
-    if (currentRankType === "menu") {
-      navigate(`/recipes/${id}`);
-    }
-  };
+  const { currentRankList, currentMenu } = props;
 
   return currentRankList.map((item, index) => {
     const menuName = currentMenu;
@@ -57,16 +40,13 @@ export const RankItemListWithMenu = (props) => {
     const thumbnailUrl = item.thumbnailUrl;
 
     return (
-      <RankItem
-        key={`${recipeId}`}
-        onClick={() => rankListNaivigateHandler(recipeId)}
-      >
+      <RankItem tabIndex="0" key={`${recipeId}`} to={`/recipes/${recipeId}`}>
         <RankNumber>
           {menuName}&nbsp;
           {index + 1}위
         </RankNumber>
         <RankMenuContent>
-          <img src={thumbnailUrl} alt="screen-shot" />
+          <img src={thumbnailUrl} alt="메뉴의 스크린샷" />
           <div>👍 {numberOfLikes}</div>
           <div>👎 {numberOfDislikes}</div>
           <div>노트수 : {numberOfNotes}</div>
@@ -78,14 +58,7 @@ export const RankItemListWithMenu = (props) => {
 };
 
 export const RankItemListWithRecipe = (props) => {
-  const navigate = useNavigate();
-  const { currentRankList, currentRankType } = props;
-
-  const rankListNaivigateHandler = (id) => {
-    if (currentRankType === "recipe") {
-      navigate(`/recipes/${id}`);
-    }
-  };
+  const { currentRankList } = props;
 
   return currentRankList.map((item, index) => {
     const {
@@ -99,10 +72,7 @@ export const RankItemListWithRecipe = (props) => {
     const menuName = item.belongsToMenu.name;
 
     return (
-      <RankItem
-        key={`${recipeId}`}
-        onClick={() => rankListNaivigateHandler(recipeId)}
-      >
+      <RankItem tabIndex="0" key={`${recipeId}`} to={`/recipes/${recipeId}`}>
         <RankNumber>{index + 1}위</RankNumber>
         <RankMenuContent>
           <img src={thumbnailUrl} alt="screen-shot" />
@@ -117,12 +87,7 @@ export const RankItemListWithRecipe = (props) => {
 };
 
 export const RankItemListWithCategory = (props) => {
-  const navigate = useNavigate();
-  const { currentRankList, currentRankType } = props;
-
-  const rankListNaivigateHandler = (id) => {
-    navigate(`/recipes/${id}`);
-  };
+  const { currentRankList } = props;
 
   const categoryName = currentRankList.name;
   const categoryMenus = currentRankList.menus;
@@ -135,8 +100,9 @@ export const RankItemListWithCategory = (props) => {
 
     return (
       <RankItem
+        tabIndex="0"
         key={`${menuId}`}
-        onClick={() => rankListNaivigateHandler(number1RecipeIdInMenu)}
+        to={`/recipes/${number1RecipeIdInMenu}`}
       >
         <RankNumber>
           {categoryName}&nbsp;
@@ -152,13 +118,14 @@ export const RankItemListWithCategory = (props) => {
   });
 };
 
-const RankItem = styled.div`
+const RankItem = styled(Link)`
   height: 10%;
   width: 100%;
   display: flex;
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: var(--secondary-color);
     border: 2px solid black;
     font-weight: bold;

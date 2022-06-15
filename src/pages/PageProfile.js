@@ -31,7 +31,7 @@ function PageProfile({ loginUserInfo, handleLogin }) {
   };
 
   useEffect(() => {
-    document.title = "Profile";
+    document.title = "Profile | 모조리";
   }, []);
 
   return (
@@ -39,7 +39,10 @@ function PageProfile({ loginUserInfo, handleLogin }) {
       <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
       <Main>
         <ProfileBox>
-          <ProfileImg src={loginUserInfo.picture} />
+          <ProfileImg
+            src={loginUserInfo.picture}
+            alt="로그인 유저의 프로필 사진"
+          />
           <ProfileLine>
             <label>별명</label>
             <div>
