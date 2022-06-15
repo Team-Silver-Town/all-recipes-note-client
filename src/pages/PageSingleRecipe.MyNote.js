@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { getIngredients, getUnits } from "../api/foodApi";
@@ -6,8 +6,10 @@ import useNoteMutation from "../hooks/note-mutation-hook";
 import Ingredients from "./PageSingleRecipe.Ingredients";
 import { isLikedCheck } from "../utils/likeHelper";
 import { getNote } from "../api/noteApi";
+import useNoteControlBySpeech from "../hooks/note-speech-control";
+import TypeWriter from "typewriter-effect";
 
-const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
+const Note = ({ loginUserInfo, note_id, recipeId, openNoteList, video }) => {
   const { data: ingredients } = useQuery("ingredients", getIngredients);
   const { data: units } = useQuery("units", getUnits);
   const { data: note } = useQuery(["note", note_id], () =>
@@ -27,6 +29,25 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
   const [isVisibile, setIsVisible] = useState(true);
   const [isLiked, setIsLiked] = useState(false);
   const [likeOrDislike, setLikeOrDislike] = useState("");
+  const [isSaved, setSaved] = useState(false);
+  const [script, setScript] = useState("");
+  const noteElement = useRef();
+  const ingredientsButtonElement = useRef();
+  const saveButtonElement = useRef();
+  const deleteButtonElement = useRef();
+
+  const [recognition, speechToText, isCommanding] = useNoteControlBySpeech(
+    noteElement.current,
+    ingredientsButtonElement.current,
+    saveButtonElement.current,
+    deleteButtonElement.current,
+    setIsVisible,
+    openNoteList,
+    video,
+    totalIngredients
+  );
+
+  recognition.start();
 
   useEffect(() => {
     if (note) {
@@ -57,6 +78,23 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
       }
     }
   }, [note]);
+
+  useEffect(() => {
+    let timer;
+    if (isSaved) {
+      timer = setTimeout(() => {
+        setSaved(false);
+      }, 5000);
+    }
+
+    return () => clearTimeout(timer);
+  }, [isSaved]);
+
+  useEffect(() => {
+    if (isCommanding) {
+      setScript(speechToText);
+    }
+  }, [speechToText]);
 
   const clickLikeHandler = (event) => {
     if (isLiked && event.target.name === likeOrDislike) {
@@ -92,7 +130,7 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
       content,
       visibility: isVisibile,
     });
-    openNoteList("notes");
+    setSaved(true);
   };
 
   const updateNoteHandler = () => {
@@ -102,6 +140,7 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
       content,
       visibility: isVisibile,
     });
+    setSaved(true);
   };
 
   const deleteNoteHandler = () => {
@@ -129,6 +168,27 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
           ingredientsHandler={setTotalIngredients}
         />
       )}
+      {isCommanding && (
+        <div>
+          <RecordingStatus className="blob red"></RecordingStatus>
+        </div>
+      )}
+      {
+        <TypewriterContainer>
+          {script && (
+            <TypeWriter
+              onInit={(typewriter) => {
+                typewriter
+                  .typeString(script)
+                  .pauseFor(1000)
+                  .deleteAll()
+                  .callFunction(() => setScript(""))
+                  .start();
+              }}
+            />
+          )}
+        </TypewriterContainer>
+      }
       <Container>
         {note && (
           <NoteLikeButton name="like" onClick={clickLikeHandler}>
@@ -144,35 +204,41 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
           defaultValue={content}
           onChange={inputContentHandler}
           disabled={!isMyNote}
+          ref={noteElement}
         />
         {isMyNote && (
           <>
+            {isSaved && <SavedMessage>SAVED</SavedMessage>}
             <ControllButtonSave
               onClick={note ? updateNoteHandler : createNoteHandler}
               disabled={!isMyNote}
+              ref={saveButtonElement}
             >
               저장
             </ControllButtonSave>
             <ControllButtonDelete
               onClick={deleteNoteHandler}
               disabled={!isMyNote}
+              ref={deleteButtonElement}
             >
               삭제
             </ControllButtonDelete>
-
             <IngredientsList>
               {totalIngredients.length &&
                 totalIngredients.map((ingredient, index) => {
                   return (
                     <IngredientsCard key={ingredient._id}>
-                      <div>{`${ingredient.split("-")[0]} ${
-                        ingredient.split("-")[1]
-                      }${ingredient.split("-")[2]}`}</div>
+                      <div key={ingredient._id + `-${index}`}>{`${
+                        ingredient.split("-")[0]
+                      } ${ingredient.split("-")[1]}${
+                        ingredient.split("-")[2]
+                      }`}</div>
                     </IngredientsCard>
                   );
                 })}
             </IngredientsList>
             <ControlButtonAddIngredient
+              ref={ingredientsButtonElement}
               onClick={openModalHandler}
               disabled={!isMyNote}
             >
@@ -192,6 +258,84 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
 };
 
 export default Note;
+
+const TypewriterContainer = styled.div`
+  height: 20%;
+  width: 55%;
+  position: absolute;
+  bottom: 4%;
+  left: 2%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 45px;
+`;
+
+const RecordingStatus = styled.div`
+  position: absolute;
+  top: 2%;
+  right: 65%;
+
+  background: rgba(255, 82, 82, 1);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
+  margin: 10px;
+  height: 25px;
+  width: 25px;
+  transform: scale(1);
+  animation: pulse-red 1s infinite;
+
+  @keyframes pulse-red {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+    }
+
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(255, 82, 82, 0);
+    }
+
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+    }
+  }
+`;
+
+const SavedMessage = styled.div`
+  position: absolute;
+  width: 120px;
+  height: 40px;
+  bottom: 70px;
+  left: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 15px;
+  font-weight: 700;
+`;
+
+const ControllButtonSave = styled.button`
+  width: 120px;
+  height: 40px;
+  background-color: var(--secondary-color);
+  font-weight: bold;
+  position: absolute;
+  bottom: 30px;
+  left: 20px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+
+  &:hover {
+    border: 2px solid black;
+    padding: 2px;
+  }
+`;
 
 const NoteLikeButton = styled.button`
   width: 5%;
@@ -270,27 +414,6 @@ const ControlButtonAddIngredient = styled.button`
   position: absolute;
   bottom: 80px;
   right: 5%;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border: none;
-  border-radius: 5px;
-  cursor: pointer;
-
-  &:hover {
-    border: 2px solid black;
-    padding: 2px;
-  }
-`;
-
-const ControllButtonSave = styled.button`
-  width: 120px;
-  height: 40px;
-  background-color: var(--secondary-color);
-  font-weight: bold;
-  position: absolute;
-  bottom: 30px;
-  left: 20px;
   display: flex;
   justify-content: center;
   align-items: center;

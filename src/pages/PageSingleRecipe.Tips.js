@@ -6,6 +6,8 @@ import { dateOptions } from "../config/dateConfig";
 import useTipMutation from "../hooks/tip-mutation-hook";
 import { isLikedCheck } from "../utils/likeHelper";
 import { sortDescendingByUpdatedAt } from "../utils/sortHelper";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faThumbsUp, faThumbsDown } from "@fortawesome/free-regular-svg-icons";
 
 const Tips = ({ loginUserInfo, recipeId }) => {
   const { data: tips } = useQuery(["tips", recipeId], () =>
@@ -207,8 +209,6 @@ const TipCard = ({ loginUserInfo, tip, isMyTip }) => {
 export default Tips;
 
 const TipEditButton = styled.button``;
-const TipLikeButton = styled.button``;
-const TipDislikeButton = styled.button``;
 
 const fadeIn = keyframes`
   from {
