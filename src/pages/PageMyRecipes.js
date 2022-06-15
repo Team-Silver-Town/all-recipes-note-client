@@ -1,4 +1,4 @@
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getUser } from "../api/authApi";
 import { getMyNotes } from "../api/noteApi";
@@ -13,7 +13,7 @@ function PageMyRecipes({ loginUserInfo, handleLogin }) {
   const { email } = loginUserInfo;
 
   useEffect(() => {
-    document.title = "My Recipes";
+    document.title = "My Recipes | 모조리";
   }, []);
 
   useEffect(() => {

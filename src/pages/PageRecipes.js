@@ -3,7 +3,6 @@ import styled from "styled-components";
 import { useQuery } from "react-query";
 import { NavLink } from "react-router-dom";
 import { getRecipes } from "../api/recipeApi";
-import { shuffle } from "lodash";
 
 import Header from "../components/Header";
 import Loading from "../components/Loading";
@@ -18,7 +17,7 @@ function PageRecipes({ loginUserInfo, handleLogin }) {
   });
 
   useEffect(() => {
-    document.title = "Recipes";
+    document.title = "Recipes | 모조리";
   }, []);
 
   return (

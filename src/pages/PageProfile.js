@@ -31,7 +31,7 @@ function PageProfile({ loginUserInfo, handleLogin }) {
   };
 
   useEffect(() => {
-    document.title = "Profile";
+    document.title = "Profile | 모조리";
   }, []);
 
   return (

@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 
 function Home({ loginUserInfo, handleLogin }) {
   useEffect(() => {
-    document.title = "Home";
+    document.title = "Home | 모조리";
   }, []);
 
   return (

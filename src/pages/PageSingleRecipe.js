@@ -1,4 +1,4 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useLayoutEffect } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -25,12 +25,13 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const { updateRecipeLikeMutation, cancelRecipeLikeMutation } =
     useRecipeMutation();
 
-  useEffect(() => {
-    document.title = "SingleRecipe";
-  }, []);
+  const pageTitle = recipe ? recipe.belongsToMenu.name : "Recipe Detail";
+
+  useLayoutEffect(() => {
+    document.title = `${pageTitle} | 모조리`;
+  }, [pageTitle]);
 
   useEffect(() => {
-    console.log("RUN useEffect SingleRecipe");
     const note = recipe?.notes.find(
       (note) => note.creator.email === loginUserInfo.email
     );
@@ -161,14 +162,6 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
               openNoteList={setBoardPage}
             />
           )}
-          {/* {currentBoardPage === "myNote" && (
-            <Note
-              loginUserInfo={loginUserInfo}
-              note={myNote}
-              recipeId={recipe_id}
-              openNoteList={setBoardPage}
-            />
-          )} */}
         </BoardMain>
       </RightSetction>
     </Container>

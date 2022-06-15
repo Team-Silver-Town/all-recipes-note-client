@@ -31,7 +31,7 @@ function PageRankings({ loginUserInfo, handleLogin }) {
   const [currentMenu, setCurrentMenu] = useState("");
 
   useEffect(() => {
-    document.title = "Rankings";
+    document.title = "Rankings | 모조리";
   }, []);
 
   useEffect(() => {

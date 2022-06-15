@@ -9,7 +9,7 @@ function Login({ handleLogin }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Login";
+    document.title = "Login | 모조리";
   }, []);
 
   const handleClick = async () => {
