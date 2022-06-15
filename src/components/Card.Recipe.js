@@ -7,7 +7,7 @@ const RecipeCard = ({ recipeData }) => {
 
   return (
     <Container>
-      <VideoThumbnail src={videoThumbnail} alt="recipe video thumbnail" />
+      <VideoThumbnail src={videoThumbnail} alt="영상 thumbnail 이미지" />
       <RecipeInfoBox>
         <MenuName>{menuName}</MenuName>
         <PostingOwner>{nickname}</PostingOwner>
