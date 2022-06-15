@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import Modal from "../components/Modal";
-import SearchInput from "../components/Input.Search";
 import styled from "styled-components";
 import useIngredientControlbySpeech from "../hooks/ingredient-speech-control";
 import TypeWriter from "typewriter-effect";
+import { generateSuggestions } from "../utils/suggestionHelper";
 
 const Ingredients = ({
   ingredients,
@@ -14,6 +14,8 @@ const Ingredients = ({
   const [ingredient, setIngredient] = useState("");
   const [portion, setPortion] = useState(0);
   const [unit, setUnit] = useState("");
+  const [ingredientSuggestions, setIngredientSuggestions] = useState([]);
+  const [unitSuggestions, setUnitSuggestions] = useState([]);
   const [isAdded, setAdded] = useState(false);
   const [script, setScript] = useState("");
   const doneButtonElement = useRef();
@@ -23,8 +25,8 @@ const Ingredients = ({
       setIngredient,
       setPortion,
       setUnit,
-      doneButtonElement.current,
-      addButtonElement.current
+      doneButtonElement,
+      addButtonElement
     );
 
   recognition.start();
@@ -35,8 +37,31 @@ const Ingredients = ({
     }
   }, [speechToText]);
 
+  const changeIngredientHandler = (event) => {
+    setIngredient(event.target.value);
+    setIngredientSuggestions(
+      generateSuggestions(ingredients, event.target.value)
+    );
+  };
+
+  const clickIngredientSuggestionHandler = (event) => {
+    console.log("suggestion clicked", event.target.innerText);
+    setIngredient(event.target.innerText);
+    setIngredientSuggestions([]);
+  };
+
   const changePortionHandler = (event) => {
     setPortion(event.target.value);
+  };
+
+  const changeUnitHandler = (event) => {
+    setUnit(event.target.value);
+    setUnitSuggestions(generateSuggestions(units, event.target.value));
+  };
+
+  const clickUnitSuggestionHandler = (event) => {
+    setUnit(event.target.innerText);
+    setUnitSuggestions([]);
   };
 
   const clickCloseHandler = () => {
@@ -87,12 +112,25 @@ const Ingredients = ({
           <Form onSubmit={clickAddHandler}>
             <TextInput>
               <label>재료</label>
-              <SearchInput
-                searchData={ingredients}
-                updateHanlder={setIngredient}
-                isSubmitted={isAdded}
-                setSubmitted={setAdded}
+              <input
+                type="text"
+                onChange={changeIngredientHandler}
+                value={ingredient}
               />
+              {ingredientSuggestions > 0 && (
+                <SuggestionContainer>
+                  {ingredientSuggestions.map((suggestion, index) => {
+                    return (
+                      <Suggestion
+                        key={`${suggestion}-${index}`}
+                        onClick={clickIngredientSuggestionHandler}
+                      >
+                        {suggestion}
+                      </Suggestion>
+                    );
+                  })}
+                </SuggestionContainer>
+              )}
             </TextInput>
             <NumberInput>
               <label>양</label>
@@ -105,12 +143,21 @@ const Ingredients = ({
             </NumberInput>
             <TextInput>
               <label>단위</label>
-              <SearchInput
-                searchData={units}
-                updateHanlder={setUnit}
-                isSubmitted={isAdded}
-                setSubmitted={setAdded}
-              />
+              <input type="text" onChange={changeUnitHandler} value={unit} />
+              {unitSuggestions.length > 0 && (
+                <SuggestionContainer>
+                  {unitSuggestions.map((suggestion, index) => {
+                    return (
+                      <Suggestion
+                        key={`${suggestion}-${index}`}
+                        onClick={clickUnitSuggestionHandler}
+                      >
+                        {suggestion}
+                      </Suggestion>
+                    );
+                  })}
+                </SuggestionContainer>
+              )}
             </TextInput>
             <ButtonContainer>
               <button
@@ -132,6 +179,16 @@ const Ingredients = ({
 };
 
 export default Ingredients;
+
+const SuggestionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+`;
+const Suggestion = styled.div`
+  cursor: pointer;
+`;
 
 const Container = styled.div`
   display: flex;

@@ -1,15 +1,8 @@
 import { useEffect, useState } from "react";
 import { grammar } from "../config/speechConfig";
 import * as commands from "../constants/voice-command";
-import { parseIngredientsFromSpeech } from "../utils/voiceHelper";
 
-const useIngredientControlbySpeech = (
-  setIngredient,
-  setPortion,
-  setUnit,
-  doneButton,
-  addButton
-) => {
+const useHomeSpeechControl = () => {
   const [speechToText, setSpeechToText] = useState("");
   const [isCommanding, setCommanding] = useState(false);
 
@@ -42,22 +35,10 @@ const useIngredientControlbySpeech = (
       setCommanding(true);
     }
 
-    if (isCommanding) {
-      if (speechToText.includes("재료 추가 완료")) {
-        doneButton.click();
-      } else {
-        const { ingredient, portion, unit } =
-          parseIngredientsFromSpeech(speechToText);
-
-        setIngredient(ingredient);
-        setPortion(portion);
-        setUnit(unit);
-      }
-    }
     return () => recognition.stop();
   }, [speechToText]);
 
   return [recognition, speechToText, isCommanding];
 };
 
-export default useIngredientControlbySpeech;
+export default useHomeSpeechControl;

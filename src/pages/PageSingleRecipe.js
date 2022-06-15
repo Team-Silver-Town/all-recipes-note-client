@@ -1,5 +1,4 @@
-import { useState, useEffect, useLayoutEffect,useRef  } from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -127,10 +126,18 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
     <Container>
       <LeftSection>
         <NavigationPage>
-          <StyledLinkButton tabIndex="0" to="/recipes" ref={toRecipesButtonElement}>
+          <StyledLinkButton
+            tabIndex="0"
+            to="/recipes"
+            ref={toRecipesButtonElement}
+          >
             레시피 페이지
           </StyledLinkButton>
-          <StyledLinkButton tabIndex="0" to="/rankings" ref={toRankingsButtonElement}>
+          <StyledLinkButton
+            tabIndex="0"
+            to="/rankings"
+            ref={toRankingsButtonElement}
+          >
             랭킹 페이지
           </StyledLinkButton>
           <button
