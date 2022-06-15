@@ -25,7 +25,6 @@ function App() {
           handleLogin={handleLogin}
         />
       </Fragment>
-      <ReactQueryDevtools initialIsOpen={false} />
     </QueryClientProvider>
   );
 }
