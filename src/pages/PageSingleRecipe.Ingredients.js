@@ -164,11 +164,11 @@ const Ingredients = ({
               >
                 추가
               </button>
-              <button onClick={clickCloseHandler} ref={doneButtonElement}>
-                완료
-              </button>
             </ButtonContainer>
           </Form>
+          <button onClick={clickCloseHandler} ref={doneButtonElement}>
+            완료
+          </button>
         </Container>
       </Modal>
     </>

@@ -48,9 +48,10 @@ const useIngredientControlbySpeech = (
     }
 
     if (speechToText.includes(FINISH_ADD_INGREDIENT)) {
-      addButton.click();
       doneButton.click();
       playText(SIRI_SAY_ADDED_INGREDIENTS);
+
+      setCommanding(false);
     }
 
     if (isCommanding) {
@@ -60,6 +61,8 @@ const useIngredientControlbySpeech = (
       setIngredient(ingredient);
       setPortion(portion);
       setUnit(unit);
+
+      addButton.click();
     }
 
     return () => recognition.stop();
