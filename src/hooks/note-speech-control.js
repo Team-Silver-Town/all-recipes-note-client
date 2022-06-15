@@ -47,9 +47,15 @@ const useNoteControlBySpeech = (
 
     if (isCommanding) {
       if (speechToText.includes(commands.PLAY_VIDEO)) {
-        video.playVideo();
+        playText(commands.SIRI_SAY_PLAY_VIDEO);
+        setTimeout(() => {
+          video.playVideo();
+        }, 2000);
       } else if (speechToText.includes(commands.STOP_VIDEO)) {
-        video.pauseVideo();
+        playText(commands.SIRI_SAY_PAUSE_VIDEO);
+        setTimeout(() => {
+          video.pauseVideo();
+        }, 2000);
       } else if (speechToText.includes(commands.SEEK_FORWARD)) {
         video.seekTo(video.getCurrentTime() + commands.SEEK_TIME, true);
       } else if (speechToText.includes(commands.SEEK_BACKWARD)) {
@@ -58,12 +64,16 @@ const useNoteControlBySpeech = (
         ingredientsButton.click();
       } else if (speechToText.includes(commands.SAVE_NOTE)) {
         saveButton.click();
+        playText(commands.SIRI_SAY_SAVED_NOTE);
       } else if (speechToText.includes(commands.DELETE_NOTE)) {
         deleteButton.click();
+        playText(commands.SIRI_SAY_DELETED_NOTE);
       } else if (speechToText.includes(commands.SET_PRIVATE)) {
         setIsVisible(false);
+        playText(commands.SIRI_SAY_NOTE_PRIVATE);
       } else if (speechToText.includes(commands.SET_PUBLIC)) {
         setIsVisible(true);
+        playText(commands.SIRI_SAY_NOTE_PUBLIC);
       } else if (speechToText.includes(commands.TO_NOTELIST)) {
         openNoteList("notes");
       } else if (speechToText.includes(commands.READ_NOTE)) {

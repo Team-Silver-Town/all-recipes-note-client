@@ -1,10 +1,19 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { grammar } from "../config/speechConfig";
 import * as commands from "../constants/voice-command";
 
-const useHomeSpeechControl = () => {
+const useRankingControlBySpeech = (
+  showLatestRanking,
+  showTotalRanking,
+  showKoreanRanking,
+  showForeignRanking,
+  showNoteRanking,
+  showTipRanking
+) => {
   const [speechToText, setSpeechToText] = useState("");
   const [isCommanding, setCommanding] = useState(false);
+  const navigate = useNavigate();
 
   const SpeechRecognition =
     window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -35,10 +44,31 @@ const useHomeSpeechControl = () => {
       setCommanding(true);
     }
 
+    if (isCommanding) {
+      if (speechToText.includes(commands.RANKING_LATEST)) {
+        showLatestRanking.click();
+      } else if (speechToText.includes(commands.RANKING_RECIPES)) {
+        showTotalRanking.click();
+      } else if (speechToText.includes(commands.RANKING_KOREAN)) {
+        showKoreanRanking.click();
+      } else if (speechToText.includes(commands.RANKING_KOREAN)) {
+        showForeignRanking.click();
+      } else if (speechToText.includes(commands.RANKING_NOTE)) {
+        showNoteRanking.click();
+      } else if (speechToText.includes(commands.RANKING_TIP)) {
+        showTipRanking.click();
+      } else if (speechToText.includes(commands.TO_RECIPES)) {
+        navigate("/recipes");
+      } else if (speechToText.includes(commands.TO_HOME)) {
+        navigate("/");
+      }
+      setCommanding(false);
+    }
+
     return () => recognition.stop();
   }, [speechToText]);
 
   return [recognition, speechToText, isCommanding];
 };
 
-export default useHomeSpeechControl;
+export default useRankingControlBySpeech;

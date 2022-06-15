@@ -35,7 +35,10 @@ export const parseIngredientsFromSpeech = (speech) => {
     let portionString = "";
 
     for (let i = 0; i < tempParseSecondArray.length; i++) {
-      if (Number(tempParseSecondArray[i])) {
+      if (
+        Number(tempParseSecondArray[i]) ||
+        Number(tempParseSecondArray[i]) === 0
+      ) {
         portionString += tempParseSecondArray[i];
       } else {
         unit += tempParseSecondArray[i];

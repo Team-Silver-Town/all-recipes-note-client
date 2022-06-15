@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { grammar } from "../config/speechConfig";
 import * as commands from "../constants/voice-command";
 
-const useVideoControlBySpeech = (
+const useRecipeControlBySpeech = (
   video,
   likeButton,
   dislikeButton,
@@ -80,4 +80,4 @@ const useVideoControlBySpeech = (
   };
 };
 
-export default useVideoControlBySpeech;
+export default useRecipeControlBySpeech;

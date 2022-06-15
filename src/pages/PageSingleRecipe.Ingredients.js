@@ -16,7 +16,6 @@ const Ingredients = ({
   const [unit, setUnit] = useState("");
   const [ingredientSuggestions, setIngredientSuggestions] = useState([]);
   const [unitSuggestions, setUnitSuggestions] = useState([]);
-  const [isAdded, setAdded] = useState(false);
   const [script, setScript] = useState("");
   const doneButtonElement = useRef();
   const addButtonElement = useRef();
@@ -25,8 +24,8 @@ const Ingredients = ({
       setIngredient,
       setPortion,
       setUnit,
-      doneButtonElement,
-      addButtonElement
+      doneButtonElement.current,
+      addButtonElement.current
     );
 
   recognition.start();
@@ -76,7 +75,6 @@ const Ingredients = ({
       return [...previous, ingredients];
     });
 
-    setAdded(true);
     setIngredient("");
     setPortion(0);
     setUnit("");
@@ -85,9 +83,9 @@ const Ingredients = ({
   return (
     <>
       {isCommanding && (
-        <div>
+        <RecodingBox>
           <RecordingStatus className="blob red"></RecordingStatus>
-        </div>
+        </RecodingBox>
       )}
       {
         <TypewriterContainer>
@@ -237,34 +235,43 @@ const TypewriterContainer = styled.div`
   font-size: 45px;
 `;
 
-const RecordingStatus = styled.div`
+const RecodingBox = styled.div`
+  background-color: var(--primary-color);
+  height: 40px;
+  width: 40px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   position: absolute;
   top: 2%;
-  right: 65%;
+  left: 22%;
+`;
 
-  background: rgba(255, 82, 82, 1);
+const RecordingStatus = styled.div`
+  background: rgba(255, 0, 0, 1);
   border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
-  margin: 10px;
-  height: 25px;
-  width: 25px;
+  box-shadow: 0 0 0 0 rgba(255, 0, 0, 1);
+  height: 30px;
+  width: 30px;
   transform: scale(1);
   animation: pulse-red 1s infinite;
 
   @keyframes pulse-red {
     0% {
       transform: scale(0.95);
-      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
     }
 
     70% {
       transform: scale(1);
-      box-shadow: 0 0 0 10px rgba(255, 82, 82, 0);
+      box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
     }
 
     100% {
       transform: scale(0.95);
-      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
     }
   }
 `;

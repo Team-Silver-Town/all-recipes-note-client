@@ -1,16 +1,41 @@
 import styled from "styled-components";
-import { Link } from "react-router-dom";
+import { Link, useLocation } from "react-router-dom";
+import useHeaderSpeechControl from "../hooks/header-speech-control";
+import { useEffect, useRef } from "react";
 
 export function Navigation() {
+  const location = useLocation();
+  const recipeLinkElement = useRef();
+  const rankingLinkElement = useRef();
+  const homeLinkElement = useRef();
+  const [recognition, speechToText, isCommanding] = useHeaderSpeechControl(
+    homeLinkElement.current,
+    recipeLinkElement.current,
+    rankingLinkElement.current
+  );
+
+  useEffect(() => {
+    if (location.pathname === "/rankings") {
+      recognition.stop();
+    } else {
+      recognition.start();
+    }
+  }, [speechToText]);
+
   return (
     <NavContainer role="tablist">
-      <StyledLink role="tab" to="/">
+      {isCommanding && (
+        <RecodingBox>
+          <RecordingStatus className="blob red"></RecordingStatus>
+        </RecodingBox>
+      )}
+      <StyledLink role="tab" to="/" ref={homeLinkElement}>
         Home
       </StyledLink>
-      <StyledLink role="tab" to="/recipes">
+      <StyledLink role="tab" to="/recipes" ref={recipeLinkElement}>
         Recipes
       </StyledLink>
-      <StyledLink role="tab" to="/rankings">
+      <StyledLink role="tab" to="/rankings" ref={rankingLinkElement}>
         Rankings
       </StyledLink>
     </NavContainer>
@@ -33,6 +58,47 @@ export function MyAccount({ clickedToggle, keyDownedToggle, loginUserInfo }) {
     />
   );
 }
+
+const RecodingBox = styled.div`
+  background-color: var(--primary-color);
+  height: 40px;
+  width: 40px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  top: 22%;
+  left: 25%;
+`;
+
+const RecordingStatus = styled.div`
+  background: rgba(255, 0, 0, 1);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(255, 0, 0, 1);
+  height: 30px;
+  width: 30px;
+  transform: scale(1);
+  animation: pulse-red 1s infinite;
+
+  @keyframes pulse-red {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+    }
+
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+    }
+
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+    }
+  }
+`;
 
 const NavContainer = styled.div`
   display: flex;
