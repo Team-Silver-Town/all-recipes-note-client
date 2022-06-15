@@ -4,13 +4,13 @@ import { useMutation, useQuery, useQueryClient } from "react-query";
 import styled from "styled-components";
 
 import { getCategories } from "../api/foodApi";
-import SearchInput from "../components/Input.Search";
 import YouTube from "react-youtube";
 import { useYoutube } from "../hooks/youtube-hook";
 import { useNavigate } from "react-router";
 
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { generateSuggestions } from "../utils/suggestionHelper";
 
 const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
   const { data: categories } = useQuery("categories", getCategories);
@@ -18,6 +18,8 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
   const navigate = useNavigate();
   const [category, setCategory] = useState({});
   const [menuName, setMenuName] = useState("");
+  const [menus, setMenus] = useState([]);
+  const [menuSuggestions, setMenuSuggestions] = useState([]);
 
   const {
     youtubeOptions,
@@ -43,9 +45,20 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
 
     if (categoryIndex) {
       setCategory(categories[categoryIndex - 1]);
+      setMenus(categories[categoryIndex - 1].menus.map((menu) => menu.name));
     } else {
       setCategory({});
     }
+  };
+
+  const changeMenuHandler = (event) => {
+    setMenuName(event.target.value);
+    setMenuSuggestions(generateSuggestions(menus, event.target.value));
+  };
+
+  const clickMenuSuggestionHandler = (event) => {
+    setMenuName(event.target.innerText);
+    setMenuSuggestions([]);
   };
 
   const createRecipeHandler = () => {
@@ -99,12 +112,29 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
             </select>
           </InputCategory>
           <InputMenu>
-            <label id="reference3">3. 메뉴명 입력하기</label>
-            <SearchInput
+            <label>3. 메뉴명 입력하기</label>
+            <input
               aria-describedby="reference3"
               updateHanlder={setMenuName}
               searchData={category.menus}
+              type="text"
+              onChange={changeMenuHandler}
+              value={menuName}
             />
+            {menuSuggestions.length > 0 && (
+              <SuggestionContainer>
+                {menuSuggestions.map((suggestion, index) => {
+                  return (
+                    <Suggestion
+                      key={`${suggestion}-${index}`}
+                      onClick={clickMenuSuggestionHandler}
+                    >
+                      {suggestion}
+                    </Suggestion>
+                  );
+                })}
+              </SuggestionContainer>
+            )}
           </InputMenu>
 
           <SubmitButton
@@ -142,6 +172,16 @@ const Container = styled.div`
   height: 100%;
   display: flex;
   flex-direction: column;
+`;
+
+const SuggestionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+`;
+const Suggestion = styled.div`
+  cursor: pointer;
 `;
 
 const Main = styled.main`
