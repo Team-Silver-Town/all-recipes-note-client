@@ -60,7 +60,7 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
   };
 
   useEffect(() => {
-    document.title = "새로운 레시피";
+    document.title = "New Recipe";
   }, []);
 
   return (
@@ -71,7 +71,7 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
           <InputLinkTitle>1. 링크 입력하기</InputLinkTitle>
           <InputLinkDetail>
             <label>URL : </label>
-            <input id="youtubeUrl" onChange={urlHandler} />
+            <input autoComplete="off" id="youtubeUrl" onChange={urlHandler} />
           </InputLinkDetail>
           <InputCategory>
             <label>2. 메뉴카테고리 선택하기</label>
