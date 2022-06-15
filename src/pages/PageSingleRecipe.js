@@ -1,4 +1,5 @@
-import { useState, useEffect, useLayoutEffect } from "react";
+import { useState, useEffect, useLayoutEffect,useRef  } from "react";
+import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -10,6 +11,8 @@ import { useQuery } from "react-query";
 import { getRecipe } from "../api/recipeApi";
 import useRecipeMutation from "../hooks/recipe-mutation-hook";
 import { isLikedCheck } from "../utils/likeHelper";
+import { videoOptions } from "../config/youtubeConfig";
+import useVideoControlBySpeech from "../hooks/video-speech-control";
 
 function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
@@ -17,13 +20,27 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const [myNoteId, setMyNoteId] = useState("");
   const [isLiked, setIsLiked] = useState(false);
   const [likeOrDislike, setLikeOrDislike] = useState("");
+  const [videoElement, setVideoElement] = useState(null);
   const { recipe_id } = useParams();
   const { data: recipe } = useQuery(["recipe", recipe_id], () =>
     getRecipe(recipe_id)
   );
-
   const { updateRecipeLikeMutation, cancelRecipeLikeMutation } =
     useRecipeMutation();
+  const recognition = useVideoControlBySpeech(videoElement);
+
+  recognition.start();
+
+  const handleVideo = (event) => {
+    setVideoElement(event.target);
+    event.target.cueVideoById({
+      videoId: recipe?.youtubeUrl.split("v=")[1].split("&")[0],
+    });
+  };
+
+  const checkVideoState = (event) => {
+    console.log(event.data);
+  };
 
   const pageTitle = recipe ? recipe.belongsToMenu.name : "Recipe Detail";
 
@@ -103,7 +120,10 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
           <YouTube
             tabIndex="1"
             videoId={recipe?.youtubeUrl.split("v=")[1].split("&")[0]}
+            onReady={handleVideo}
             id="youtube"
+            opts={videoOptions}
+            onStateChange={checkVideoState}
           />
         </VideoPlayer>
       </LeftSection>

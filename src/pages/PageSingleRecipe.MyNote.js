@@ -65,7 +65,6 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
         note_id: note._id,
         like: event.target.name,
       });
-      console.log("CANCEL LIKE");
 
       setIsLiked(false);
       setLikeOrDislike("");
@@ -75,7 +74,6 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList }) => {
         note_id: note._id,
         like: event.target.name,
       });
-      console.log("UPDATE LIKE");
 
       setIsLiked(true);
       setLikeOrDislike(event.target.name);
