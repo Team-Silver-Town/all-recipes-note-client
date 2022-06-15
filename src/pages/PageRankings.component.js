@@ -2,7 +2,7 @@ import styled from "styled-components";
 import { Link } from "react-router-dom";
 
 export const RankItemListWithNoteOrTip = (props) => {
-  const { currentRankList, currentRankType } = props;
+  const { currentRankList } = props;
 
   return currentRankList.map((item, index) => {
     const recipeId = item.relatedRecipe._id;
@@ -28,7 +28,7 @@ export const RankItemListWithNoteOrTip = (props) => {
 };
 
 export const RankItemListWithMenu = (props) => {
-  const { currentRankList, currentRankType, currentMenu } = props;
+  const { currentRankList, currentMenu } = props;
 
   return currentRankList.map((item, index) => {
     const menuName = currentMenu;
@@ -58,7 +58,7 @@ export const RankItemListWithMenu = (props) => {
 };
 
 export const RankItemListWithRecipe = (props) => {
-  const { currentRankList, currentRankType } = props;
+  const { currentRankList } = props;
 
   return currentRankList.map((item, index) => {
     const {
@@ -87,7 +87,7 @@ export const RankItemListWithRecipe = (props) => {
 };
 
 export const RankItemListWithCategory = (props) => {
-  const { currentRankList, currentRankType } = props;
+  const { currentRankList } = props;
 
   const categoryName = currentRankList.name;
   const categoryMenus = currentRankList.menus;

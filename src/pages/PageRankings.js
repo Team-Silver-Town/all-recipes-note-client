@@ -245,7 +245,6 @@ function PageRankings({ loginUserInfo, handleLogin }) {
                   <RankTitle>{currentRankTitle}</RankTitle>
                   <RankItemListWithNoteOrTip
                     currentRankList={currentRankList}
-                    currentRankType={currentRankType}
                   />
                 </Fragment>
               )}
@@ -254,7 +253,6 @@ function PageRankings({ loginUserInfo, handleLogin }) {
                 <RankTitle>{currentRankTitle}</RankTitle>
                 <RankItemListWithMenu
                   currentRankList={currentRankList}
-                  currentRankType={currentRankType}
                   currentMenu={currentMenu}
                 />
               </Fragment>
@@ -262,19 +260,13 @@ function PageRankings({ loginUserInfo, handleLogin }) {
             {currentRankType && currentRankType === "recipe" && (
               <Fragment>
                 <RankTitle>{currentRankTitle}</RankTitle>
-                <RankItemListWithRecipe
-                  currentRankList={currentRankList}
-                  currentRankType={currentRankType}
-                />
+                <RankItemListWithRecipe currentRankList={currentRankList} />
               </Fragment>
             )}
             {currentRankType && currentRankType === "category" && (
               <Fragment>
                 <RankTitle>{currentRankTitle}</RankTitle>
-                <RankItemListWithCategory
-                  currentRankList={currentRankList}
-                  currentRankType={currentRankType}
-                />
+                <RankItemListWithCategory currentRankList={currentRankList} />
               </Fragment>
             )}
           </RankTable>
