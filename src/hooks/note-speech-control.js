@@ -1,16 +1,17 @@
 import { useEffect, useState } from "react";
 import { grammar } from "../config/speechConfig";
 import * as commands from "../constants/voice-command";
+import { playText } from "../utils/speechSynthesis";
 
-const useVideoControlBySpeech = (
+const useNoteControlBySpeech = (
+  note,
+  ingredientsButton,
+  saveButton,
+  deleteButton,
+  setIsVisible,
+  openNoteList,
   video,
-  likeButton,
-  dislikeButton,
-  toRankingsButton,
-  toRecipesButton,
-  toMyNoteButton,
-  toNoteListButton,
-  toTipListButton
+  ingredients
 ) => {
   const [speechToText, setSpeechToText] = useState("");
   const [isCommanding, setCommanding] = useState(false);
@@ -53,31 +54,34 @@ const useVideoControlBySpeech = (
         video.seekTo(video.getCurrentTime() + commands.SEEK_TIME, true);
       } else if (speechToText.includes(commands.SEEK_BACKWARD)) {
         video.seekTo(video.getCurrentTime() - commands.SEEK_TIME, true);
-      } else if (speechToText.includes(commands.OPEN_NOTE)) {
-        toMyNoteButton.click();
+      } else if (speechToText.includes(commands.TO_INGREDIENTS)) {
+        ingredientsButton.click();
+      } else if (speechToText.includes(commands.SAVE_NOTE)) {
+        saveButton.click();
+      } else if (speechToText.includes(commands.DELETE_NOTE)) {
+        deleteButton.click();
+      } else if (speechToText.includes(commands.SET_PRIVATE)) {
+        setIsVisible(false);
+      } else if (speechToText.includes(commands.SET_PUBLIC)) {
+        setIsVisible(true);
       } else if (speechToText.includes(commands.TO_NOTELIST)) {
-        toNoteListButton.click();
-      } else if (speechToText.includes(commands.TO_TIPS)) {
-        toTipListButton.click();
-      } else if (speechToText.includes(commands.LIKE_RECIPE)) {
-        likeButton.click();
-      } else if (speechToText.includes(commands.DISLIKE_RECIPE)) {
-        dislikeButton.click();
-      } else if (speechToText.includes(commands.TO_RECIPES)) {
-        toRecipesButton.click();
-      } else if (speechToText.includes(commands.TO_RANKINGS)) {
-        toRankingsButton.click();
+        openNoteList("notes");
+      } else if (speechToText.includes(commands.READ_NOTE)) {
+        playText(commands.SIRI_READ_NOTE);
+        playText(note.value);
+      } else if (speechToText.includes(commands.READ_INGREDIENTS)) {
+        playText(commands.SIRI_READ_INGREDIENTS);
+        ingredients.forEach((ingredient) => {
+          const ingredientText = ingredient.split("-").join(" ");
+          playText(ingredientText);
+        });
       }
       setCommanding(false);
     }
     return () => recognition.stop();
   }, [speechToText]);
 
-  return {
-    recognition,
-    speechToText,
-    isCommanding,
-  };
+  return [recognition, speechToText, isCommanding];
 };
 
-export default useVideoControlBySpeech;
+export default useNoteControlBySpeech;

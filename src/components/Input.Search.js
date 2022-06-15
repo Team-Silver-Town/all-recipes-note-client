@@ -1,12 +1,24 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { debounce } from "lodash";
 import styled from "styled-components";
 
-const SearchInput = ({ updateHanlder, searchData }) => {
+const SearchInput = ({
+  updateHanlder,
+  searchData,
+  isSubmitted,
+  setSubmitted,
+}) => {
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState([]);
   const inputElement = useRef();
-  // TODO: fine tuning
+
+  useEffect(() => {
+    if (isSubmitted) {
+      inputElement.current.value = "";
+      setSubmitted(false);
+    }
+  }, [isSubmitted]);
+
   const inputHandler = debounce((e) => {
     const inputValue = e.target.value;
     updateHanlder(inputValue);
