@@ -1,5 +1,4 @@
-import { useState, useEffect, useLayoutEffect,useRef  } from "react";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect, useLayoutEffect, useRef } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -63,7 +62,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const pageTitle = recipe ? recipe.belongsToMenu.name : "Recipe Detail";
 
   useLayoutEffect(() => {
-    document.title = `${pageTitle} | 모조리`;
+    document.title = `${pageTitle} 레시 | 모조리`;
   }, [pageTitle]);
 
   useEffect(() => {
@@ -127,32 +126,24 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
     <Container>
       <LeftSection>
         <NavigationPage>
-          <StyledLinkButton tabIndex="0" to="/recipes" ref={toRecipesButtonElement}>
+          <StyledLinkButton
+            tabIndex="0"
+            to="/recipes"
+            ref={toRecipesButtonElement}
+          >
             레시피 페이지
           </StyledLinkButton>
-          <StyledLinkButton tabIndex="0" to="/rankings" ref={toRankingsButtonElement}>
+          <StyledLinkButton
+            tabIndex="0"
+            to="/rankings"
+            ref={toRankingsButtonElement}
+          >
             랭킹 페이지
           </StyledLinkButton>
-          <button
-            tabIndex="0"
-            name="like"
-            onClick={clickLikeHandler}
-            ref={likeButtonElement}
-          >
-            👍 {recipe?.liked.length}
-          </button>
-          <button
-            tabIndex="0"
-            name="dislike"
-            onClick={clickLikeHandler}
-            ref={dislikeButtonElement}
-          >
-            👎 {recipe?.disliked.length}
-          </button>
           {isCommanding && (
-            <div>
+            <RecodingBox>
               <RecordingStatus className="blob red"></RecordingStatus>
-            </div>
+            </RecodingBox>
           )}
         </NavigationPage>
         <VideoPlayer tabIndex="1">
@@ -272,9 +263,20 @@ const ButtonBox = styled.div`
   justify-content: space-between;
 `;
 
+const VideoPlayer = styled.article`
+  height: 95%;
+  width: 100%;
+  padding: 0px 8px 8px 8px;
+
+  iframe {
+    width: 100%;
+    height: 600px;
+  }
+`;
+
 const TypewriterContainer = styled.div`
   position: absolute;
-  height: 20%;
+  height: auto;
   width: 55%;
   bottom: 4%;
   left: 2%;
@@ -284,34 +286,39 @@ const TypewriterContainer = styled.div`
   font-size: 45px;
 `;
 
-const RecordingStatus = styled.div`
-  position: absolute;
-  top: 2%;
-  right: 65%;
+const RecodingBox = styled.div`
+  background-color: var(--primary-color);
+  height: 40px;
+  width: 40px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+`;
 
-  background: rgba(255, 82, 82, 1);
+const RecordingStatus = styled.div`
+  background: rgba(255, 0, 0, 1);
   border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
-  margin: 10px;
-  height: 25px;
-  width: 25px;
+  box-shadow: 0 0 0 0 rgba(255, 0, 0, 1);
+  height: 30px;
+  width: 30px;
   transform: scale(1);
   animation: pulse-red 1s infinite;
 
   @keyframes pulse-red {
     0% {
       transform: scale(0.95);
-      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
     }
 
     70% {
       transform: scale(1);
-      box-shadow: 0 0 0 10px rgba(255, 82, 82, 0);
+      box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
     }
 
     100% {
       transform: scale(0.95);
-      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
     }
   }
 `;
@@ -393,16 +400,5 @@ const StyledLinkButton = styled(Link)`
   &:focus {
     border: 2px solid black;
     padding: 2px;
-  }
-`;
-
-const VideoPlayer = styled.article`
-  height: 95%;
-  width: 100%;
-  padding: 0px 8px 8px 8px;
-
-  iframe {
-    width: 100%;
-    height: 600px;
   }
 `;

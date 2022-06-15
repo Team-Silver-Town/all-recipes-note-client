@@ -69,10 +69,14 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
       <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
       <Main>
         <InputForm>
-          <InputLinkTitle>1. 링크 입력하기</InputLinkTitle>
+          <InputLinkTitle aria-describedby="reference">
+            1. 링크 입력하기
+          </InputLinkTitle>
           <InputLinkDetail>
-            <label>URL : </label>
+            <label id="reference">URL : </label>
             <input
+              aria-describedby="reference"
+              aria-required="true"
               autoComplete="off"
               type="url"
               id="youtubeUrl"
@@ -80,8 +84,10 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
             />
           </InputLinkDetail>
           <InputCategory>
-            <label>2. 메뉴카테고리 선택하기</label>
+            <label id="reference2">2. 메뉴카테고리 선택하기</label>
             <select
+              aria-describedby="reference2"
+              aria-required="true"
               id="categories"
               onChange={selectCategoryHanlder}
               disabled={!isValidUrl}
@@ -93,8 +99,9 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
             </select>
           </InputCategory>
           <InputMenu>
-            <label>3. 메뉴명 입력하기</label>
+            <label id="reference3">3. 메뉴명 입력하기</label>
             <SearchInput
+              aria-describedby="reference3"
               updateHanlder={setMenuName}
               searchData={category.menus}
             />
