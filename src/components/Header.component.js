@@ -2,6 +2,11 @@ import styled from "styled-components";
 import { Link, useLocation } from "react-router-dom";
 import useHeaderSpeechControl from "../hooks/header-speech-control";
 import { useEffect, useRef } from "react";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileAudio } from "@fortawesome/free-regular-svg-icons";
+import VoiceControlGuide from "./VoiceControlGuide";
+import { useState } from "react";
+import ModalGuide from "./ModalGuide";
 
 export function Navigation() {
   const location = useLocation();
@@ -43,21 +48,47 @@ export function Navigation() {
 }
 
 export function MyAccount({ clickedToggle, keyDownedToggle, loginUserInfo }) {
+  const [isModalOpen, setModalOpen] = useState(false);
+
+  const clickVoiceControlGuide = () => {
+    setModalOpen(!isModalOpen);
+  };
+
   return (
-    <ProfileImg
-      role="button"
-      tabIndex="0"
-      onKeyDown={keyDownedToggle}
-      onClick={clickedToggle}
-      src={
-        loginUserInfo
-          ? loginUserInfo.picture
-          : "https://archive.org/download/no-photo-available/no-photo-available.png"
-      }
-      alt="my-profile-image"
-    />
+    <>
+      {isModalOpen && (
+        <ModalGuide>
+          <VoiceControlGuide />
+        </ModalGuide>
+      )}
+      <StyledFontAwesomeIcon
+        icon={faFileAudio}
+        onClick={clickVoiceControlGuide}
+      />
+      <ProfileImg
+        role="button"
+        tabIndex="0"
+        onKeyDown={keyDownedToggle}
+        onClick={clickedToggle}
+        src={
+          loginUserInfo
+            ? loginUserInfo.picture
+            : "https://archive.org/download/no-photo-available/no-photo-available.png"
+        }
+        alt="my-profile-image"
+      />
+    </>
   );
 }
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  font-size: 25px;
+  top: 35%;
+  right: 7%;
+
+  cursor: pointer;
+`;
 
 const RecodingBox = styled.div`
   background-color: var(--primary-color);

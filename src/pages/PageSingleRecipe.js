@@ -6,9 +6,13 @@ import YouTube from "react-youtube";
 import Notes from "./PageSingleRecipe.Notes";
 import Tips from "./PageSingleRecipe.Tips";
 import Note from "./PageSingleRecipe.MyNote";
+import ModalGuide from "../components/ModalGuide";
+import VoiceControlGuide from "../components/VoiceControlGuide";
 import { useQuery } from "react-query";
 import { getRecipe } from "../api/recipeApi";
 import { videoOptions } from "../config/youtubeConfig";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileAudio } from "@fortawesome/free-regular-svg-icons";
 import useRecipeControlBySpeech from "../hooks/recipe-speech-control";
 import TypeWriter from "typewriter-effect";
 
@@ -16,6 +20,7 @@ function PageSingleRecipe({ loginUserInfo }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
   const [currentNoteId, setCurrentNoteId] = useState("");
   const [myNoteId, setMyNoteId] = useState("");
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const [videoElement, setVideoElement] = useState(null);
   const [script, setScript] = useState("");
@@ -69,6 +74,10 @@ function PageSingleRecipe({ loginUserInfo }) {
     }
   }, [speechToText]);
 
+  const clickVoiceControlGuide = () => {
+    setModalOpen(!isModalOpen);
+  };
+
   const handleBoardNavigation = (event) => {
     if (event.target.name === "myNote") {
       setCurrentNoteId(myNoteId);
@@ -80,6 +89,11 @@ function PageSingleRecipe({ loginUserInfo }) {
 
   return (
     <Container>
+      {isModalOpen && (
+        <ModalGuide>
+          <VoiceControlGuide />
+        </ModalGuide>
+      )}
       <LeftSection>
         <NavigationPage>
           <StyledLinkButton
@@ -149,6 +163,10 @@ function PageSingleRecipe({ loginUserInfo }) {
                 꿀팁
               </Button>
             </ButtonLeft>
+            <StyledFontAwesomeIcon
+              icon={faFileAudio}
+              onClick={clickVoiceControlGuide}
+            />
             <ButtonRight>
               {currentBoardPage !== "myNote" && (
                 <Button
@@ -227,6 +245,15 @@ const VideoPlayer = styled.article`
     width: 100%;
     height: 600px;
   }
+`;
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  font-size: 25px;
+  top: 3%;
+  right: 12%;
+
+  cursor: pointer;
 `;
 
 const TypewriterContainer = styled.div`
