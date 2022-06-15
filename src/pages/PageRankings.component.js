@@ -46,7 +46,7 @@ export const RankItemListWithMenu = (props) => {
           {index + 1}위
         </RankNumber>
         <RankMenuContent>
-          <img src={thumbnailUrl} alt="메뉴의 스크린샷" />
+          <img src={thumbnailUrl} alt={`${menuName} 사진`} />
           <div>👍 {numberOfLikes}</div>
           <div>👎 {numberOfDislikes}</div>
           <div>노트수 : {numberOfNotes}</div>
@@ -75,7 +75,7 @@ export const RankItemListWithRecipe = (props) => {
       <RankItem tabIndex="0" key={`${recipeId}`} to={`/recipes/${recipeId}`}>
         <RankNumber>{index + 1}위</RankNumber>
         <RankMenuContent>
-          <img src={thumbnailUrl} alt="screen-shot" />
+          <img src={thumbnailUrl} alt={`${menuName} 사진`} />
           <div>{menuName}</div>
           <div>👍 {numberOfLikes}</div>
           <div>👎 {numberOfDislikes}</div>

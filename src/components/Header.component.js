@@ -3,10 +3,16 @@ import { Link } from "react-router-dom";
 
 export function Navigation() {
   return (
-    <NavContainer>
-      <StyledLink to="/">Home</StyledLink>
-      <StyledLink to="/recipes">Recipes</StyledLink>
-      <StyledLink to="/rankings">Rankings</StyledLink>
+    <NavContainer role="tablist">
+      <StyledLink role="tab" to="/">
+        Home
+      </StyledLink>
+      <StyledLink role="tab" to="/recipes">
+        Recipes
+      </StyledLink>
+      <StyledLink role="tab" to="/rankings">
+        Rankings
+      </StyledLink>
     </NavContainer>
   );
 }
@@ -14,6 +20,7 @@ export function Navigation() {
 export function MyAccount({ clickedToggle, keyDownedToggle, loginUserInfo }) {
   return (
     <ProfileImg
+      role="button"
       tabIndex="0"
       onKeyDown={keyDownedToggle}
       onClick={clickedToggle}
