@@ -42,7 +42,8 @@ const StyledLink = styled(Link)`
   align-items: center;
   border: 2px solid black;
 
-  &:hover {
+  &:hover,
+  &:focus {
     font-weight: bolder;
     background-color: var(--secondary-color);
   }

@@ -1,3 +1,4 @@
+import { useState, useEffect, useLayoutEffect,useRef  } from "react";
 import { useState, useEffect, useRef } from "react";
 import { useParams } from "react-router";
 import { Link } from "react-router-dom";
@@ -59,9 +60,11 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
     console.log(event.data);
   };
 
-  useEffect(() => {
-    document.title = "SingleRecipe";
-  }, []);
+  const pageTitle = recipe ? recipe.belongsToMenu.name : "Recipe Detail";
+
+  useLayoutEffect(() => {
+    document.title = `${pageTitle} | 모조리`;
+  }, [pageTitle]);
 
   useEffect(() => {
     const note = recipe?.notes.find(
@@ -124,13 +127,14 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
     <Container>
       <LeftSection>
         <NavigationPage>
-          <StyledLinkButton to="/recipes" ref={toRecipesButtonElement}>
+          <StyledLinkButton tabIndex="0" to="/recipes" ref={toRecipesButtonElement}>
             레시피 페이지
           </StyledLinkButton>
-          <StyledLinkButton to="/rankings" ref={toRankingsButtonElement}>
+          <StyledLinkButton tabIndex="0" to="/rankings" ref={toRankingsButtonElement}>
             랭킹 페이지
           </StyledLinkButton>
           <button
+            tabIndex="0"
             name="like"
             onClick={clickLikeHandler}
             ref={likeButtonElement}
@@ -138,6 +142,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
             👍 {recipe?.liked.length}
           </button>
           <button
+            tabIndex="0"
             name="dislike"
             onClick={clickLikeHandler}
             ref={dislikeButtonElement}
@@ -150,8 +155,10 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
             </div>
           )}
         </NavigationPage>
-        <VideoPlayer>
+        <VideoPlayer tabIndex="1">
           <YouTube
+            tabIndex="1"
+            videoId={recipe?.youtubeUrl.split("v=")[1].split("&")[0]}
             onReady={handleVideo}
             id="youtube"
             opts={videoOptions}
@@ -178,6 +185,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
           <ButtonBox>
             <ButtonLeft>
               <Button
+                tabIndex="0"
                 type="button"
                 name="notes"
                 onClick={handleBoardNavigation}
@@ -186,6 +194,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
                 노트
               </Button>
               <Button
+                tabIndex="0"
                 type="button"
                 name="tips"
                 onClick={handleBoardNavigation}
@@ -197,6 +206,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
             <ButtonRight>
               {currentBoardPage !== "myNote" && (
                 <Button
+                  tabIndex="0"
                   type="button"
                   name="myNote"
                   onClick={handleBoardNavigation}
@@ -342,7 +352,8 @@ const Button = styled.button`
   padding: 2px;
   cursor: pointer;
 
-  &:hover {
+  &:hover,
+  &:focus {
     border: 2px solid black;
     padding: 2px;
   }
@@ -378,7 +389,8 @@ const StyledLinkButton = styled(Link)`
   margin-right: 10px;
   padding: 2px;
 
-  &:hover {
+  &:hover,
+  &:focus {
     border: 2px solid black;
     padding: 2px;
   }

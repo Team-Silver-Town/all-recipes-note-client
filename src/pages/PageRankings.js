@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Fragment, useEffect, useState } from "react";
 import styled from "styled-components";
 import { getTop5Menus } from "../api/foodApi";
 
@@ -25,11 +25,13 @@ import {
 function PageRankings({ loginUserInfo, handleLogin }) {
   const [currentRankList, setCurrentRankList] = useState([]);
   const [currentRankType, setCurrentRankType] = useState("");
+  const [currentRankTitle, setCurrentRankTitle] =
+    useState("최신 레시피 Top 10");
   const [curretnTop5Menus, setCurrentTop5Menus] = useState([]);
   const [currentMenu, setCurrentMenu] = useState("");
 
   useEffect(() => {
-    document.title = "Rankings";
+    document.title = "Rankings | 모조리";
   }, []);
 
   useEffect(() => {
@@ -63,44 +65,90 @@ function PageRankings({ loginUserInfo, handleLogin }) {
             <h2>레시피 / 메뉴 랭킹</h2>
             <ul>
               <li
-                onClick={() =>
+                tabIndex="0"
+                onClick={() => {
                   clickLatestTop10RecipesHandler(
                     handleSetCurrentRankType,
                     handleSetCurrentRankList
-                  )
-                }
+                  );
+                  setCurrentRankTitle("최신 레시피 Top 10");
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    clickLatestTop10RecipesHandler(
+                      handleSetCurrentRankType,
+                      handleSetCurrentRankList
+                    );
+                    setCurrentRankTitle("최신 레시피 Top 10");
+                  }
+                }}
               >
                 최신 레시피 Top 10
               </li>
               <li
-                onClick={() =>
+                tabIndex="0"
+                onClick={() => {
                   clickTop10Recipes(
                     handleSetCurrentRankType,
                     handleSetCurrentRankList
-                  )
-                }
+                  );
+                  setCurrentRankTitle("전체 레시피 Top 10");
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    clickTop10Recipes(
+                      handleSetCurrentRankType,
+                      handleSetCurrentRankList
+                    );
+                    setCurrentRankTitle("전체 레시피 Top 10");
+                  }
+                }}
               >
                 전체 레시피 Top 10
               </li>
               <li
-                onClick={() =>
+                tabIndex="0"
+                onClick={() => {
                   clickTop10MenusByCategory(
                     "한식",
                     handleSetCurrentRankType,
                     handleSetCurrentRankList
-                  )
-                }
+                  );
+                  setCurrentRankTitle("한식 메뉴 Top 10");
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    clickTop10MenusByCategory(
+                      "한식",
+                      handleSetCurrentRankType,
+                      handleSetCurrentRankList
+                    );
+                    setCurrentRankTitle("한식 메뉴 Top 10");
+                  }
+                }}
               >
                 한식 메뉴 Top 10
               </li>
               <li
-                onClick={() =>
+                tabIndex="0"
+                onClick={() => {
                   clickTop10MenusByCategory(
                     "양식",
                     handleSetCurrentRankType,
                     handleSetCurrentRankList
-                  )
-                }
+                  );
+                  setCurrentRankTitle("양식 메뉴 Top 10");
+                }}
+                onKeyDown={(event) => {
+                  if (event.key === "Enter") {
+                    clickTop10MenusByCategory(
+                      "양식",
+                      handleSetCurrentRankType,
+                      handleSetCurrentRankList
+                    );
+                    setCurrentRankTitle("양식 메뉴 Top 10");
+                  }
+                }}
               >
                 양식 메뉴 Top 10
               </li>
@@ -113,14 +161,27 @@ function PageRankings({ loginUserInfo, handleLogin }) {
                 return (
                   <li
                     key={menu._id}
-                    onClick={() =>
+                    tabIndex="0"
+                    onClick={() => {
                       clickMenuTop10Handler(
                         menu,
                         setCurrentMenu,
                         handleSetCurrentRankType,
                         handleSetCurrentRankList
-                      )
-                    }
+                      );
+                      setCurrentRankTitle(`${menu.name} Top 10`);
+                    }}
+                    onKeyDown={(event) => {
+                      if (event.key === "Enter") {
+                        clickMenuTop10Handler(
+                          menu,
+                          setCurrentMenu,
+                          handleSetCurrentRankType,
+                          handleSetCurrentRankList
+                        );
+                        setCurrentRankTitle(`${menu.name} Top 10`);
+                      }
+                    }}
                   >
                     {menu.name} Top 10
                   </li>
@@ -130,24 +191,46 @@ function PageRankings({ loginUserInfo, handleLogin }) {
           </RankingList>
           <RankingList>
             <h2
-              onClick={() =>
+              tabIndex="0"
+              onClick={() => {
                 clickNotesTop10Handler(
                   handleSetCurrentRankType,
                   handleSetCurrentRankList
-                )
-              }
+                );
+                setCurrentRankTitle("베스트 노트 Top 10");
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  clickNotesTop10Handler(
+                    handleSetCurrentRankType,
+                    handleSetCurrentRankList
+                  );
+                  setCurrentRankTitle("베스트 노트 Top 10");
+                }
+              }}
             >
               베스트 노트 Top 10
             </h2>
           </RankingList>
           <RankingList>
             <h2
-              onClick={() =>
+              tabIndex="0"
+              onClick={() => {
                 clickTipsTop10Handler(
                   handleSetCurrentRankType,
                   handleSetCurrentRankList
-                )
-              }
+                );
+                setCurrentRankTitle("베스트 꿀팁 Top 10");
+              }}
+              onKeyDown={(event) => {
+                if (event.key === "Enter") {
+                  clickTipsTop10Handler(
+                    handleSetCurrentRankType,
+                    handleSetCurrentRankList
+                  );
+                  setCurrentRankTitle("베스트 꿀팁 Top 10");
+                }
+              }}
             >
               베스트 꿀팁 Top 10
             </h2>
@@ -158,29 +241,33 @@ function PageRankings({ loginUserInfo, handleLogin }) {
             {!currentRankType && <Loading />}
             {currentRankType &&
               (currentRankType === "note" || currentRankType === "tip") && (
-                <RankItemListWithNoteOrTip
-                  currentRankList={currentRankList}
-                  currentRankType={currentRankType}
-                />
+                <Fragment>
+                  <RankTitle>{currentRankTitle}</RankTitle>
+                  <RankItemListWithNoteOrTip
+                    currentRankList={currentRankList}
+                  />
+                </Fragment>
               )}
             {currentRankType && currentRankType === "menu" && (
-              <RankItemListWithMenu
-                currentRankList={currentRankList}
-                currentRankType={currentRankType}
-                currentMenu={currentMenu}
-              />
+              <Fragment>
+                <RankTitle>{currentRankTitle}</RankTitle>
+                <RankItemListWithMenu
+                  currentRankList={currentRankList}
+                  currentMenu={currentMenu}
+                />
+              </Fragment>
             )}
             {currentRankType && currentRankType === "recipe" && (
-              <RankItemListWithRecipe
-                currentRankList={currentRankList}
-                currentRankType={currentRankType}
-              />
+              <Fragment>
+                <RankTitle>{currentRankTitle}</RankTitle>
+                <RankItemListWithRecipe currentRankList={currentRankList} />
+              </Fragment>
             )}
             {currentRankType && currentRankType === "category" && (
-              <RankItemListWithCategory
-                currentRankList={currentRankList}
-                currentRankType={currentRankType}
-              />
+              <Fragment>
+                <RankTitle>{currentRankTitle}</RankTitle>
+                <RankItemListWithCategory currentRankList={currentRankList} />
+              </Fragment>
             )}
           </RankTable>
         </RankingSection>
@@ -265,8 +352,18 @@ const RankingSection = styled.section`
 
 const RankTable = styled.div`
   width: 90%;
-  height: 90%;
-  margin: 30px;
+  height: 95%;
+  margin: 10px;
   display: flex;
   flex-direction: column;
+`;
+
+const RankTitle = styled.h2`
+  width: 90%;
+  height: 10%;
+  font-size: x-large;
+  font-weight: bold;
+  display: flex;
+  align-items: center;
+  padding-left: 30px;
 `;

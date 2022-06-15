@@ -65,8 +65,6 @@ export const clickLatestTop10RecipesHandler = async (
 
     const resultData = await getLatestTop10Recipes();
 
-    console.log("최신 top10");
-
     handleSetCurrentRankList(resultData);
     handleSetCurrentRankType("recipe");
   } catch (error) {}
@@ -80,8 +78,6 @@ export const clickTop10Recipes = async (
     handleSetCurrentRankType("");
 
     const resultData = await getTop10Recipes();
-
-    console.log("전체 top10");
 
     handleSetCurrentRankList(resultData);
     handleSetCurrentRankType("recipe");

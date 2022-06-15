@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 
 function Home({ loginUserInfo, handleLogin }) {
   useEffect(() => {
-    document.title = "Home";
+    document.title = "Home | 모조리";
   }, []);
 
   return (
@@ -20,10 +20,10 @@ function Home({ loginUserInfo, handleLogin }) {
             onInit={(typewriter) => {
               typewriter
                 .typeString("요리 좋아하세요?,,,🍖🤔")
-                .pauseFor(1000)
+                .pauseFor(500)
                 .deleteAll()
-                .typeString("유튜브 영상 많이 보셨겠네요.....🥸")
-                .pauseFor(1000)
+                .typeString("유튜브 요리 영상 많이 보셨겠네요...🥸")
+                .pauseFor(500)
                 .deleteAll()
                 .typeString("이제 영상과 함께 나만의 요리 노트를 저장하세요📸")
                 .pauseFor(1500)

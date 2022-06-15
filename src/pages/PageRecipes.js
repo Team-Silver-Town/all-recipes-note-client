@@ -12,10 +12,12 @@ import RecipeCard from "../components/Card.Recipe";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function PageRecipes({ loginUserInfo, handleLogin }) {
-  const { data: recipes } = useQuery("recipes", getRecipes);
+  const { data: recipes } = useQuery("recipes", getRecipes, {
+    staleTime: 300000,
+  });
 
   useEffect(() => {
-    document.title = "Recipes";
+    document.title = "Recipes | 모조리";
   }, []);
 
   return (
@@ -89,7 +91,8 @@ const StyledNewLink = styled(NavLink)`
   padding: 2px;
   border: 2px solid black;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: var(--secondary-color);
 
     div:nth-child(1) {
@@ -116,7 +119,8 @@ const StyledRecipeLink = styled(NavLink)`
   background-color: white;
   border: 2px solid black;
 
-  &:hover {
+  &:hover,
+  &:focus {
     background-color: var(--secondary-color);
     font-weight: bold;
   }

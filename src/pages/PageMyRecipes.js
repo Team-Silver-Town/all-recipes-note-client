@@ -1,4 +1,4 @@
-import { useEffect, useState, Fragment } from "react";
+import { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getUser } from "../api/authApi";
 import { getMyNotes } from "../api/noteApi";
@@ -13,7 +13,7 @@ function PageMyRecipes({ loginUserInfo, handleLogin }) {
   const { email } = loginUserInfo;
 
   useEffect(() => {
-    document.title = "MyRecipes";
+    document.title = "My Recipes | 모조리";
   }, []);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const GridMain = styled.main`
   padding-top: 80px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-auto-rows: 250px;
+  grid-auto-rows: 200px;
   gap: 10px;
   margin: 10px;
 `;

@@ -1,6 +1,6 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { signInWithGoogle } from "../services/firebase";
+import { auth, signInWithGoogle } from "../services/firebase";
 import { getUser, createUser } from "../api/authApi";
 
 import styled from "styled-components";
@@ -9,17 +9,22 @@ function Login({ handleLogin }) {
   const navigate = useNavigate();
 
   useEffect(() => {
-    document.title = "Login";
+    document.title = "Login | 모조리";
   }, []);
 
   const handleClick = async () => {
     try {
       const loginInfo = await signInWithGoogle();
+      const token = await auth.currentUser.getIdToken(true);
       const { id, email, picture } = loginInfo.additionalUserInfo.profile;
-      const tokken = loginInfo.credential.idToken;
 
       const responseData = await getUser(email);
       const { nickname } = responseData.data;
+
+      localStorage.setItem(
+        "allRecipesNoteLoginInfo",
+        JSON.stringify({ email, picture, nickname, token })
+      );
 
       if (!responseData.data) {
         await createUser({
@@ -29,12 +34,7 @@ function Login({ handleLogin }) {
         });
       }
 
-      localStorage.setItem(
-        "allRecipesNoteLoginInfo",
-        JSON.stringify({ email, picture, nickname, tokken })
-      );
-
-      handleLogin({ email, picture, nickname, tokken });
+      handleLogin({ email, picture, nickname, token });
       navigate("/");
     } catch (error) {
       // TODO: 에러 처리 요망

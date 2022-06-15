@@ -2,7 +2,12 @@ import { Fragment, useState } from "react";
 import GlobalStyles from "../config/GlobalStyles";
 import DefaultRoutes from "../routes/Routes";
 
+import { QueryClient, QueryClientProvider } from "react-query";
+import { ReactQueryDevtools } from "react-query/devtools";
+
 function App() {
+  const queryClient = new QueryClient();
+
   const localStorageInfo = JSON.parse(
     localStorage.getItem("allRecipesNoteLoginInfo")
   );
@@ -12,10 +17,15 @@ function App() {
   };
 
   return (
-    <Fragment>
-      <GlobalStyles />
-      <DefaultRoutes loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
-    </Fragment>
+    <QueryClientProvider client={queryClient}>
+      <Fragment>
+        <GlobalStyles />
+        <DefaultRoutes
+          loginUserInfo={loginUserInfo}
+          handleLogin={handleLogin}
+        />
+      </Fragment>
+    </QueryClientProvider>
   );
 }
 

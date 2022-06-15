@@ -14,24 +14,24 @@ function PageProfile({ loginUserInfo, handleLogin }) {
   const handleClick = async () => {
     try {
       const nickname = inputNickname;
-      const { email, picture, tokken } = loginUserInfo;
+      const { email, picture, token } = loginUserInfo;
 
       await updateUser({ nickname, email });
 
       localStorage.removeItem("allRecipesNoteLoginInfo");
       localStorage.setItem(
         "allRecipesNoteLoginInfo",
-        JSON.stringify({ email, picture, nickname, tokken })
+        JSON.stringify({ email, picture, nickname, token })
       );
 
-      handleLogin({ email, picture, nickname, tokken });
+      handleLogin({ email, picture, nickname, token });
     } catch (error) {
       console.log(error);
     }
   };
 
   useEffect(() => {
-    document.title = "Profile";
+    document.title = "Profile | 모조리";
   }, []);
 
   return (
@@ -39,7 +39,10 @@ function PageProfile({ loginUserInfo, handleLogin }) {
       <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
       <Main>
         <ProfileBox>
-          <ProfileImg src={loginUserInfo.picture} />
+          <ProfileImg
+            src={loginUserInfo.picture}
+            alt="로그인 유저의 프로필 사진"
+          />
           <ProfileLine>
             <label>별명</label>
             <div>
