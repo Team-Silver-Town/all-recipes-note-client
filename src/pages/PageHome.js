@@ -22,7 +22,7 @@ function Home({ loginUserInfo, handleLogin }) {
                 .typeString("요리 좋아하세요?,,,🍖🤔")
                 .pauseFor(500)
                 .deleteAll()
-                .typeString("유튜브 영상 많이 보셨겠네요.....🥸")
+                .typeString("유튜브 요리 영상 많이 보셨겠네요...🥸")
                 .pauseFor(500)
                 .deleteAll()
                 .typeString("이제 영상과 함께 나만의 요리 노트를 저장하세요📸")

@@ -13,7 +13,7 @@ function PageMyRecipes({ loginUserInfo, handleLogin }) {
   const { email } = loginUserInfo;
 
   useEffect(() => {
-    document.title = "MyRecipes";
+    document.title = "My Recipes";
   }, []);
 
   useEffect(() => {
@@ -62,7 +62,7 @@ const GridMain = styled.main`
   padding-top: 80px;
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  grid-auto-rows: 250px;
+  grid-auto-rows: 200px;
   gap: 10px;
   margin: 10px;
 `;

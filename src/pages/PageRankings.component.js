@@ -1,22 +1,11 @@
 import styled from "styled-components";
-import { useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export const RankItemListWithNoteOrTip = (props) => {
-  const navigate = useNavigate();
   const { currentRankList, currentRankType } = props;
 
-  const rankListNaivigateHandler = (id) => {
-    if (currentRankType === "note") {
-      navigate(`/recipes/${id}`);
-    }
-
-    if (currentRankType === "tip") {
-      navigate(`/recipes/${id}`);
-    }
-  };
-
   return currentRankList.map((item, index) => {
-    const id = item.relatedRecipe._id;
+    const recipeId = item.relatedRecipe._id;
     const { nickname } = item.creator;
     const { name: menuName } = item.relatedRecipe.belongsToMenu;
     const content = item.content;
@@ -25,12 +14,7 @@ export const RankItemListWithNoteOrTip = (props) => {
       <RankItem
         tabIndex="0"
         key={`${item}${index}`}
-        onClick={() => rankListNaivigateHandler(id)}
-        onKeyDown={(event) => {
-          if (event.key === "Enter") {
-            rankListNaivigateHandler(id);
-          }
-        }}
+        to={`/recipes/${recipeId}`}
       >
         <RankNumber>{index + 1}위</RankNumber>
         <RankContent>
@@ -44,14 +28,7 @@ export const RankItemListWithNoteOrTip = (props) => {
 };
 
 export const RankItemListWithMenu = (props) => {
-  const navigate = useNavigate();
   const { currentRankList, currentRankType, currentMenu } = props;
-
-  const rankListNaivigateHandler = (id) => {
-    if (currentRankType === "menu") {
-      navigate(`/recipes/${id}`);
-    }
-  };
 
   return currentRankList.map((item, index) => {
     const menuName = currentMenu;
@@ -63,16 +40,7 @@ export const RankItemListWithMenu = (props) => {
     const thumbnailUrl = item.thumbnailUrl;
 
     return (
-      <RankItem
-        tabIndex="0"
-        key={`${recipeId}`}
-        onClick={() => rankListNaivigateHandler(recipeId)}
-        onKeyDown={(event) => {
-          if (event.key === "Enter") {
-            rankListNaivigateHandler(recipeId);
-          }
-        }}
-      >
+      <RankItem tabIndex="0" key={`${recipeId}`} to={`/recipes/${recipeId}`}>
         <RankNumber>
           {menuName}&nbsp;
           {index + 1}위
@@ -90,14 +58,7 @@ export const RankItemListWithMenu = (props) => {
 };
 
 export const RankItemListWithRecipe = (props) => {
-  const navigate = useNavigate();
   const { currentRankList, currentRankType } = props;
-
-  const rankListNaivigateHandler = (id) => {
-    if (currentRankType === "recipe") {
-      navigate(`/recipes/${id}`);
-    }
-  };
 
   return currentRankList.map((item, index) => {
     const {
@@ -111,16 +72,7 @@ export const RankItemListWithRecipe = (props) => {
     const menuName = item.belongsToMenu.name;
 
     return (
-      <RankItem
-        tabIndex="0"
-        key={`${recipeId}`}
-        onClick={() => rankListNaivigateHandler(recipeId)}
-        onKeyDown={(event) => {
-          if (event.key === "Enter") {
-            rankListNaivigateHandler(recipeId);
-          }
-        }}
-      >
+      <RankItem tabIndex="0" key={`${recipeId}`} to={`/recipes/${recipeId}`}>
         <RankNumber>{index + 1}위</RankNumber>
         <RankMenuContent>
           <img src={thumbnailUrl} alt="screen-shot" />
@@ -135,12 +87,7 @@ export const RankItemListWithRecipe = (props) => {
 };
 
 export const RankItemListWithCategory = (props) => {
-  const navigate = useNavigate();
   const { currentRankList, currentRankType } = props;
-
-  const rankListNaivigateHandler = (id) => {
-    navigate(`/recipes/${id}`);
-  };
 
   const categoryName = currentRankList.name;
   const categoryMenus = currentRankList.menus;
@@ -155,12 +102,7 @@ export const RankItemListWithCategory = (props) => {
       <RankItem
         tabIndex="0"
         key={`${menuId}`}
-        onClick={() => rankListNaivigateHandler(number1RecipeIdInMenu)}
-        onKeyDown={(event) => {
-          if (event.key === "Enter") {
-            rankListNaivigateHandler(number1RecipeIdInMenu);
-          }
-        }}
+        to={`/recipes/${number1RecipeIdInMenu}`}
       >
         <RankNumber>
           {categoryName}&nbsp;
@@ -176,7 +118,7 @@ export const RankItemListWithCategory = (props) => {
   });
 };
 
-const RankItem = styled.div`
+const RankItem = styled(Link)`
   height: 10%;
   width: 100%;
   display: flex;

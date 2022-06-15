@@ -3,6 +3,7 @@ import styled from "styled-components";
 import { useQuery } from "react-query";
 import { NavLink } from "react-router-dom";
 import { getRecipes } from "../api/recipeApi";
+import { shuffle } from "lodash";
 
 import Header from "../components/Header";
 import Loading from "../components/Loading";
@@ -12,7 +13,9 @@ import RecipeCard from "../components/Card.Recipe";
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
 function PageRecipes({ loginUserInfo, handleLogin }) {
-  const { data: recipes } = useQuery("recipes", getRecipes);
+  const { data: recipes } = useQuery("recipes", getRecipes, {
+    staleTime: 300000,
+  });
 
   useEffect(() => {
     document.title = "Recipes";
