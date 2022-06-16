@@ -34,13 +34,13 @@ const StyledLink = styled(Link)`
   width: 100%;
   height: 100%;
 
-  background-color: white;
+  background-color: var(--primary-color);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  border: 2px solid black;
+  border: 2px solid var(--line-color);
 
   &:hover,
   &:focus {

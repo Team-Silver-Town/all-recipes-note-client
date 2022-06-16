@@ -59,9 +59,15 @@ const NotesCard = styled.button`
   width: 100%;
   height: 40px;
   margin-bottom: 5px;
-  background-color: whitesmoke;
+  background-color: var(--secondary-color);
   display: flex;
   align-items: center;
   border: none;
   cursor: pointer;
+
+  &:hover,
+  &:focus {
+    border: 2px solid var(--line-color);
+    padding: 2px;
+  }
 `;

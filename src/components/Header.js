@@ -5,7 +5,7 @@ import { signOut } from "../services/firebase";
 
 import { Navigation, MyAccount } from "./Header.component";
 
-function Header({ loginUserInfo, handleLogin }) {
+function Header({ loginUserInfo, handleLogin, toggleTheme, theme }) {
   const [isModalOpen, setModalOpen] = useState(false);
   const navigate = useNavigate();
 
@@ -49,27 +49,39 @@ function Header({ loginUserInfo, handleLogin }) {
   if (isModalOpen) {
     return (
       <Container>
-        <Navigation />
-        <MyAccount
-          tabIndex="0"
-          clickedToggle={clickedToggle}
-          keyDownedToggle={keyDownedToggle}
-          loginUserInfo={loginUserInfo}
-        />
-        <MyAccountModal>
-          {loginUserInfo ? modalOnLogin : modalOnLogout}
-        </MyAccountModal>
+        <Navigation toggleTheme={toggleTheme} />
+        <Status>
+          <ViewMode onClick={toggleTheme}>
+            {theme === "light" && "Dark Mode"}
+            {theme === "dark" && "Light Mode"}
+          </ViewMode>
+          <MyAccount
+            tabIndex="0"
+            clickedToggle={clickedToggle}
+            keyDownedToggle={keyDownedToggle}
+            loginUserInfo={loginUserInfo}
+          />
+          <MyAccountModal>
+            {loginUserInfo ? modalOnLogin : modalOnLogout}
+          </MyAccountModal>
+        </Status>
       </Container>
     );
   } else {
     return (
       <Container>
-        <Navigation />
-        <MyAccount
-          clickedToggle={clickedToggle}
-          keyDownedToggle={keyDownedToggle}
-          loginUserInfo={loginUserInfo}
-        />
+        <Navigation toggleTheme={toggleTheme} />
+        <Status>
+          <ViewMode onClick={toggleTheme}>
+            {theme === "light" && "Dark Mode ☾"}
+            {theme === "dark" && "Light Mode ☀"}
+          </ViewMode>
+          <MyAccount
+            clickedToggle={clickedToggle}
+            keyDownedToggle={keyDownedToggle}
+            loginUserInfo={loginUserInfo}
+          />
+        </Status>
       </Container>
     );
   }
@@ -85,7 +97,7 @@ const Container = styled.header`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  border-bottom: 2px solid black;
+  border-bottom: 2px solid var(--line-color);
   position: fixed;
   z-index: 1;
 `;
@@ -99,6 +111,24 @@ const fadeIn = keyframes`
   to {
     transform: scale(1);
     opacity: 1;
+  }
+`;
+
+const Status = styled.div`
+  display: flex;
+`;
+
+const ViewMode = styled.button`
+  width: 100px;
+  margin-right: 10px;
+  border-radius: 10px;
+  height: 40px;
+  background-color: var(--font-color);
+  color: var(--primary-color);
+  border: none;
+
+  &:hover {
+    border: 2px solid var(--primary-color);
   }
 `;
 
@@ -137,7 +167,7 @@ const MyAccountModal = styled.div`
   }
 
   a:nth-child(2) {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--line-color);
   }
 
   animation: ${fadeIn} 0.15s ease-out;

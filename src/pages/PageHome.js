@@ -6,14 +6,19 @@ import Header from "../components/Header";
 import Main from "../components/Main";
 import Footer from "../components/Footer";
 
-function Home({ loginUserInfo, handleLogin }) {
+function Home({ loginUserInfo, handleLogin, toggleTheme, theme }) {
   useEffect(() => {
     document.title = "Home | 모조리";
   }, []);
 
   return (
     <Container>
-      <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
+      <Header
+        loginUserInfo={loginUserInfo}
+        handleLogin={handleLogin}
+        toggleTheme={toggleTheme}
+        theme={theme}
+      />
       <Main>
         <TypewriterContainer>
           <Typewriter

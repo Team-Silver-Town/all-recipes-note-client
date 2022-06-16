@@ -13,19 +13,26 @@ import PageProfile from "../pages/PageProfile";
 import PageRankings from "../pages/PageRankings";
 import PageRecipes from "../pages/PageRecipes";
 
-function DefaultRoutes({ loginUserInfo, handleLogin }) {
+function DefaultRoutes({ loginUserInfo, handleLogin, toggleTheme, theme }) {
   return (
     <Router>
       <Routes>
         <Route
           path="/"
           element={
-            <PageHome loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
+            <PageHome
+              loginUserInfo={loginUserInfo}
+              handleLogin={handleLogin}
+              toggleTheme={toggleTheme}
+              theme={theme}
+            />
           }
         />
         <Route
           path="/login"
-          element={<PageLogin handleLogin={handleLogin} />}
+          element={
+            <PageLogin handleLogin={handleLogin} toggleTheme={toggleTheme} />
+          }
         />
         <Route
           path="/recipes"
@@ -33,6 +40,8 @@ function DefaultRoutes({ loginUserInfo, handleLogin }) {
             <PageRecipes
               loginUserInfo={loginUserInfo}
               handleLogin={handleLogin}
+              toggleTheme={toggleTheme}
+              theme={theme}
             />
           }
         />
@@ -43,6 +52,8 @@ function DefaultRoutes({ loginUserInfo, handleLogin }) {
               <PageNewRecipe
                 loginUserInfo={loginUserInfo}
                 handleLogin={handleLogin}
+                toggleTheme={toggleTheme}
+                theme={theme}
               />
             ) : (
               <Navigate to="/login" />
@@ -56,6 +67,8 @@ function DefaultRoutes({ loginUserInfo, handleLogin }) {
               <PageMyRecipes
                 loginUserInfo={loginUserInfo}
                 handleLogin={handleLogin}
+                toggleTheme={toggleTheme}
+                theme={theme}
               />
             ) : (
               <Navigate to="/login" />
@@ -69,6 +82,8 @@ function DefaultRoutes({ loginUserInfo, handleLogin }) {
               <PageSingleRecipe
                 loginUserInfo={loginUserInfo}
                 handleLogin={handleLogin}
+                toggleTheme={toggleTheme}
+                theme={theme}
               />
             ) : (
               <Navigate to="/login" />
@@ -82,6 +97,8 @@ function DefaultRoutes({ loginUserInfo, handleLogin }) {
               <PageProfile
                 loginUserInfo={loginUserInfo}
                 handleLogin={handleLogin}
+                toggleTheme={toggleTheme}
+                theme={theme}
               />
             ) : (
               <Navigate to="/login" />
@@ -95,6 +112,8 @@ function DefaultRoutes({ loginUserInfo, handleLogin }) {
               <PageRankings
                 loginUserInfo={loginUserInfo}
                 handleLogin={handleLogin}
+                toggleTheme={toggleTheme}
+                theme={theme}
               />
             ) : (
               <Navigate to="/login" />

@@ -320,6 +320,7 @@ const ControllButtonSave = styled.button`
   width: 120px;
   height: 40px;
   background-color: var(--secondary-color);
+  color: var(--button-font-color);
   font-weight: bold;
   position: absolute;
   bottom: 30px;
@@ -332,7 +333,7 @@ const ControllButtonSave = styled.button`
   cursor: pointer;
 
   &:hover {
-    border: 2px solid black;
+    border: 2px solid var(--line-color);
     padding: 2px;
   }
 `;
@@ -342,6 +343,7 @@ const NoteLikeButton = styled.button`
   height: 5%;
   font-weight: bold;
   position: absolute;
+  color: var(--button-font-color);
   bottom: 4%;
   left: 59%;
   display: flex;
@@ -355,6 +357,7 @@ const NoteDislikeButton = styled.button`
   height: 5%;
   font-weight: bold;
   position: absolute;
+  color: var(--button-font-color);
   bottom: 4%;
   left: 64%;
   display: flex;
@@ -370,6 +373,7 @@ const IngredientsList = styled.div`
   flex-direction: column;
   align-self: top;
   align-items: center;
+  color: var(--button-font-color);
   gap: 10px;
 `;
 
@@ -389,27 +393,32 @@ const IngredientsCard = styled.div`
 
 const Container = styled.div`
   width: 100%;
-  background-color: white;
+  background-color: var(--primary-color);
+  color: var(--font-color);
   display: flex;
   margin-bottom: 5px;
   height: 100%;
   position: relative;
+  border: 2px solid var(--line-color);
 `;
 
 const ProcessMemo = styled.textarea`
   width: 70%;
   height: 100%;
   padding: 10px;
-  background-color: white;
+  color: var(--font-color);
+  background-color: var(--primary-color);
   border: none;
-  border-right: 1px solid black;
+  border-right: 1px solid var(--line-color);
   outline: none;
 `;
 
 const ControlButtonAddIngredient = styled.button`
   width: 120px;
   height: 40px;
+  color: var(--font-color);
   background-color: var(--secondary-color);
+  color: var(--button-font-color);
   font-weight: bold;
   position: absolute;
   bottom: 80px;
@@ -422,7 +431,7 @@ const ControlButtonAddIngredient = styled.button`
   cursor: pointer;
 
   &:hover {
-    border: 2px solid black;
+    border: 2px solid var(--line-color);
     padding: 2px;
   }
 `;
@@ -431,6 +440,7 @@ const ControllButtonDelete = styled.button`
   width: 120px;
   height: 40px;
   background-color: var(--secondary-color);
+  color: var(--button-font-color);
   font-weight: bold;
   position: absolute;
   bottom: 30px;
@@ -443,7 +453,7 @@ const ControllButtonDelete = styled.button`
   cursor: default;
 
   &:hover {
-    border: 2px solid black;
+    border: 2px solid var(--line-color);
     padding: 2px;
   }
 `;
@@ -463,7 +473,7 @@ const ControllButtonDisclose = styled.button`
   cursor: default;
 
   &:hover {
-    border: 2px solid black;
+    border: 2px solid var(--line-color);
     padding: 2px;
   }
 `;

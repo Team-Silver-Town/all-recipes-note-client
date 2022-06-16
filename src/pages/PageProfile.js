@@ -5,7 +5,7 @@ import { updateUser } from "../api/authApi";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 
-function PageProfile({ loginUserInfo, handleLogin }) {
+function PageProfile({ loginUserInfo, handleLogin, toggleTheme, theme }) {
   const [inputNickname, setInputNickname] = useState(loginUserInfo.nickname);
   const handleChange = (event) => {
     setInputNickname(event.target.value);
@@ -36,7 +36,12 @@ function PageProfile({ loginUserInfo, handleLogin }) {
 
   return (
     <Container>
-      <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
+      <Header
+        loginUserInfo={loginUserInfo}
+        handleLogin={handleLogin}
+        toggleTheme={toggleTheme}
+        theme={theme}
+      />
       <Main>
         <ProfileBox>
           <ProfileImg
@@ -85,7 +90,7 @@ const Main = styled.main`
 
 const ProfileBox = styled.div`
   margin-top: 110px;
-  background-color: white;
+  background-color: var(--primary-color);
   border-radius: 20px;
   width: 40%;
   min-width: 350px;
@@ -122,7 +127,7 @@ const ProfileLine = styled.div`
   div {
     width: 80%;
     padding-left: 5px;
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--line-color);
     background-color: var(--secondary-color);
   }
 

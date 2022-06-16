@@ -14,7 +14,7 @@ import { videoOptions } from "../config/youtubeConfig";
 import useVideoControlBySpeech from "../hooks/video-speech-control";
 import TypeWriter from "typewriter-effect";
 
-function PageSingleRecipe({ loginUserInfo, handleLogin }) {
+function PageSingleRecipe({ loginUserInfo, toggleTheme, theme }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
   const [currentNoteId, setCurrentNoteId] = useState("");
   const [myNoteId, setMyNoteId] = useState("");
@@ -93,26 +93,6 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
     }
   }, [recipe, loginUserInfo.email]);
 
-  const clickLikeHandler = (event) => {
-    if (isLiked && event.target.name === likeOrDislike) {
-      cancelRecipeLikeMutation.mutate({
-        email: loginUserInfo.email,
-        recipe_id,
-        like: event.target.name,
-      });
-
-      setIsLiked(false);
-    } else if (!isLiked) {
-      updateRecipeLikeMutation.mutate({
-        email: loginUserInfo.email,
-        recipe_id,
-        like: event.target.name,
-      });
-
-      setIsLiked(true);
-    }
-  };
-
   const handleBoardNavigation = (event) => {
     if (event.target.name === "myNote") {
       setCurrentNoteId(myNoteId);
@@ -140,6 +120,10 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
           >
             랭킹 페이지
           </StyledLinkButton>
+          <ViewMode onClick={toggleTheme}>
+            {theme === "light" && "Dark Mode ☾"}
+            {theme === "dark" && "Light Mode ☀"}
+          </ViewMode>
           {isCommanding && (
             <RecodingBox>
               <RecordingStatus className="blob red"></RecordingStatus>
@@ -241,7 +225,7 @@ export default PageSingleRecipe;
 const Container = styled.div`
   height: 100%;
   display: flex;
-  background-color: var(--secondary-color);
+  background-color: var(--primary-color);
 `;
 
 const RightSetction = styled.article`
@@ -259,6 +243,7 @@ const BoardHeader = styled.header`
 const ButtonBox = styled.div`
   height: 100%;
   width: 95%;
+  color: var(--button-font-color);
   display: flex;
   justify-content: space-between;
 `;
@@ -353,7 +338,7 @@ const Button = styled.button`
   border-radius: 5px;
   text-align: center;
   line-height: 40px;
-  background-color: white;
+  background-color: var(--secondary-color);
   font-weight: bold;
   margin-right: 5px;
   padding: 2px;
@@ -361,7 +346,7 @@ const Button = styled.button`
 
   &:hover,
   &:focus {
-    border: 2px solid black;
+    border: 2px solid var(--line-color);
     padding: 2px;
   }
 `;
@@ -390,15 +375,31 @@ const StyledLinkButton = styled(Link)`
   height: 40px;
   border-radius: 5px;
   text-align: center;
+  color: var(--button-font-color);
   line-height: 40px;
-  background-color: white;
+  background-color: var(--secondary-color);
   font-weight: bold;
   margin-right: 10px;
   padding: 2px;
 
   &:hover,
   &:focus {
-    border: 2px solid black;
+    border: 2px solid var(--line-color);
     padding: 2px;
+  }
+`;
+
+const ViewMode = styled.button`
+  width: 120px;
+  margin-right: 10px;
+  border-radius: 10px;
+  height: 40px;
+  font-size: medium;
+  background-color: var(--font-color);
+  color: var(--primary-color);
+  border: none;
+
+  &:hover {
+    border: 2px solid var(--primary-color);
   }
 `;

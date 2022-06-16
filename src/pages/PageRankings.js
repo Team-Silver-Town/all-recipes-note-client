@@ -22,7 +22,7 @@ import {
   RankItemListWithCategory,
 } from "./PageRankings.component";
 
-function PageRankings({ loginUserInfo, handleLogin }) {
+function PageRankings({ loginUserInfo, handleLogin, toggleTheme, theme }) {
   const [currentRankList, setCurrentRankList] = useState([]);
   const [currentRankType, setCurrentRankType] = useState("");
   const [currentRankTitle, setCurrentRankTitle] =
@@ -58,7 +58,12 @@ function PageRankings({ loginUserInfo, handleLogin }) {
 
   return (
     <Container>
-      <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
+      <Header
+        loginUserInfo={loginUserInfo}
+        handleLogin={handleLogin}
+        toggleTheme={toggleTheme}
+        theme={theme}
+      />
       <Main>
         <Navigation>
           <RankingList>
@@ -296,7 +301,7 @@ const Navigation = styled.nav`
   height: 100%;
   width: 220px;
   min-width: 220px;
-  border-right: 2px solid black;
+  border-right: 2px solid var(--line-color);
   display: flex;
   flex-direction: column;
   padding: 20px 10px;
@@ -311,7 +316,7 @@ const RankingList = styled.div`
   padding: 10px 10px;
 
   &:hover {
-    background-color: white;
+    background-color: var(--primary-color);
   }
 
   h2 {

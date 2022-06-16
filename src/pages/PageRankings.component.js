@@ -127,7 +127,7 @@ const RankItem = styled(Link)`
   &:hover,
   &:focus {
     background-color: var(--secondary-color);
-    border: 2px solid black;
+    border: 2px solid var(--line-color);
     font-weight: bold;
     font-size: large;
   }

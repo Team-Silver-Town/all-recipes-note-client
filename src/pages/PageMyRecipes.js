@@ -8,7 +8,7 @@ import Footer from "../components/Footer";
 import NoteCard from "./PageMyRecipes.NoteCard";
 import Loading from "../components/Loading";
 
-function PageMyRecipes({ loginUserInfo, handleLogin }) {
+function PageMyRecipes({ loginUserInfo, handleLogin, toggleTheme, theme }) {
   const [notesData, setNotesData] = useState(null);
   const { email } = loginUserInfo;
 
@@ -29,7 +29,12 @@ function PageMyRecipes({ loginUserInfo, handleLogin }) {
 
   return (
     <Container>
-      <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
+      <Header
+        loginUserInfo={loginUserInfo}
+        handleLogin={handleLogin}
+        toggleTheme={toggleTheme}
+        theme={theme}
+      />
       {!notesData && (
         <Main>
           <Loading />
