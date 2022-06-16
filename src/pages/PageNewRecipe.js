@@ -136,7 +136,6 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
               </SuggestionContainer>
             )}
           </InputMenu>
-
           <SubmitButton
             onClick={createRecipeHandler}
             disabled={!isValidUrl || !Object.keys(category).length || !menuName}

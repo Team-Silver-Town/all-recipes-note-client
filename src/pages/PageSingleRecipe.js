@@ -6,20 +6,22 @@ import YouTube from "react-youtube";
 import Notes from "./PageSingleRecipe.Notes";
 import Tips from "./PageSingleRecipe.Tips";
 import Note from "./PageSingleRecipe.MyNote";
+import ModalGuide from "../components/ModalGuide";
+import VoiceControlGuide from "../components/VoiceControlGuide";
 import { useQuery } from "react-query";
 import { getRecipe } from "../api/recipeApi";
-import useRecipeMutation from "../hooks/recipe-mutation-hook";
-import { isLikedCheck } from "../utils/likeHelper";
 import { videoOptions } from "../config/youtubeConfig";
-import useVideoControlBySpeech from "../hooks/video-speech-control";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileAudio } from "@fortawesome/free-regular-svg-icons";
+import useRecipeControlBySpeech from "../hooks/recipe-speech-control";
 import TypeWriter from "typewriter-effect";
 
-function PageSingleRecipe({ loginUserInfo, handleLogin }) {
+function PageSingleRecipe({ loginUserInfo }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
   const [currentNoteId, setCurrentNoteId] = useState("");
   const [myNoteId, setMyNoteId] = useState("");
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeOrDislike, setLikeOrDislike] = useState("");
+  const [isModalOpen, setModalOpen] = useState(false);
+
   const [videoElement, setVideoElement] = useState(null);
   const [script, setScript] = useState("");
   const likeButtonElement = useRef();
@@ -33,9 +35,7 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
   const { data: recipe } = useQuery(["recipe", recipe_id], () =>
     getRecipe(recipe_id)
   );
-  const { updateRecipeLikeMutation, cancelRecipeLikeMutation } =
-    useRecipeMutation();
-  const { recognition, speechToText, isCommanding } = useVideoControlBySpeech(
+  const { recognition, speechToText, isCommanding } = useRecipeControlBySpeech(
     videoElement,
     likeButtonElement.current,
     dislikeButtonElement.current,
@@ -53,10 +53,6 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
     event.target.cueVideoById({
       videoId: recipe?.youtubeUrl.split("v=")[1].split("&")[0],
     });
-  };
-
-  const checkVideoState = (event) => {
-    console.log(event.data);
   };
 
   const pageTitle = recipe ? recipe.belongsToMenu.name : "Recipe Detail";
@@ -78,39 +74,8 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
     }
   }, [speechToText]);
 
-  useEffect(() => {
-    if (recipe) {
-      const isAlreadyLiked = isLikedCheck(loginUserInfo.email, recipe?.liked);
-      const isAlreadyDisliked = isLikedCheck(
-        loginUserInfo.email,
-        recipe.disliked
-      );
-      if (isAlreadyLiked || isAlreadyDisliked) {
-        setIsLiked(true);
-        isAlreadyLiked && setLikeOrDislike("like");
-        isAlreadyDisliked && setLikeOrDislike("dislike");
-      }
-    }
-  }, [recipe, loginUserInfo.email]);
-
-  const clickLikeHandler = (event) => {
-    if (isLiked && event.target.name === likeOrDislike) {
-      cancelRecipeLikeMutation.mutate({
-        email: loginUserInfo.email,
-        recipe_id,
-        like: event.target.name,
-      });
-
-      setIsLiked(false);
-    } else if (!isLiked) {
-      updateRecipeLikeMutation.mutate({
-        email: loginUserInfo.email,
-        recipe_id,
-        like: event.target.name,
-      });
-
-      setIsLiked(true);
-    }
+  const clickVoiceControlGuide = () => {
+    setModalOpen(!isModalOpen);
   };
 
   const handleBoardNavigation = (event) => {
@@ -124,6 +89,11 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
 
   return (
     <Container>
+      {isModalOpen && (
+        <ModalGuide>
+          <VoiceControlGuide />
+        </ModalGuide>
+      )}
       <LeftSection>
         <NavigationPage>
           <StyledLinkButton
@@ -153,7 +123,6 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
             onReady={handleVideo}
             id="youtube"
             opts={videoOptions}
-            onStateChange={checkVideoState}
           />
           <TypewriterContainer>
             {script && (
@@ -194,6 +163,10 @@ function PageSingleRecipe({ loginUserInfo, handleLogin }) {
                 꿀팁
               </Button>
             </ButtonLeft>
+            <StyledFontAwesomeIcon
+              icon={faFileAudio}
+              onClick={clickVoiceControlGuide}
+            />
             <ButtonRight>
               {currentBoardPage !== "myNote" && (
                 <Button
@@ -272,6 +245,15 @@ const VideoPlayer = styled.article`
     width: 100%;
     height: 600px;
   }
+`;
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+  position: absolute;
+  font-size: 25px;
+  top: 3%;
+  right: 12%;
+
+  cursor: pointer;
 `;
 
 const TypewriterContainer = styled.div`

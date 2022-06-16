@@ -1,20 +1,8 @@
 import { useEffect, useState } from "react";
 import { grammar } from "../config/speechConfig";
-import {
-  ADD_INGREDIENT,
-  FINISH_ADD_INGREDIENT,
-  SIRI_SAY_ADDED_INGREDIENTS,
-} from "../constants/voice-command";
-import { playText } from "../utils/speechSynthesis";
-import { parseIngredientsFromSpeech } from "../utils/voiceHelper";
+import * as commands from "../constants/voice-command";
 
-const useIngredientControlbySpeech = (
-  setIngredient,
-  setPortion,
-  setUnit,
-  doneButton,
-  addButton
-) => {
+const useHeaderSpeechControl = (toHomeLink, toRecipeLink, toRankLink) => {
   const [speechToText, setSpeechToText] = useState("");
   const [isCommanding, setCommanding] = useState(false);
 
@@ -43,26 +31,20 @@ const useIngredientControlbySpeech = (
 
   useEffect(() => {
     console.log(speechToText);
-    if (speechToText.includes(ADD_INGREDIENT)) {
+    if (speechToText.includes(commands.START_COMMAND)) {
       setCommanding(true);
     }
 
-    if (speechToText.includes(FINISH_ADD_INGREDIENT)) {
-      doneButton.click();
-      playText(SIRI_SAY_ADDED_INGREDIENTS);
+    if (isCommanding) {
+      if (speechToText.includes("홈으로 이동")) {
+        toHomeLink.click();
+      } else if (speechToText.includes("레시피로 이동")) {
+        toRecipeLink.click();
+      } else if (speechToText.includes("랭킹으로 이동")) {
+        toRankLink.click();
+      }
 
       setCommanding(false);
-    }
-
-    if (isCommanding) {
-      const { ingredient, portion, unit } =
-        parseIngredientsFromSpeech(speechToText);
-
-      setIngredient(ingredient);
-      setPortion(portion);
-      setUnit(unit);
-
-      addButton.click();
     }
 
     return () => recognition.stop();
@@ -71,4 +53,4 @@ const useIngredientControlbySpeech = (
   return [recognition, speechToText, isCommanding];
 };
 
-export default useIngredientControlbySpeech;
+export default useHeaderSpeechControl;
