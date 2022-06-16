@@ -1,9 +1,9 @@
 import React, { useState, useEffect, useRef } from "react";
 import Modal from "../components/Modal";
-import SearchInput from "../components/Input.Search";
 import styled from "styled-components";
 import useIngredientControlbySpeech from "../hooks/ingredient-speech-control";
 import TypeWriter from "typewriter-effect";
+import { generateSuggestions } from "../utils/suggestionHelper";
 
 const Ingredients = ({
   ingredients,
@@ -14,7 +14,8 @@ const Ingredients = ({
   const [ingredient, setIngredient] = useState("");
   const [portion, setPortion] = useState(0);
   const [unit, setUnit] = useState("");
-  const [isAdded, setAdded] = useState(false);
+  const [ingredientSuggestions, setIngredientSuggestions] = useState([]);
+  const [unitSuggestions, setUnitSuggestions] = useState([]);
   const [script, setScript] = useState("");
   const doneButtonElement = useRef();
   const addButtonElement = useRef();
@@ -35,8 +36,30 @@ const Ingredients = ({
     }
   }, [speechToText]);
 
+  const changeIngredientHandler = (event) => {
+    setIngredient(event.target.value);
+    setIngredientSuggestions(
+      generateSuggestions(ingredients, event.target.value)
+    );
+  };
+
+  const clickIngredientSuggestionHandler = (event) => {
+    setIngredient(event.target.innerText);
+    setIngredientSuggestions([]);
+  };
+
   const changePortionHandler = (event) => {
     setPortion(event.target.value);
+  };
+
+  const changeUnitHandler = (event) => {
+    setUnit(event.target.value);
+    setUnitSuggestions(generateSuggestions(units, event.target.value));
+  };
+
+  const clickUnitSuggestionHandler = (event) => {
+    setUnit(event.target.innerText);
+    setUnitSuggestions([]);
   };
 
   const clickCloseHandler = () => {
@@ -52,7 +75,6 @@ const Ingredients = ({
       return [...previous, ingredients];
     });
 
-    setAdded(true);
     setIngredient("");
     setPortion(0);
     setUnit("");
@@ -61,9 +83,9 @@ const Ingredients = ({
   return (
     <>
       {isCommanding && (
-        <div>
+        <RecodingBox>
           <RecordingStatus className="blob red"></RecordingStatus>
-        </div>
+        </RecodingBox>
       )}
       {
         <TypewriterContainer>
@@ -87,12 +109,25 @@ const Ingredients = ({
           <Form onSubmit={clickAddHandler}>
             <TextInput>
               <label>재료</label>
-              <SearchInput
-                searchData={ingredients}
-                updateHanlder={setIngredient}
-                isSubmitted={isAdded}
-                setSubmitted={setAdded}
+              <input
+                type="text"
+                onChange={changeIngredientHandler}
+                value={ingredient}
               />
+              {ingredientSuggestions > 0 && (
+                <SuggestionContainer>
+                  {ingredientSuggestions.map((suggestion, index) => {
+                    return (
+                      <Suggestion
+                        key={`${suggestion}-${index}`}
+                        onClick={clickIngredientSuggestionHandler}
+                      >
+                        {suggestion}
+                      </Suggestion>
+                    );
+                  })}
+                </SuggestionContainer>
+              )}
             </TextInput>
             <NumberInput>
               <label>양</label>
@@ -105,12 +140,21 @@ const Ingredients = ({
             </NumberInput>
             <TextInput>
               <label>단위</label>
-              <SearchInput
-                searchData={units}
-                updateHanlder={setUnit}
-                isSubmitted={isAdded}
-                setSubmitted={setAdded}
-              />
+              <input type="text" onChange={changeUnitHandler} value={unit} />
+              {unitSuggestions.length > 0 && (
+                <SuggestionContainer>
+                  {unitSuggestions.map((suggestion, index) => {
+                    return (
+                      <Suggestion
+                        key={`${suggestion}-${index}`}
+                        onClick={clickUnitSuggestionHandler}
+                      >
+                        {suggestion}
+                      </Suggestion>
+                    );
+                  })}
+                </SuggestionContainer>
+              )}
             </TextInput>
             <ButtonContainer>
               <button
@@ -120,11 +164,11 @@ const Ingredients = ({
               >
                 추가
               </button>
-              <button onClick={clickCloseHandler} ref={doneButtonElement}>
-                완료
-              </button>
             </ButtonContainer>
           </Form>
+          <button onClick={clickCloseHandler} ref={doneButtonElement}>
+            완료
+          </button>
         </Container>
       </Modal>
     </>
@@ -132,6 +176,16 @@ const Ingredients = ({
 };
 
 export default Ingredients;
+
+const SuggestionContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  cursor: pointer;
+`;
+const Suggestion = styled.div`
+  cursor: pointer;
+`;
 
 const Container = styled.div`
   display: flex;
@@ -181,34 +235,43 @@ const TypewriterContainer = styled.div`
   font-size: 45px;
 `;
 
-const RecordingStatus = styled.div`
+const RecodingBox = styled.div`
+  background-color: var(--primary-color);
+  height: 40px;
+  width: 40px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
   position: absolute;
   top: 2%;
-  right: 65%;
+  left: 22%;
+`;
 
-  background: rgba(255, 82, 82, 1);
+const RecordingStatus = styled.div`
+  background: rgba(255, 0, 0, 1);
   border-radius: 50%;
-  box-shadow: 0 0 0 0 rgba(255, 82, 82, 1);
-  margin: 10px;
-  height: 25px;
-  width: 25px;
+  box-shadow: 0 0 0 0 rgba(255, 0, 0, 1);
+  height: 30px;
+  width: 30px;
   transform: scale(1);
   animation: pulse-red 1s infinite;
 
   @keyframes pulse-red {
     0% {
       transform: scale(0.95);
-      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0.7);
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
     }
 
     70% {
       transform: scale(1);
-      box-shadow: 0 0 0 10px rgba(255, 82, 82, 0);
+      box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
     }
 
     100% {
       transform: scale(0.95);
-      box-shadow: 0 0 0 0 rgba(255, 82, 82, 0);
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
     }
   }
 `;

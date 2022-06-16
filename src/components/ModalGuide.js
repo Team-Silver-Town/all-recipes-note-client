@@ -2,7 +2,7 @@ import React from "react";
 import ModalPortal from "./Portal";
 import styled from "styled-components";
 
-const Modal = ({ children }) => {
+const ModalGuide = ({ children }) => {
   return (
     <ModalPortal>
       <Background>
@@ -12,7 +12,7 @@ const Modal = ({ children }) => {
   );
 };
 
-export default Modal;
+export default ModalGuide;
 
 const Background = styled.div`
   position: fixed;
@@ -26,11 +26,11 @@ const Background = styled.div`
 const Content = styled.div`
   position: fixed;
   top: 50%;
-  left: 70%;
+  left: 50%;
   transform: translate(-50%, -50%);
-  width: 35%;
-  height: 60%;
-  background-color: var(--primary-color);
+  width: 90%;
+  height: 90%;
+  background-color: white;
   padding: 30px;
   border-radius: 5px;
   box-shadow: 0 3px 10px rgba(0, 0, 0, 0.3);

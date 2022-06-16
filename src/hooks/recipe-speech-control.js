@@ -1,17 +1,16 @@
 import { useEffect, useState } from "react";
 import { grammar } from "../config/speechConfig";
 import * as commands from "../constants/voice-command";
-import { playText } from "../utils/speechSynthesis";
 
-const useNoteControlBySpeech = (
-  note,
-  ingredientsButton,
-  saveButton,
-  deleteButton,
-  setIsVisible,
-  openNoteList,
+const useRecipeControlBySpeech = (
   video,
-  ingredients
+  likeButton,
+  dislikeButton,
+  toRankingsButton,
+  toRecipesButton,
+  toMyNoteButton,
+  toNoteListButton,
+  toTipListButton
 ) => {
   const [speechToText, setSpeechToText] = useState("");
   const [isCommanding, setCommanding] = useState(false);
@@ -47,51 +46,38 @@ const useNoteControlBySpeech = (
 
     if (isCommanding) {
       if (speechToText.includes(commands.PLAY_VIDEO)) {
-        playText(commands.SIRI_SAY_PLAY_VIDEO);
-        setTimeout(() => {
-          video.playVideo();
-        }, 2000);
+        video.playVideo();
       } else if (speechToText.includes(commands.STOP_VIDEO)) {
-        playText(commands.SIRI_SAY_PAUSE_VIDEO);
-        setTimeout(() => {
-          video.pauseVideo();
-        }, 2000);
+        video.pauseVideo();
       } else if (speechToText.includes(commands.SEEK_FORWARD)) {
         video.seekTo(video.getCurrentTime() + commands.SEEK_TIME, true);
       } else if (speechToText.includes(commands.SEEK_BACKWARD)) {
         video.seekTo(video.getCurrentTime() - commands.SEEK_TIME, true);
-      } else if (speechToText.includes(commands.TO_INGREDIENTS)) {
-        ingredientsButton.click();
-      } else if (speechToText.includes(commands.SAVE_NOTE)) {
-        saveButton.click();
-        playText(commands.SIRI_SAY_SAVED_NOTE);
-      } else if (speechToText.includes(commands.DELETE_NOTE)) {
-        deleteButton.click();
-        playText(commands.SIRI_SAY_DELETED_NOTE);
-      } else if (speechToText.includes(commands.SET_PRIVATE)) {
-        setIsVisible(false);
-        playText(commands.SIRI_SAY_NOTE_PRIVATE);
-      } else if (speechToText.includes(commands.SET_PUBLIC)) {
-        setIsVisible(true);
-        playText(commands.SIRI_SAY_NOTE_PUBLIC);
+      } else if (speechToText.includes(commands.OPEN_NOTE)) {
+        toMyNoteButton.click();
       } else if (speechToText.includes(commands.TO_NOTELIST)) {
-        openNoteList("notes");
-      } else if (speechToText.includes(commands.READ_NOTE)) {
-        playText(commands.SIRI_READ_NOTE);
-        playText(note.value);
-      } else if (speechToText.includes(commands.READ_INGREDIENTS)) {
-        playText(commands.SIRI_READ_INGREDIENTS);
-        ingredients.forEach((ingredient) => {
-          const ingredientText = ingredient.split("-").join(" ");
-          playText(ingredientText);
-        });
+        toNoteListButton.click();
+      } else if (speechToText.includes(commands.TO_TIPS)) {
+        toTipListButton.click();
+      } else if (speechToText.includes(commands.LIKE_RECIPE)) {
+        likeButton.click();
+      } else if (speechToText.includes(commands.DISLIKE_RECIPE)) {
+        dislikeButton.click();
+      } else if (speechToText.includes(commands.TO_RECIPES)) {
+        toRecipesButton.click();
+      } else if (speechToText.includes(commands.TO_RANKINGS)) {
+        toRankingsButton.click();
       }
       setCommanding(false);
     }
     return () => recognition.stop();
   }, [speechToText]);
 
-  return [recognition, speechToText, isCommanding];
+  return {
+    recognition,
+    speechToText,
+    isCommanding,
+  };
 };
 
-export default useNoteControlBySpeech;
+export default useRecipeControlBySpeech;

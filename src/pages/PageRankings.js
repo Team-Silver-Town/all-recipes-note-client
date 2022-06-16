@@ -1,4 +1,4 @@
-import { Fragment, useEffect, useState } from "react";
+import { Fragment, useEffect, useRef, useState } from "react";
 import styled from "styled-components";
 import { getTop5Menus } from "../api/foodApi";
 
@@ -21,6 +21,7 @@ import {
   RankItemListWithRecipe,
   RankItemListWithCategory,
 } from "./PageRankings.component";
+import useRankingControlBySpeech from "../hooks/ranking-speech-control";
 
 function PageRankings({ loginUserInfo, handleLogin, toggleTheme, theme }) {
   const [currentRankList, setCurrentRankList] = useState([]);
@@ -29,6 +30,23 @@ function PageRankings({ loginUserInfo, handleLogin, toggleTheme, theme }) {
     useState("최신 레시피 Top 10");
   const [curretnTop5Menus, setCurrentTop5Menus] = useState([]);
   const [currentMenu, setCurrentMenu] = useState("");
+  const latestRankingElement = useRef();
+  const totalRankingElement = useRef();
+  const koreanRankingElement = useRef();
+  const foreignRankingElement = useRef();
+  const noteRankingElement = useRef();
+  const tipRankingElement = useRef();
+
+  const [recognition, speechToText, isCommanding] = useRankingControlBySpeech(
+    latestRankingElement.current,
+    totalRankingElement.current,
+    koreanRankingElement.current,
+    foreignRankingElement.current,
+    noteRankingElement.current,
+    tipRankingElement.current
+  );
+
+  recognition.start();
 
   useEffect(() => {
     document.title = "Rankings | 모조리";
@@ -64,6 +82,11 @@ function PageRankings({ loginUserInfo, handleLogin, toggleTheme, theme }) {
         toggleTheme={toggleTheme}
         theme={theme}
       />
+      {isCommanding && (
+        <RecodingBox>
+          <RecordingStatus className="blob red"></RecordingStatus>
+        </RecodingBox>
+      )}
       <Main>
         <Navigation>
           <RankingList>
@@ -87,6 +110,7 @@ function PageRankings({ loginUserInfo, handleLogin, toggleTheme, theme }) {
                     setCurrentRankTitle("최신 레시피 Top 10");
                   }
                 }}
+                ref={latestRankingElement}
               >
                 최신 레시피 Top 10
               </li>
@@ -108,6 +132,7 @@ function PageRankings({ loginUserInfo, handleLogin, toggleTheme, theme }) {
                     setCurrentRankTitle("전체 레시피 Top 10");
                   }
                 }}
+                ref={totalRankingElement}
               >
                 전체 레시피 Top 10
               </li>
@@ -131,6 +156,7 @@ function PageRankings({ loginUserInfo, handleLogin, toggleTheme, theme }) {
                     setCurrentRankTitle("한식 메뉴 Top 10");
                   }
                 }}
+                ref={koreanRankingElement}
               >
                 한식 메뉴 Top 10
               </li>
@@ -154,6 +180,7 @@ function PageRankings({ loginUserInfo, handleLogin, toggleTheme, theme }) {
                     setCurrentRankTitle("양식 메뉴 Top 10");
                   }
                 }}
+                ref={foreignRankingElement}
               >
                 양식 메뉴 Top 10
               </li>
@@ -213,6 +240,7 @@ function PageRankings({ loginUserInfo, handleLogin, toggleTheme, theme }) {
                   setCurrentRankTitle("베스트 노트 Top 10");
                 }
               }}
+              ref={noteRankingElement}
             >
               베스트 노트 Top 10
             </h2>
@@ -236,6 +264,7 @@ function PageRankings({ loginUserInfo, handleLogin, toggleTheme, theme }) {
                   setCurrentRankTitle("베스트 꿀팁 Top 10");
                 }
               }}
+              ref={tipRankingElement}
             >
               베스트 꿀팁 Top 10
             </h2>
@@ -371,4 +400,46 @@ const RankTitle = styled.h2`
   display: flex;
   align-items: center;
   padding-left: 30px;
+`;
+
+const RecodingBox = styled.div`
+  background-color: var(--primary-color);
+  height: 40px;
+  width: 40px;
+  border-radius: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  position: absolute;
+  top: 2%;
+  left: 22%;
+  z-index: 100;
+`;
+
+const RecordingStatus = styled.div`
+  background: rgba(255, 0, 0, 1);
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(255, 0, 0, 1);
+  height: 30px;
+  width: 30px;
+  transform: scale(1);
+  animation: pulse-red 1s infinite;
+
+  @keyframes pulse-red {
+    0% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0.7);
+    }
+
+    70% {
+      transform: scale(1);
+      box-shadow: 0 0 0 10px rgba(255, 0, 0, 0);
+    }
+
+    100% {
+      transform: scale(0.95);
+      box-shadow: 0 0 0 0 rgba(255, 0, 0, 0);
+    }
+  }
 `;

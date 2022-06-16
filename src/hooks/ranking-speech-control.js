@@ -1,19 +1,19 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 import { grammar } from "../config/speechConfig";
 import * as commands from "../constants/voice-command";
 
-const useVideoControlBySpeech = (
-  video,
-  likeButton,
-  dislikeButton,
-  toRankingsButton,
-  toRecipesButton,
-  toMyNoteButton,
-  toNoteListButton,
-  toTipListButton
+const useRankingControlBySpeech = (
+  showLatestRanking,
+  showTotalRanking,
+  showKoreanRanking,
+  showForeignRanking,
+  showNoteRanking,
+  showTipRanking
 ) => {
   const [speechToText, setSpeechToText] = useState("");
   const [isCommanding, setCommanding] = useState(false);
+  const navigate = useNavigate();
 
   const SpeechRecognition =
     window.SpeechRecognition || window.webkitSpeechRecognition;
@@ -45,39 +45,30 @@ const useVideoControlBySpeech = (
     }
 
     if (isCommanding) {
-      if (speechToText.includes(commands.PLAY_VIDEO)) {
-        video.playVideo();
-      } else if (speechToText.includes(commands.STOP_VIDEO)) {
-        video.pauseVideo();
-      } else if (speechToText.includes(commands.SEEK_FORWARD)) {
-        video.seekTo(video.getCurrentTime() + commands.SEEK_TIME, true);
-      } else if (speechToText.includes(commands.SEEK_BACKWARD)) {
-        video.seekTo(video.getCurrentTime() - commands.SEEK_TIME, true);
-      } else if (speechToText.includes(commands.OPEN_NOTE)) {
-        toMyNoteButton.click();
-      } else if (speechToText.includes(commands.TO_NOTELIST)) {
-        toNoteListButton.click();
-      } else if (speechToText.includes(commands.TO_TIPS)) {
-        toTipListButton.click();
-      } else if (speechToText.includes(commands.LIKE_RECIPE)) {
-        likeButton.click();
-      } else if (speechToText.includes(commands.DISLIKE_RECIPE)) {
-        dislikeButton.click();
+      if (speechToText.includes(commands.RANKING_LATEST)) {
+        showLatestRanking.click();
+      } else if (speechToText.includes(commands.RANKING_RECIPES)) {
+        showTotalRanking.click();
+      } else if (speechToText.includes(commands.RANKING_KOREAN)) {
+        showKoreanRanking.click();
+      } else if (speechToText.includes(commands.RANKING_KOREAN)) {
+        showForeignRanking.click();
+      } else if (speechToText.includes(commands.RANKING_NOTE)) {
+        showNoteRanking.click();
+      } else if (speechToText.includes(commands.RANKING_TIP)) {
+        showTipRanking.click();
       } else if (speechToText.includes(commands.TO_RECIPES)) {
-        toRecipesButton.click();
-      } else if (speechToText.includes(commands.TO_RANKINGS)) {
-        toRankingsButton.click();
+        navigate("/recipes");
+      } else if (speechToText.includes(commands.TO_HOME)) {
+        navigate("/");
       }
       setCommanding(false);
     }
+
     return () => recognition.stop();
   }, [speechToText]);
 
-  return {
-    recognition,
-    speechToText,
-    isCommanding,
-  };
+  return [recognition, speechToText, isCommanding];
 };
 
-export default useVideoControlBySpeech;
+export default useRankingControlBySpeech;

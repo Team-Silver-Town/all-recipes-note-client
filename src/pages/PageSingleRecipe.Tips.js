@@ -17,7 +17,7 @@ const Tips = ({ loginUserInfo, recipeId }) => {
   return (
     <TipsContainer>
       <CreateTip loginUserInfo={loginUserInfo} recipeId={recipeId} />
-      {tips?.length &&
+      {tips?.length > 0 &&
         sortDescendingByUpdatedAt(tips).map((tip) => {
           return (
             <TipCard
