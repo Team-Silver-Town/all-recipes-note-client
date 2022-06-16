@@ -44,7 +44,7 @@ export function Navigation() {
 
 export function MyAccount({ clickedToggle, keyDownedToggle, loginUserInfo }) {
   return (
-    <>
+    <ImageBox>
       <ProfileImg
         role="button"
         tabIndex="0"
@@ -57,7 +57,7 @@ export function MyAccount({ clickedToggle, keyDownedToggle, loginUserInfo }) {
         }
         alt="my-profile-image"
       />
-    </>
+    </ImageBox>
   );
 }
 
@@ -140,4 +140,12 @@ const ProfileImg = styled.img`
     height: 50px;
     border-radius: 50px;
   }
+`;
+
+const ImageBox = styled.div`
+  width: 50px;
+  height: 50px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
