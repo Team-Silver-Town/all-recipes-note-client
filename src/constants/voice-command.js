@@ -1,10 +1,10 @@
 export const START_COMMAND = "시리야";
 
-export const TO_HOME = "홈으로 이동";
-export const TO_RECIPES = "레시피로 이동";
-export const TO_RANKINGS = "랭킹으로 이동";
-export const TO_NOTELIST = "노트 목록으로 이동";
-export const TO_TIPS = "꿀팁으로 이동";
+export const TO_HOME = "홈 이동";
+export const TO_RECIPES = "레시피 이동";
+export const TO_RANKINGS = "랭킹 이동";
+export const TO_NOTELIST = "노트 목록 이동";
+export const TO_TIPS = "꿀팁 이동";
 
 export const PLAY_VIDEO = "영상 시작";
 export const STOP_VIDEO = "영상 멈춰";
