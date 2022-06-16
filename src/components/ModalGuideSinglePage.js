@@ -2,24 +2,24 @@ import React from "react";
 import ModalPortal from "./Portal";
 import styled from "styled-components";
 
-const ModalGuide = ({ children }) => {
+const ModalGuideSinglePage = ({ children }) => {
   return (
     <ModalPortal>
       <Content>
-        <div>VoiceControlGuideForHeader</div>;
+        <div>VoiceControlGuideForSingleRecipe</div>;
       </Content>
     </ModalPortal>
   );
 };
 
-export default ModalGuide;
+export default ModalGuideSinglePage;
 
 const Content = styled.div`
   position: fixed;
-  top: 13%;
-  right: 4%;
+  top: 3%;
+  left: 30%;
   width: 25%;
-  height: 84%;
+  height: 90%;
   background-color: white;
   padding: 30px;
   border-radius: 5px;

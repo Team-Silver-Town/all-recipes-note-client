@@ -3,10 +3,14 @@ import styled, { keyframes } from "styled-components";
 import { Link, useNavigate } from "react-router-dom";
 import { signOut } from "../services/firebase";
 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faFileAudio } from "@fortawesome/free-regular-svg-icons";
 import { Navigation, MyAccount } from "./Header.component";
+import ModalGuide from "./ModalGuide";
 
 function Header({ loginUserInfo, handleLogin, toggleTheme, theme }) {
   const [isModalOpen, setModalOpen] = useState(false);
+  const [isGuideModalOpen, setGuideModalOpen] = useState(false);
   const navigate = useNavigate();
 
   const clickedToggle = () => {
@@ -46,11 +50,20 @@ function Header({ loginUserInfo, handleLogin, toggleTheme, theme }) {
     </>
   );
 
+  const clickVoiceControlGuide = () => {
+    setGuideModalOpen(!isGuideModalOpen);
+  };
+
   if (isModalOpen) {
     return (
       <Container>
         <Navigation toggleTheme={toggleTheme} />
         <Status>
+          {isGuideModalOpen && <ModalGuide />}
+          <StyledFontAwesomeIcon
+            icon={faFileAudio}
+            onClick={clickVoiceControlGuide}
+          />
           <ViewMode onClick={toggleTheme}>
             {theme === "light" && "Dark Mode"}
             {theme === "dark" && "Light Mode"}
@@ -72,6 +85,11 @@ function Header({ loginUserInfo, handleLogin, toggleTheme, theme }) {
       <Container>
         <Navigation toggleTheme={toggleTheme} />
         <Status>
+          {isGuideModalOpen && <ModalGuide />}
+          <StyledFontAwesomeIcon
+            icon={faFileAudio}
+            onClick={clickVoiceControlGuide}
+          />
           <ViewMode onClick={toggleTheme}>
             {theme === "light" && "Dark Mode ☾"}
             {theme === "dark" && "Light Mode ☀"}
@@ -116,6 +134,7 @@ const fadeIn = keyframes`
 
 const Status = styled.div`
   display: flex;
+  align-items: center;
 `;
 
 const ViewMode = styled.button`
@@ -171,4 +190,11 @@ const MyAccountModal = styled.div`
   }
 
   animation: ${fadeIn} 0.15s ease-out;
+`;
+
+const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
+  font-size: 25px;
+  margin-right: 10px;
+
+  cursor: pointer;
 `;
