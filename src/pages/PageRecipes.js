@@ -11,7 +11,7 @@ import RecipeCard from "../components/Card.Recipe";
 
 import { faPlus } from "@fortawesome/free-solid-svg-icons";
 
-function PageRecipes({ loginUserInfo, handleLogin }) {
+function PageRecipes({ loginUserInfo, handleLogin, toggleTheme, theme }) {
   const { data: recipes } = useQuery("recipes", getRecipes, {
     staleTime: 300000,
   });
@@ -22,7 +22,12 @@ function PageRecipes({ loginUserInfo, handleLogin }) {
 
   return (
     <Container>
-      <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
+      <Header
+        loginUserInfo={loginUserInfo}
+        handleLogin={handleLogin}
+        toggleTheme={toggleTheme}
+        theme={theme}
+      />
       {!recipes && (
         <LoagingMain>
           <Loading />
@@ -81,7 +86,7 @@ const StyledNewLink = styled(NavLink)`
   display: inline-block;
   width: 100%;
   height: 100%;
-  background-color: white;
+  background-color: var(--primary-color);
   border-radius: 10px;
   display: flex;
   flex-direction: column;
@@ -89,7 +94,7 @@ const StyledNewLink = styled(NavLink)`
   align-items: center;
   position: relative;
   padding: 2px;
-  border: 2px solid black;
+  border: 2px solid var(--line-color);
 
   &:hover,
   &:focus {
@@ -116,8 +121,8 @@ const StyledRecipeLink = styled(NavLink)`
   width: 100%;
   height: 100%;
   border-radius: 10px;
-  background-color: white;
-  border: 2px solid black;
+  background-color: var(--primary-color);
+  border: 2px solid var(--line-color);
 
   &:hover,
   &:focus {

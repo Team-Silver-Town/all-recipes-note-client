@@ -12,7 +12,7 @@ import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { generateSuggestions } from "../utils/suggestionHelper";
 
-const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
+const PageNewRecipe = ({ loginUserInfo, handleLogin, toggleTheme, theme }) => {
   const { data: categories } = useQuery("categories", getCategories);
   const queryClient = useQueryClient();
   const navigate = useNavigate();
@@ -79,7 +79,12 @@ const PageNewRecipe = ({ loginUserInfo, handleLogin }) => {
 
   return (
     <Container>
-      <Header loginUserInfo={loginUserInfo} handleLogin={handleLogin} />
+      <Header
+        loginUserInfo={loginUserInfo}
+        handleLogin={handleLogin}
+        toggleTheme={toggleTheme}
+        theme={theme}
+      />
       <Main>
         <InputForm>
           <InputLinkTitle aria-describedby="reference">
@@ -298,7 +303,7 @@ const PreviewComment = styled.div`
   height: 490px;
   display: flex;
   flex-direction: column;
-  border: 1px solid black;
+  border: 1px solid var(--line-color);
   justify-content: center;
   align-items: center;
 

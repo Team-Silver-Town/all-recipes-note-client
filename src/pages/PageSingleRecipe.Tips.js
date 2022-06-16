@@ -259,7 +259,7 @@ const TipEditContainer = styled.div`
   }
 
   div:nth-child(2) {
-    border-bottom: 1px solid black;
+    border-bottom: 1px solid var(--line-color);
   }
 
   animation: ${fadeIn} 0.15s ease-out;
@@ -273,7 +273,8 @@ const TipsContainer = styled.div`
 const TipsCardContainer = styled.div`
   width: 100%;
   height: 100px;
-  background-color: white;
+  background-color: var(--secondary-color);
+  color: var(--button-font-color);
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -286,7 +287,7 @@ const TipProfileImg = styled.img`
   min-width: 60px;
   height: 60px;
   border-radius: 60px;
-  background-color: silver;
+  background-color: var(--secondary-color);
   margin-right: 10px;
 `;
 
@@ -320,6 +321,8 @@ const TipInputContainer = styled.div`
 const TipInput = styled.input`
   border: none;
   margin-bottom: 5px;
+  background-color: var(--secondary-color);
+  color: var(--button-font-color);
 
   &:hover {
     border-bottom: 2px solid rgba(0, 0, 0, 0.3);
@@ -327,7 +330,7 @@ const TipInput = styled.input`
 
   &:focus {
     outline: none;
-    border-bottom: 2px solid black;
+    border-bottom: 2px solid var(--line-color);
   }
 `;
 
