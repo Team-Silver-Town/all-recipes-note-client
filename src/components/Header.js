@@ -138,16 +138,18 @@ const Status = styled.div`
 `;
 
 const ViewMode = styled.button`
-  width: 100px;
+  width: 105px;
   margin-right: 10px;
   border-radius: 10px;
+  font-weight: bold;
   height: 40px;
   background-color: var(--font-color);
   color: var(--primary-color);
   border: none;
 
   &:hover {
-    border: 2px solid var(--primary-color);
+    color: black;
+    background-color: var(--secondary-color);
   }
 `;
 
@@ -194,7 +196,7 @@ const MyAccountModal = styled.div`
 
 const StyledFontAwesomeIcon = styled(FontAwesomeIcon)`
   font-size: 25px;
-  margin-right: 10px;
+  margin-right: 15px;
 
   cursor: pointer;
 `;
