@@ -204,6 +204,7 @@ const InputForm = styled.div`
   padding-left: 20px;
   padding-top: 20px;
   background-color: var(--secondary-color);
+  color: black;
 
   div {
     font-size: large;
@@ -292,6 +293,7 @@ const Preview = styled.div`
   flex-direction: column;
   align-items: center;
   background-color: var(--secondary-color);
+  color: black;
 
   div {
     font-size: larger;
@@ -306,6 +308,7 @@ const PreviewComment = styled.div`
   border: 1px solid var(--line-color);
   justify-content: center;
   align-items: center;
+  color: black;
 
   div {
     margin-bottom: 20px;
