@@ -3,7 +3,6 @@ import envKeys from "../config/config";
 
 const fetchApi = axios.create({
   baseURL: envKeys.REACT_APP_BACKEND_URL,
-  withCredentials: true,
 });
 
 fetchApi.interceptors.request.use(function (config) {
