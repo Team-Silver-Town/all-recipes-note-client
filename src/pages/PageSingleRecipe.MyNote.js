@@ -280,7 +280,7 @@ const RecodingBox = styled.div`
 
   position: absolute;
   top: 2%;
-  left: 22%;
+  left: 25%;
 `;
 
 const RecordingStatus = styled.div`
