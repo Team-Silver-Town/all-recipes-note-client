@@ -6,7 +6,6 @@ import YouTube from "react-youtube";
 import Notes from "./PageSingleRecipe.Notes";
 import Tips from "./PageSingleRecipe.Tips";
 import Note from "./PageSingleRecipe.MyNote";
-import ModalGuideSinglePage from "../components/ModalGuideSinglePage";
 import { useQuery } from "react-query";
 import { getRecipe } from "../api/recipeApi";
 import { videoOptions } from "../config/youtubeConfig";
@@ -14,6 +13,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faFileAudio } from "@fortawesome/free-regular-svg-icons";
 import useRecipeControlBySpeech from "../hooks/recipe-speech-control";
 import TypeWriter from "typewriter-effect";
+import ModalGuide from "../components/ModalGuide";
 
 function PageSingleRecipe({ loginUserInfo, toggleTheme, theme }) {
   const [currentBoardPage, setBoardPage] = useState("notes");
@@ -34,6 +34,7 @@ function PageSingleRecipe({ loginUserInfo, toggleTheme, theme }) {
   const { data: recipe } = useQuery(["recipe", recipe_id], () =>
     getRecipe(recipe_id)
   );
+
   const { recognition, speechToText, isCommanding } = useRecipeControlBySpeech(
     videoElement,
     likeButtonElement.current,
@@ -54,10 +55,10 @@ function PageSingleRecipe({ loginUserInfo, toggleTheme, theme }) {
     });
   };
 
-  const pageTitle = recipe ? recipe.belongsToMenu.name : "Recipe Detail";
+  const pageTitle = recipe ? recipe.belongsToMenu?.name : "Recipe Detail";
 
   useLayoutEffect(() => {
-    document.title = `${pageTitle} 레시 | 모조리`;
+    document.title = `${pageTitle} 레시피 | 모조리`;
   }, [pageTitle]);
 
   useEffect(() => {
@@ -88,7 +89,7 @@ function PageSingleRecipe({ loginUserInfo, toggleTheme, theme }) {
 
   return (
     <Container>
-      {isModalOpen && <ModalGuideSinglePage />}
+      {isModalOpen && <ModalGuide />}
       <LeftSection>
         <NavigationPage>
           <StyledLinkButton
