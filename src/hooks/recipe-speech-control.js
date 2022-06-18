@@ -59,10 +59,6 @@ const useRecipeControlBySpeech = (
         toNoteListButton.click();
       } else if (speechToText.includes(commands.TO_TIPS)) {
         toTipListButton.click();
-      } else if (speechToText.includes(commands.LIKE_RECIPE)) {
-        likeButton.click();
-      } else if (speechToText.includes(commands.DISLIKE_RECIPE)) {
-        dislikeButton.click();
       } else if (speechToText.includes(commands.TO_RECIPES)) {
         toRecipesButton.click();
       } else if (speechToText.includes(commands.TO_RANKINGS)) {

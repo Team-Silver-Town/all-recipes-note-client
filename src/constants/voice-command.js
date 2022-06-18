@@ -11,8 +11,6 @@ export const STOP_VIDEO = "영상 멈춰";
 export const SEEK_FORWARD = "영상 앞으로";
 export const SEEK_BACKWARD = "영상 뒤로";
 export const OPEN_NOTE = "노트로 이동";
-export const LIKE_RECIPE = "레시피 좋아요";
-export const DISLIKE_RECIPE = "레시피 안 좋아요";
 
 export const SEEK_TIME = 20;
 
