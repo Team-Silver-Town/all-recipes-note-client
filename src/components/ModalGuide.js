@@ -28,6 +28,8 @@ const ModalGuide = ({ children }) => {
 
         <ControlContainer>
           <h2>📓 노트 컨트롤</h2>
+          <li>노트 목록 이동</li>
+          <li>노트로 이동</li>
           <li>노트 읽어 줘</li>
           <li>재료 읽어 줘</li>
           <li>노트 저장</li>

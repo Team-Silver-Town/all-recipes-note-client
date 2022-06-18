@@ -223,18 +223,6 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList, video }) => {
             >
               삭제
             </ControllButtonDelete>
-            <IngredientsList>
-              {totalIngredients.length > 0 &&
-                totalIngredients.map((ingredient, index) => {
-                  return (
-                    <IngredientsCard key={`${ingredient.name}-${index}`}>
-                      <div key={ingredient._id}>{`${ingredient.split("-")[0]} ${
-                        ingredient.split("-")[1]
-                      }${ingredient.split("-")[2]}`}</div>
-                    </IngredientsCard>
-                  );
-                })}
-            </IngredientsList>
             <ControlButtonAddIngredient
               ref={ingredientsButtonElement}
               onClick={openModalHandler}
@@ -250,6 +238,18 @@ const Note = ({ loginUserInfo, note_id, recipeId, openNoteList, video }) => {
             </ControllButtonDisclose>
           </>
         )}
+        <IngredientsList>
+          {totalIngredients.length > 0 &&
+            totalIngredients.map((ingredient, index) => {
+              return (
+                <IngredientsCard key={`${ingredient.name}-${index}`}>
+                  <div key={ingredient._id}>{`${ingredient.split("-")[0]} ${
+                    ingredient.split("-")[1]
+                  }${ingredient.split("-")[2]}`}</div>
+                </IngredientsCard>
+              );
+            })}
+        </IngredientsList>
       </Container>
     </>
   );
