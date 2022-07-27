@@ -77,7 +77,6 @@
 - 앱의 주요 기능들은 Web Speech API를 사용하여 구현된 보이스 컨트롤 기능으로 작동이 가능합니다.
   - 페이지 Navigation, 특정 메뉴 외 원하는 랭킹 카테고리 표시, 등록된 레시피 페이지의 영상 제어, 노트와 재료 읽어주기, 재료 추가, 노트 저장 삭제 및 비/공개 처리
 - 보이스 컨트롤 상세 명령어는 아래 아이콘을 클릭하여 확인 할 수 있습니다.
-  ![Untitled](https://s3-us-west-2.amazonaws.com/secure.notion-static.com/4c12fff0-e86c-4369-b480-b10d0e7e0057/Untitled.png)
 
 **의견 / 소감**
 
