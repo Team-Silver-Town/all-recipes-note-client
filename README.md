@@ -117,7 +117,7 @@ npm start
     - 예를 들어 탭 키를 이용해 모두 항목을 이동할 수 있습니다.
     - VoiceOver를 이용하여 페이지를 이동할 수 있습니다.
     - 체크리스트에서 요구하는 Semantic한 페이지의 조건을 최대한 충족시켰습니다.
-    - lighthouse를 이용한 Accessbility Test 결과 각 페이지에서 91점 이상을 달성하였습니다. SEO Test에서도 90점 이상을 달성하였습니다.
+    - lighthouse를 이용한 Accessbility Test 결과 주요 페이지에서 평균 97.2점을 달성하였습니다. SEO Test에서도 평균 90.8점을 달성하였습니다.
     <img width="581" alt="image" src="https://user-images.githubusercontent.com/78262571/183460798-ad33b7a4-9893-429e-a67b-5fad2553e867.png">
     <img width="581" alt="image" src="https://user-images.githubusercontent.com/78262571/183460994-6f476acc-9d48-4723-89a7-bccef81c7c33.png">
     <img width="581" alt="image" src="https://user-images.githubusercontent.com/78262571/183461046-b4f18cf4-0522-4d92-83a4-56c91ee582d0.png">
