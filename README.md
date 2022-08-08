@@ -3,6 +3,7 @@
 ## 프로젝트명
 
 - 모두의 조리 노트
+- [배포 URL](https://all-recipes-note-client.vercel.app/)
 
 ## 팀 구성원
 
@@ -11,7 +12,15 @@
 
 ## 프로젝트 진행 기간
 
-- 5월 30일 월요일 ~ 6월 17일 금요일
+- 2022.05.30 ~ 2022.06.17 (19 days)
+
+## 설치
+
+```sh
+npm install
+npm start
+// environment variables not included
+```
 
 ## 앱 소개
 
@@ -66,7 +75,10 @@
 ### **Task Tool**
 
 - Mockup : Figma
+  - [Mockup 진행 기록](https://www.figma.com/file/6DWAbo2j4z8FpoK6pZVicw/RecipeNote?node-id=0%3A1)
 - DB Modeling: Lucidchart
+  - [DB Modeling 진행 기록](https://lucid.app/lucidchart/2ad6c7c6-2e8a-4001-8830-4f82de5dad54/edit?viewport_loc=16%2C-9%2C2219%2C1183%2C0_0&invitationId=inv_e163582a-f3b2-485b-b0b1-20504e771523#)
+- 기획 및 프로젝트 진행 Kanban: Notion
 
 ## 앱의 주요 특징 / Features
 
@@ -144,6 +156,10 @@
 ### 세진
 
 첫 팀 협업 프로젝트다 보니 어려운 점들이 많았던것 같습니다. 하지만 같이 일하면서 팀원의 코딩 스타일이나 제가 몰랐던 지식에 대해서도 배우고 협업을 통해 혼자 할때보다도 조금 더 스케일이 있는 프로젝트를 시도 할 수 있었다는 점이 유익하면서도 재미가 있었던 것 같습니다.
+
+Git을 통한 협업
+
+팀 프로젝트를 통해서 개발자에게 communication 및 협업 능력이 왜 중요한지 배울 수 있었던 계기가 되었던 것 같습니다. 개발을 시작하기 전 git commit message 의 규칙을 어떻게 할 것인지, 어떤 단어를 사용하여 자신의 업무를 git 기록에 표현 할 것인지, pull request는 얼마나 상세해야되고 팀원 코드의 리뷰 및 approve 절차, 방식 모두 조사하고 사전 논의를 했습니다. 이렇게 현업에서는 개발자들이 어떻게 협업 하는지에 대해서 고민한 후 최대한 같은 방식으로 업무를 진행하려고 노력했습니다. 자신의 PR에 대한 피드백이 오고 가고 하는 과정에서 서로의 코드에 대해 토론하고 개선점 또는 타협점이 무엇인가에 대해서 협의 할 수 있었고 개발자에게 soft skill 또한 매우 중요하다는 것을 깨닫게 되었습니다. 처음 하는 협업인 만큼 협업 과정에 의한 시간 지체도 걱정이 되었고 코드에 있어 토론이 필요하다면 서로의 관점을 이해하는 과정도 어렵고 작업 효율에 있어 부족한 점도 있었던 것 같습니다. 하지만 또 협업이 있었기에 짧은 시간내에 혼자만의 역량 이상으로 프로젝트를 진행 할 수 있었다고 생각하고 협업 과정 속에서 communication 이라는 개발자의 또 다른 중요한 능력을 체험하고 배울 수 있었습니다.
 
 SQL vs NoSQL
 
