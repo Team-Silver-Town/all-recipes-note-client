@@ -3,7 +3,7 @@
 ## 프로젝트명
 
 - 모두의 조리 노트
-- [배포 URL](https://all-recipes-note-client.vercel.app/)
+- [배포 URL](https://cahoot.netlify.app/)
 
 ## 팀 구성원
 
